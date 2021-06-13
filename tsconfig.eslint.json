@@ -1,0 +1,9 @@
+// Special TypeScript project file to lint files outside of the project
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src",
+    "test",
+    ".eslintrc.js",
+  ],
+}
