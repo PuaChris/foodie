@@ -1,0 +1,47 @@
+// Small devices (phones)
+#wrapper {
+  width: 95%;
+  margin: 0 auto;
+}
+
+#header {
+  width: 100%;
+}
+
+#content {
+  width: 100%;
+}
+
+#sidebar {
+  width: 100%;
+}
+
+#footer {
+  width: 100%;
+}
+
+// Medium devices (tablets, 641px and up)
+@media (min-width: 641px) {
+  #wrapper {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  #content {
+    width: 70%;
+    float: left;
+  }
+
+  #sidebar {
+    width: 30%;
+    float: right;
+  }
+
+  // Large devices (large desktops, 1008px and up)
+  @media (min-width: 1008px) {
+    #wrapper {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
+}

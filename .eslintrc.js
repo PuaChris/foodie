@@ -1,5 +1,8 @@
 module.exports = {
   extends: ['airbnb-typescript'],
+  env: {
+    browser: true,
+  },
   parserOptions: {
     project: './tsconfig.eslint.json',
   },
@@ -11,7 +14,20 @@ module.exports = {
     "react/prop-types": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
     "react/jsx-props-no-spreading": "warn",
-    "arrow-body-style": "always",
+    "arrow-body-style": "off",
+    "jsx-a11y/label-has-associated-control": ["error", {
+      "required": {
+        "some": ["nesting", "id"],
+      },
+    }],
+    "jsx-a11y/label-has-for": ["error", {
+      "required": {
+        "some": ["nesting", "id"]
+      }
+    }],
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/dot-notation": "off",
+
   },
   ignorePatterns: ['.eslintrc.js']
 };

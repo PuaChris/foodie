@@ -2,8 +2,18 @@
 {
   "extends": "./tsconfig.json",
   "include": [
+    "typings",
     "src",
-    "test",
-    ".eslintrc.js",
-  ],
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.scss",
+    "__tests__",
+    "__mocks__", 
+    "next.config.js",
+    "eslintrc.js",
+    ],
+  "exclude": [
+    "node_modules/",
+    "src/ssr-server.ts"
+  ]
 }

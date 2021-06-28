@@ -1,0 +1,62 @@
+#restaurant-list_container {
+  // Size
+  width: 90%;
+  padding: 0;
+}
+
+.restaurant-list_list {
+  padding: 0;
+
+  // Grid
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  align-items: center;
+  justify-items: center;
+}
+
+.restaurant-list_add-btn {
+  // Positioning
+  position: fixed;
+  bottom: 8%;
+  right: 11%;
+
+  // Size
+  height: 70px;
+  width: 70px;
+
+  // Color
+  background-color: #707070;
+  border-radius: 50%;
+  border: none;
+
+  display: inline-block;
+}
+
+.restaurant-list_add-btn_icon {
+  color: white;
+
+  font-size: 35px;
+}
+
+@media screen and (min-width: 641px) {
+  .restaurant-list_list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .restaurant-list_add-btn {
+    // Positioning
+    bottom: 8%;
+    right: 25%;
+
+    // Size
+    height: 70px;
+    width: 70px;
+  }
+}
+
+@media screen and (min-width: 1008px) {
+  .restaurant-list_list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
