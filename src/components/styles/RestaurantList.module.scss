@@ -38,44 +38,10 @@
   // margin: 13px;
 }
 
-.restaurant-list_add-btn {
-  // Positioning
-  position: fixed;
-  bottom: 8%;
-  right: 11%;
-
-  // Size
-  height: 70px;
-  width: 70px;
-
-  // Color
-  background-color: #707070;
-  border-radius: 50%;
-  border: none;
-
-  display: inline-block;
-}
-
-.restaurant-list_add-btn_icon {
-  color: white;
-
-  font-size: 35px;
-}
-
 @media screen and (min-width: 641px) {
   .restaurant-list_list {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 18px;
-  }
-
-  .restaurant-list_add-btn {
-    // Positioning
-    bottom: 8%;
-    right: 10%;
-
-    // Size
-    height: 70px;
-    width: 70px;
   }
 }
 

@@ -26,10 +26,11 @@ const index: React.FC = (): JSX.Element => {
           position: relative;
           width: 100%;
           margin: 0;
+          padding: 0;
         }
       `}
       </style>
-      <header id={style['header_container']}>
+      <header className={style['header_container']}>
         <h1 className={style['header_title']}>My Restaurants</h1>
         <span className={style['header_profile_icon']}>
           <FontAwesomeIcon icon={['fas', 'user-circle']} />

@@ -1,0 +1,29 @@
+.restaurant_container {
+  // Center element
+  margin: 0 auto;
+  width: 60%;
+  height: auto;
+}
+
+.restaurant_description {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  // grid-gap: 12px;
+  grid-template-rows: auto;
+  align-items: center;
+  justify-items: center;
+}
+
+.restaurant_description_emotion {
+  width: 200px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.restaurant_item-list {
+  // Remove bullet in front of <li>
+  list-style-type: none;
+}

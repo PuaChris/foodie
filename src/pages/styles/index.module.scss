@@ -1,5 +1,7 @@
 .home_container {
+  // Center element
   margin: 0 auto;
+  width: 60%;
 
   // Flex
   display: flex;
@@ -8,7 +10,7 @@
   align-items: center;
 }
 
-#header_container {
+.header_container {
   // Size
   width: 85%;
   margin: 10px 20px;

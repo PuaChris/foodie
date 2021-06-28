@@ -57,8 +57,8 @@ class RestaurantList extends React.Component<IProps, IState> {
             );
           })}
         </ul>
-        <button type="button" className={style['restaurant-list_add-btn']} onClick={this.addRestaurant}>
-          <span className={style['restaurant-list_add-btn_icon']}>
+        <button type="button" className="add-btn" onClick={this.addRestaurant}>
+          <span className="add-btn_icon">
             <FontAwesomeIcon icon={['fas', 'plus']} />
           </span>
         </button>

@@ -1,47 +1,58 @@
-// Small devices (phones)
-#wrapper {
-  width: 95%;
-  margin: 0 auto;
+.add-btn {
+  // Positioning
+  position: fixed;
+  bottom: 8%;
+  right: 11%;
+
+  // Size
+  height: 70px;
+  width: 70px;
+
+  // Color
+  background-color: #707070;
+  border-radius: 50%;
+  border: none;
+
+  display: inline-block;
 }
 
-#header {
-  width: 100%;
+.add-btn_icon {
+  color: white;
+  font-size: 35px;
 }
 
-#content {
-  width: 100%;
+.back-btn {
+  background-color: white;
+  border: none;
+
+  display: inline-block;
 }
 
-#sidebar {
-  width: 100%;
+.back-btn_icon {
+  color: black;
+  font-size: 35px;
 }
 
-#footer {
-  width: 100%;
-}
+@media screen and (min-width: 641px) {
+  .add-btn {
+    // Positioning
+    bottom: 8%;
+    right: 10%;
 
-// Medium devices (tablets, 641px and up)
-@media (min-width: 641px) {
-  #wrapper {
-    width: 90%;
-    margin: 0 auto;
+    // Size
+    height: 70px;
+    width: 70px;
   }
+}
 
-  #content {
-    width: 70%;
-    float: left;
-  }
+@media screen and (min-width: 1008px) {
+  .add-btn {
+    // Positioning
+    bottom: 8%;
+    right: 25%;
 
-  #sidebar {
-    width: 30%;
-    float: right;
-  }
-
-  // Large devices (large desktops, 1008px and up)
-  @media (min-width: 1008px) {
-    #wrapper {
-      width: 90%;
-      margin: 0 auto;
-    }
+    // Size
+    height: 70px;
+    width: 70px;
   }
 }
