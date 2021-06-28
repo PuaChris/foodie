@@ -6,9 +6,9 @@ import styles from './styles/RestaurantListCard.module.scss';
 const style: any = styles;
 const RestaurantListCard: React.FC = (): JSX.Element => {
   return (
-    <div className={style['restaurant-list-card']}>
+    <li className={style['restaurant-list-card']}>
       hello
-    </div>
+    </li>
   );
 };
 
