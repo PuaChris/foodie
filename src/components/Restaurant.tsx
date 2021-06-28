@@ -48,36 +48,44 @@ class Restaurant extends React.Component<IProps, IState> {
           <h1 className={style['restaurant_profile-title']}>
             Anh Dao
           </h1>
+
           {/* Descriptions */}
-          <div className={style['restaurant_description']}>
+          <div className={style['restaurant_description_container']}>
+
             {/* Location */}
-            <div className={style['restaurant_description_location']}>
+            <div className={style['restaurant_description']}>
               <span className="location_icon">
                 <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
               </span>
+              <p className={style['description_text']}>383 Spadina Ave, Toronto, Ontario M5T 2G6 Canada</p>
             </div>
+
             {/* Phone Number */}
-            <div className={style['restaurant_description_phone']}>
+            <div className={style['restaurant_description']}>
               <span className="phone_icon">
                 <FontAwesomeIcon icon={['fas', 'phone-alt']} />
               </span>
+              <p className={style['description_text']}>+1 (416)-598-4514</p>
             </div>
+
             {/* Emotions */}
-            <div className={style['restaurant_description_emotion']}>
+            <div className={style['restaurant_description']}>
               <span className="emotion_icon">
-                <FontAwesomeIcon icon={['far', 'frown']} />
+                {/* <FontAwesomeIcon icon={['far', 'frown']} />
                 <FontAwesomeIcon icon={['far', 'meh']} />
-                <FontAwesomeIcon icon={['far', 'smile']} />
+                <FontAwesomeIcon icon={['far', 'smile']} /> */}
                 <FontAwesomeIcon icon={['far', 'grin-hearts']} />
               </span>
-              <p>It was okay.</p>
+              <p className={style['description_text']}>It was okay.</p>
             </div>
+
             {/* Recommendation */}
-            <div className={style['restaurant_description_recommend']}>
+            <div className={style['restaurant_description']}>
               <span className="recommend_icon">
                 <FontAwesomeIcon icon={['far', 'check-circle']} />
-                <FontAwesomeIcon icon={['far', 'times-circle']} />
+                {/* <FontAwesomeIcon icon={['far', 'times-circle']} /> */}
               </span>
+              <p className={style['description_text']}>Would I go back?</p>
             </div>
           </div>
 

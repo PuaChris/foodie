@@ -3,24 +3,31 @@
   margin: 0 auto;
   width: 60%;
   height: auto;
+
+  font-family: "Poppins", sans-serif;
+  color: black;
 }
 
-.restaurant_description {
+.restaurant_description_container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   // grid-gap: 12px;
   grid-template-rows: auto;
   align-items: center;
-  justify-items: center;
+  justify-items: left;
 }
 
-.restaurant_description_emotion {
+.restaurant_description {
   width: 200px;
 
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+}
+
+.description_text {
+  margin: 8px;
+  font-size: 14px;
 }
 
 .restaurant_item-list {
