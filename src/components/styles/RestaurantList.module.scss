@@ -19,6 +19,25 @@
   justify-items: center;
 }
 
+.restaurant-list-card {
+  background: #009432;
+  border-radius: 8px;
+
+  position: relative;
+
+  padding-top: 100%;
+  width: 100%;
+  height: auto;
+
+  color: white;
+
+  // Size
+  // height: 130px;
+  // width: 130px;
+
+  // margin: 13px;
+}
+
 .restaurant-list_add-btn {
   // Positioning
   position: fixed;

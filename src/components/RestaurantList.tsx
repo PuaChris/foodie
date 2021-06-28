@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styles from './styles/RestaurantList.module.scss';
 import SearchBar from './SearchBar';
-import RestaurantListCard from './RestaurantListCard';
 
 // Declaring Prop interface
 type IProps = {
@@ -21,7 +20,7 @@ class RestaurantList extends React.Component<IProps, IState> {
     super(props);
 
     // Retrieving cache
-    const oldRestaurants: number[] = JSON.parse(localStorage.getItem('restaurantList') || '{}');
+    // const oldRestaurants: number[] = JSON.parse(localStorage.getItem('restaurantList') || '{}');
 
     this.state = {
       restaurants: [0, 1, 2],
@@ -50,7 +49,11 @@ class RestaurantList extends React.Component<IProps, IState> {
       <div id={style['restaurant-list_container']}>
         <ul className={style['restaurant-list_list']}>
           {restaurants.map((item) => {
-            return <RestaurantListCard key={item} />;
+            return (
+              <li key={item} className={style['restaurant-list-card']}>
+                hello
+              </li>
+            );
           })}
         </ul>
         <button type="button" className={style['restaurant-list_add-btn']} onClick={this.addRestaurant}>
