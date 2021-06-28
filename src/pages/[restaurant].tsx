@@ -1,15 +1,20 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/dist/client/router';
 
-import styles from './styles/[restaurant].module.scss';
+import Restaurant from '../components/Restaurant';
 
-const style: any = styles;
-const RestaurantListCard: React.FC = (): JSX.Element => {
-  return (
-    <div className={style['']}>
-      hello
-    </div>
-  );
+const Post: any = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  console.log(router, 'routes');
+  console.log(id, 'id');
+
+  return <Restaurant id={id} />;
 };
 
-export default RestaurantListCard;
+export default Post;
+
+// export async function getStaticPaths() {
+//   // Return a list of possible value for id
+// };

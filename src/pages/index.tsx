@@ -16,7 +16,7 @@ const style: any = styles;
 
 const index: React.FC = (): JSX.Element => {
   return (
-    <div id={style['home_container']}>
+    <div className={style['home_container']}>
       {/* Remove horizontal scroll bar in mobile */}
       <style jsx global>{`
         html, body {

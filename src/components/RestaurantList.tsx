@@ -1,8 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/dist/client/link';
 
 import styles from './styles/RestaurantList.module.scss';
-import SearchBar from './SearchBar';
 
 // Declaring Prop interface
 type IProps = {
@@ -51,7 +51,8 @@ class RestaurantList extends React.Component<IProps, IState> {
           {restaurants.map((item) => {
             return (
               <li key={item} className={style['restaurant-list-card']}>
-                hello
+                {/* Adding dynamic ID to new links */}
+                <Link href={`/${item}`}>Restaurant</Link>
               </li>
             );
           })}
