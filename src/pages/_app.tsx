@@ -4,6 +4,7 @@ import Head from 'next/head'
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import '../styles/global.scss';
+import 'semantic-ui-css/semantic.min.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';

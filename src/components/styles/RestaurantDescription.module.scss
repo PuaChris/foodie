@@ -1,0 +1,23 @@
+.restaurant_description_container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  // grid-gap: 12px;
+  grid-template-rows: auto;
+  align-items: center;
+  justify-items: left;
+
+  border: 3px purple dashed;
+}
+
+.restaurant_description {
+  width: 200px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.description_text {
+  margin: 8px;
+  font-size: 14px;
+}

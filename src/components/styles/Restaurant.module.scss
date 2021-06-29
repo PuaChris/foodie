@@ -6,6 +6,29 @@
 
   font-family: "Poppins", sans-serif;
   color: black;
+
+  border: 3px grey solid;
+}
+
+.restaurant_profile-title {
+  font-family: "Poppins", sans-serif;
+  color: black;
+
+  font-size: 30px;
+
+  border: none;
+}
+
+.restaurant_profile-title:focus {
+  outline: none;
+}
+
+.restaurant_item-list {
+  // Remove bullet in front of <li>
+  list-style-type: none;
+
+  width: 100%;
+  padding: 0;
 }
 
 .restaurant_description_container {
@@ -15,6 +38,8 @@
   grid-template-rows: auto;
   align-items: center;
   justify-items: left;
+
+  border: 3px purple dashed;
 }
 
 .restaurant_description {
@@ -28,9 +53,4 @@
 .description_text {
   margin: 8px;
   font-size: 14px;
-}
-
-.restaurant_item-list {
-  // Remove bullet in front of <li>
-  list-style-type: none;
 }
