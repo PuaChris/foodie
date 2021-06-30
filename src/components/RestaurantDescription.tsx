@@ -1,66 +1,37 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NumberFormat from 'react-number-format';
 import { Dropdown } from 'semantic-ui-react';
+
+import {
+  PlaceHolder,
+  DescriptionType,
+  EmotionOptions,
+  RecommendOptions,
+} from '../constant';
 
 import styles from './styles/RestaurantDescription.module.scss';
 
 const style: any = styles;
 
 type IProps = {
-  id: string | string[] | undefined;
+  location: string;
+  phone: string;
+  emotion: string;
+  recommend: string;
+
+  handleChangeText: (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => void;
+  handleDropdown: (e: SyntheticEvent, type: DescriptionType) => void;
 };
 
-enum PlaceHolder {
-  Name = 'Restaurant Name',
-  Location = 'Location',
-  Phone = 'Phone Number',
-  Emotion = 'How was it?',
-  Recommend = 'Would I go back?',
-}
-
-enum OptionType {
-  Emotion,
-  Recommend,
-}
-
-const emotionOptions = [
-  {
-    key: 'love',
-    text: 'I loved it!',
-    value: 'love',
-  },
-  {
-    key: 'happy',
-    text: 'It was good',
-    value: 'happy',
-  },
-  {
-    key: 'meh',
-    text: 'It was okay',
-    value: 'meh',
-  },
-  {
-    key: 'sad',
-    text: 'It was not good',
-    value: 'sad',
-  },
-];
-
-const recommendOptions = [
-  {
-    key: 'yes',
-    text: 'I would go back',
-    value: 'yes',
-  },
-  {
-    key: 'no',
-    text: 'I would not go back',
-    value: 'no',
-  },
-];
-
-const RestaurantDescription: React.FC = (): JSX.Element => {
+const RestaurantDescription = ({
+  location,
+  phone,
+  emotion,
+  recommend,
+  handleChangeText,
+  handleDropdown,
+}: IProps) => {
   return (
     <div className={style['restaurant_description_container']}>
 
@@ -74,7 +45,7 @@ const RestaurantDescription: React.FC = (): JSX.Element => {
           type="text"
           placeholder={PlaceHolder.Location}
           value={location}
-          onChange={(e) => this.handleChangeText(e)}
+          onChange={(e) => handleChangeText(e, DescriptionType.Location)}
         />
       </div>
 
@@ -88,7 +59,7 @@ const RestaurantDescription: React.FC = (): JSX.Element => {
           placeholder={PlaceHolder.Phone}
           mask="_"
           value={phone}
-          onChange={(e) => this.handleChangeText(e)}
+          onChange={(e) => handleChangeText(e, DescriptionType.Phone)}
         />
       </div>
 
@@ -102,10 +73,11 @@ const RestaurantDescription: React.FC = (): JSX.Element => {
         </span>
         <Dropdown
           placeholder={PlaceHolder.Emotion}
+          value={emotion}
           scrolling
           selection
-          options={emotionOptions}
-          onChange={(e) => this.handleDropdown(e, OptionType.Emotion)}
+          options={EmotionOptions}
+          onChange={(e) => handleDropdown(e, DescriptionType.Emotion)}
         />
 
         {/* <p className={style['description_text']}>It was okay.</p> */}
@@ -119,12 +91,12 @@ const RestaurantDescription: React.FC = (): JSX.Element => {
         </span>
         <Dropdown
           placeholder={PlaceHolder.Recommend}
+          value={recommend}
           scrolling
           selection
-          options={recommendOptions}
-          onChange={(e) => this.handleDropdown(e, OptionType.Recommend)}
+          options={RecommendOptions}
+          onChange={(e) => handleDropdown(e, DescriptionType.Recommend)}
         />
-
       </div>
     </div>
 

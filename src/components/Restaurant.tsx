@@ -3,10 +3,11 @@
 
 import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import NumberFormat from 'react-number-format';
-import { Dropdown } from 'semantic-ui-react';
 
+import RestaurantDescription from './RestaurantDescription';
 import RestaurantItem from './RestaurantItem';
+
+import { PlaceHolder, DescriptionType } from '../constant';
 
 import styles from './styles/Restaurant.module.scss';
 
@@ -28,55 +29,6 @@ type IState = {
   comments: string[];
 };
 
-enum PlaceHolder {
-  Name = 'Restaurant Name',
-  Location = 'Location',
-  Phone = 'Phone Number',
-  Emotion = 'How was it?',
-  Recommend = 'Would I go back?',
-}
-
-enum OptionType {
-  Emotion,
-  Recommend,
-}
-
-const emotionOptions = [
-  {
-    key: 'love',
-    text: 'I loved it!',
-    value: 'love',
-  },
-  {
-    key: 'happy',
-    text: 'It was good',
-    value: 'happy',
-  },
-  {
-    key: 'meh',
-    text: 'It was okay',
-    value: 'meh',
-  },
-  {
-    key: 'sad',
-    text: 'It was not good',
-    value: 'sad',
-  },
-];
-
-const recommendOptions = [
-  {
-    key: 'yes',
-    text: 'I would go back',
-    value: 'yes',
-  },
-  {
-    key: 'no',
-    text: 'I would not go back',
-    value: 'no',
-  },
-];
-
 class Restaurant extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -90,47 +42,52 @@ class Restaurant extends React.Component<IProps, IState> {
       itemList: [1, 2, 3, 4, 5, 6, 7, 8],
       comments: [],
     };
+
+    this.handleChangeText = this.handleChangeText.bind(this);
+    this.handleDropdown = this.handleDropdown.bind(this);
   }
 
-  handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleChangeText = (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => {
     const placeHolder = e.target.placeholder;
     const { value } = e.target;
 
     console.log(placeHolder, 'Place holder');
 
-    switch (placeHolder) {
-      case PlaceHolder.Name:
+    switch (type) {
+      case DescriptionType.Name:
         this.setState({
           name: value,
         });
         break;
-      case PlaceHolder.Location:
+      case DescriptionType.Location:
         this.setState({
           location: value,
         });
         break;
-      case PlaceHolder.Phone:
+      case DescriptionType.Phone:
         this.setState({
           phone: value,
         });
         break;
 
-      case 'How was it?':
+      case DescriptionType.Emotion:
+        break;
+      case DescriptionType.Recommend:
         break;
       default:
         break;
     }
   };
 
-  handleDropdown = (e: SyntheticEvent, type: OptionType) => {
+  handleDropdown = (e: SyntheticEvent, type: DescriptionType) => {
     e.persist();
     const value = e.currentTarget.textContent;
 
     if (value) {
-      if (type === OptionType.Emotion) {
+      if (type === DescriptionType.Emotion) {
         this.setState({ emotion: value }, this.updateEmotionIcon);
       }
-      else if (type === OptionType.Recommend) {
+      else if (type === DescriptionType.Recommend) {
         this.setState({ recommend: value }, this.updateRecommendIcon);
       }
     }
@@ -173,75 +130,18 @@ class Restaurant extends React.Component<IProps, IState> {
             type="text"
             placeholder={PlaceHolder.Name}
             value={name}
-            onChange={(e) => this.handleChangeText(e)}
+            onChange={(e) => this.handleChangeText(e, DescriptionType.Name)}
           />
 
           {/* Descriptions */}
-          <div className={style['restaurant_description_container']}>
-
-            {/* Location */}
-            <div className={style['restaurant_description']}>
-              <span className={style['location_icon']}>
-                <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
-              </span>
-              <input
-                className={style['description_text']}
-                type="text"
-                placeholder={PlaceHolder.Location}
-                value={location}
-                onChange={(e) => this.handleChangeText(e)}
-              />
-            </div>
-
-            {/* Phone Number */}
-            <div className={style['restaurant_description']}>
-              <span className={style['phone_icon']}>
-                <FontAwesomeIcon icon={['fas', 'phone-alt']} />
-              </span>
-              <NumberFormat
-                format="(###) ###-####"
-                placeholder={PlaceHolder.Phone}
-                mask="_"
-                value={phone}
-                onChange={(e) => this.handleChangeText(e)}
-              />
-            </div>
-
-            {/* Emotions */}
-            <div className={style['restaurant_description']}>
-              <span className={style['emotion_icon']}>
-                {/* <FontAwesomeIcon icon={['far', 'frown']} />
-                <FontAwesomeIcon icon={['far', 'meh']} />
-                <FontAwesomeIcon icon={['far', 'smile']} /> */}
-                <FontAwesomeIcon icon={['far', 'grin-hearts']} />
-              </span>
-              <Dropdown
-                placeholder={PlaceHolder.Emotion}
-                scrolling
-                selection
-                options={emotionOptions}
-                onChange={(e) => this.handleDropdown(e, OptionType.Emotion)}
-              />
-
-              {/* <p className={style['description_text']}>It was okay.</p> */}
-            </div>
-
-            {/* Recommendation */}
-            <div className={style['restaurant_description']}>
-              <span className={style['recommend_icon']}>
-                <FontAwesomeIcon icon={['far', 'check-circle']} />
-                {/* <FontAwesomeIcon icon={['far', 'times-circle']} /> */}
-              </span>
-              <Dropdown
-                placeholder={PlaceHolder.Recommend}
-                scrolling
-                selection
-                options={recommendOptions}
-                onChange={(e) => this.handleDropdown(e, OptionType.Recommend)}
-              />
-
-            </div>
-          </div>
+          <RestaurantDescription
+            location={location}
+            phone={phone}
+            emotion={emotion}
+            recommend={recommend}
+            handleChangeText={this.handleChangeText}
+            handleDropdown={this.handleDropdown}
+          />
 
           {/* Restaurant Items */}
           <ul className={style['restaurant_item-list']}>
