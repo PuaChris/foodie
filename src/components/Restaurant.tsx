@@ -4,10 +4,16 @@
 import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import RestaurantDescription from './RestaurantDescription';
 import RestaurantItem from './RestaurantItem';
 
-import { PlaceHolder, DescriptionType } from '../constant';
+import {
+  PlaceHolder,
+  DescriptionType,
+  EmotionType,
+  RecommendType,
+} from '../constant';
 
 import styles from './styles/Restaurant.module.scss';
 
@@ -20,11 +26,11 @@ type IProps = {
 
 // Declaring State interface
 type IState = {
-  name: string;
-  location: string;
-  phone: string;
-  emotion: string;
-  recommend: string;
+  name: string | null;
+  location: string | null;
+  phone: string | null;
+  emotion: EmotionType | null;
+  recommend: RecommendType | null;
   itemList: number[];
   comments: string[];
 };
@@ -34,11 +40,11 @@ class Restaurant extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      name: '',
-      location: '',
-      phone: '',
-      emotion: '',
-      recommend: '',
+      name: null,
+      location: null,
+      phone: null,
+      emotion: null,
+      recommend: null,
       itemList: [1, 2, 3, 4, 5, 6, 7, 8],
       comments: [],
     };
@@ -51,7 +57,7 @@ class Restaurant extends React.Component<IProps, IState> {
     const placeHolder = e.target.placeholder;
     const { value } = e.target;
 
-    console.log(placeHolder, 'Place holder');
+    console.log(placeHolder, 'Placeholder');
 
     switch (type) {
       case DescriptionType.Name:
@@ -79,16 +85,24 @@ class Restaurant extends React.Component<IProps, IState> {
     }
   };
 
-  handleDropdown = (e: SyntheticEvent, type: DescriptionType) => {
+  handleDropdown = (e: SyntheticEvent, data: DropdownProps, type: DescriptionType) => {
     e.persist();
-    const value = e.currentTarget.textContent;
+    if (data && data.options) {
+      // Retrieving selected key from dropdown
+      const { value } = data;
+      const key: DropdownItemProps | undefined = data.options.find(
+        (o) => o.value === value,
+      );
 
-    if (value) {
-      if (type === DescriptionType.Emotion) {
-        this.setState({ emotion: value }, this.updateEmotionIcon);
-      }
-      else if (type === DescriptionType.Recommend) {
-        this.setState({ recommend: value }, this.updateRecommendIcon);
+      if (key) {
+        if (type === DescriptionType.Emotion) {
+          const emotionKey: EmotionType = key.value as EmotionType;
+          this.setState({ emotion: emotionKey }, this.updateEmotionIcon);
+        }
+        else if (type === DescriptionType.Recommend) {
+          const recommendKey: RecommendType = key.value as RecommendType;
+          this.setState({ recommend: recommendKey }, this.updateRecommendIcon);
+        }
       }
     }
   };
@@ -100,7 +114,7 @@ class Restaurant extends React.Component<IProps, IState> {
 
   updateRecommendIcon = () => {
     const { recommend } = this.state;
-    console.log(recommend, 'emotion');
+    console.log(recommend, 'recommend');
   };
 
   addItem = () => {
@@ -129,7 +143,7 @@ class Restaurant extends React.Component<IProps, IState> {
             className={style['restaurant_profile-title']}
             type="text"
             placeholder={PlaceHolder.Name}
-            value={name}
+            value={name || ''}
             onChange={(e) => this.handleChangeText(e, DescriptionType.Name)}
           />
 

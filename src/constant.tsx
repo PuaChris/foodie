@@ -14,7 +14,14 @@ export enum DescriptionType {
   Recommend,
 }
 
-export const EmotionOptions = [
+export enum EmotionType {
+  Love = 'love',
+  Happy = 'happy',
+  Meh = 'meh',
+  Sad = 'sad',
+}
+
+export const EmotionDropdownOptions = [
   {
     key: 'love',
     text: 'I loved it!',
@@ -37,7 +44,12 @@ export const EmotionOptions = [
   },
 ];
 
-export const RecommendOptions = [
+export enum RecommendType {
+  Yes = 'yes',
+  No = 'no',
+}
+
+export const RecommendDropdownOptions = [
   {
     key: 'yes',
     text: 'I would go back',

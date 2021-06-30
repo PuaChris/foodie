@@ -1,13 +1,16 @@
 import React, { SyntheticEvent } from 'react';
+import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NumberFormat from 'react-number-format';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, DropdownProps } from 'semantic-ui-react';
 
 import {
   PlaceHolder,
   DescriptionType,
-  EmotionOptions,
-  RecommendOptions,
+  EmotionDropdownOptions,
+  EmotionType,
+  RecommendDropdownOptions,
+  RecommendType,
 } from '../constant';
 
 import styles from './styles/RestaurantDescription.module.scss';
@@ -15,13 +18,13 @@ import styles from './styles/RestaurantDescription.module.scss';
 const style: any = styles;
 
 type IProps = {
-  location: string;
-  phone: string;
-  emotion: string;
-  recommend: string;
+  location: string | null;
+  phone: string | null;
+  emotion: EmotionType | null;
+  recommend: RecommendType | null;
 
   handleChangeText: (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => void;
-  handleDropdown: (e: SyntheticEvent, type: DescriptionType) => void;
+  handleDropdown: (e: SyntheticEvent, data: DropdownProps, type: DescriptionType) => void;
 };
 
 const RestaurantDescription = ({
@@ -32,6 +35,40 @@ const RestaurantDescription = ({
   handleChangeText,
   handleDropdown,
 }: IProps) => {
+  let emojiIcon: [IconPrefix, IconName];
+  let recommendIcon: [IconPrefix, IconName];
+
+  // Matching icon with selected option
+  switch (emotion) {
+    case EmotionType.Love:
+      emojiIcon = ['far', 'grin-hearts'];
+      break;
+    case EmotionType.Happy:
+      emojiIcon = ['far', 'smile'];
+      break;
+    case EmotionType.Meh:
+      emojiIcon = ['far', 'meh'];
+      break;
+    case EmotionType.Sad:
+      emojiIcon = ['far', 'frown'];
+      break;
+    default:
+      emojiIcon = ['far', 'surprise'];
+      break;
+  }
+
+  switch (recommend) {
+    case RecommendType.Yes:
+      recommendIcon = ['far', 'check-circle'];
+      break;
+    case RecommendType.No:
+      recommendIcon = ['far', 'times-circle'];
+      break;
+    default:
+      recommendIcon = ['far', 'question-circle'];
+      break;
+  }
+
   return (
     <div className={style['restaurant_description_container']}>
 
@@ -44,7 +81,7 @@ const RestaurantDescription = ({
           className={style['description_text']}
           type="text"
           placeholder={PlaceHolder.Location}
-          value={location}
+          value={location || ''}
           onChange={(e) => handleChangeText(e, DescriptionType.Location)}
         />
       </div>
@@ -66,36 +103,30 @@ const RestaurantDescription = ({
       {/* Emotions */}
       <div className={style['restaurant_description']}>
         <span className={style['emotion_icon']}>
-          {/* <FontAwesomeIcon icon={['far', 'frown']} />
-                <FontAwesomeIcon icon={['far', 'meh']} />
-                <FontAwesomeIcon icon={['far', 'smile']} /> */}
-          <FontAwesomeIcon icon={['far', 'grin-hearts']} />
+          <FontAwesomeIcon icon={emojiIcon} />
         </span>
         <Dropdown
           placeholder={PlaceHolder.Emotion}
-          value={emotion}
+          value={emotion || ''}
           scrolling
           selection
-          options={EmotionOptions}
-          onChange={(e) => handleDropdown(e, DescriptionType.Emotion)}
+          options={EmotionDropdownOptions}
+          onChange={(e, data) => handleDropdown(e, data, DescriptionType.Emotion)}
         />
-
-        {/* <p className={style['description_text']}>It was okay.</p> */}
       </div>
 
       {/* Recommendation */}
       <div className={style['restaurant_description']}>
         <span className={style['recommend_icon']}>
-          <FontAwesomeIcon icon={['far', 'check-circle']} />
-          {/* <FontAwesomeIcon icon={['far', 'times-circle']} /> */}
+          <FontAwesomeIcon icon={recommendIcon} />
         </span>
         <Dropdown
           placeholder={PlaceHolder.Recommend}
-          value={recommend}
+          value={recommend || ''}
           scrolling
           selection
-          options={RecommendOptions}
-          onChange={(e) => handleDropdown(e, DescriptionType.Recommend)}
+          options={RecommendDropdownOptions}
+          onChange={(e, data) => handleDropdown(e, data, DescriptionType.Recommend)}
         />
       </div>
     </div>
