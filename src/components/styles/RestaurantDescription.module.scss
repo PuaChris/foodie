@@ -1,7 +1,6 @@
-.restaurant_description_container {
+.restaurant-description_container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  // grid-gap: 12px;
   grid-template-rows: auto;
   align-items: center;
   justify-items: left;
@@ -9,15 +8,31 @@
   border: 3px purple dashed;
 }
 
-.restaurant_description {
-  width: 200px;
-
+.restaurant-description {
+  // Centering icons with inputs
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
 }
 
-.description_text {
+.location_icon {
+  font-size: 30px;
+}
+
+.phone_icon {
+  font-size: 30px;
+}
+
+.emotion_icon {
+  font-size: 30px;
+}
+
+.recommend_icon {
+  font-size: 30px;
+}
+
+.restaurant-description_location-input {
   margin: 8px;
   font-size: 14px;
 }

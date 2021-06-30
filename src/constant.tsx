@@ -1,3 +1,14 @@
+export type RestaurantData = {
+  id?: string;
+  name?: string;
+  location?: string;
+  phone?: string;
+  emotion?: EmotionType;
+  recommend?: RecommendType;
+  itemList?: number[];
+  comments?: string[];
+};
+
 export enum PlaceHolder {
   Name = 'Restaurant Name',
   Location = 'Location',

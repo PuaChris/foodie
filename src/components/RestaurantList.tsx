@@ -1,7 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/dist/client/link';
+import { uid } from 'react-uid';
 
+import Restaurant from './Restaurant';
+
+import { RestaurantData } from '../constant';
 import styles from './styles/RestaurantList.module.scss';
 
 // Declaring Prop interface
@@ -11,7 +15,7 @@ type IProps = {
 
 // Declaring State interface
 type IState = {
-  restaurants: number[];
+  restaurantList: RestaurantData[];
 };
 
 const style: any = styles;
@@ -23,7 +27,7 @@ class RestaurantList extends React.Component<IProps, IState> {
     // const oldRestaurants: number[] = JSON.parse(localStorage.getItem('restaurantList') || '{}');
 
     this.state = {
-      restaurants: [0, 1, 2],
+      restaurantList: [],
     };
   }
 
@@ -37,22 +41,32 @@ class RestaurantList extends React.Component<IProps, IState> {
   // onClick(event: React.MouseEvent<HTMLButtonElement>): void;
 
   addRestaurant = () => {
-    const { restaurants } = this.state;
-    restaurants.push(8);
-    this.setState({ restaurants });
+    // Create a new restaurant ID
+    const newRestaurant: RestaurantData = { };
+    newRestaurant.id = uid(newRestaurant);
+    newRestaurant.name = 'new-restaurant';
+
+    const { restaurantList } = this.state;
+
+    restaurantList.push(newRestaurant);
+
+    // TODO: Open a new restaurant dialog and fill in basic information
+    this.setState({ restaurantList }, () => {
+      window.location.href = `/${newRestaurant.name}`;
+    });
   };
 
   render() {
-    const { restaurants } = this.state;
+    const { restaurantList } = this.state;
 
     return (
       <div id={style['restaurant-list_container']}>
         <ul className={style['restaurant-list_list']}>
-          {restaurants.map((item) => {
+          {restaurantList.map((restaurant) => {
             return (
-              <li key={item} className={style['restaurant-list-card']}>
+              <li key={restaurant.id} className={style['restaurant-list_card']}>
                 {/* Adding dynamic ID to new links */}
-                <Link href={`/${item}`}>Restaurant</Link>
+                <Link href={`/${restaurant.name}`}>Restaurant</Link>
               </li>
             );
           })}

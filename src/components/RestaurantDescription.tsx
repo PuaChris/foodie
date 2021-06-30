@@ -35,25 +35,25 @@ const RestaurantDescription = ({
   handleChangeText,
   handleDropdown,
 }: IProps) => {
-  let emojiIcon: [IconPrefix, IconName];
+  let emotionIcon: [IconPrefix, IconName];
   let recommendIcon: [IconPrefix, IconName];
 
   // Matching icon with selected option
   switch (emotion) {
     case EmotionType.Love:
-      emojiIcon = ['far', 'grin-hearts'];
+      emotionIcon = ['far', 'grin-hearts'];
       break;
     case EmotionType.Happy:
-      emojiIcon = ['far', 'smile'];
+      emotionIcon = ['far', 'smile'];
       break;
     case EmotionType.Meh:
-      emojiIcon = ['far', 'meh'];
+      emotionIcon = ['far', 'meh'];
       break;
     case EmotionType.Sad:
-      emojiIcon = ['far', 'frown'];
+      emotionIcon = ['far', 'frown'];
       break;
     default:
-      emojiIcon = ['far', 'surprise'];
+      emotionIcon = ['far', 'surprise'];
       break;
   }
 
@@ -70,15 +70,15 @@ const RestaurantDescription = ({
   }
 
   return (
-    <div className={style['restaurant_description_container']}>
+    <div className={style['restaurant-description_container']}>
 
       {/* Location */}
-      <div className={style['restaurant_description']}>
+      <div className={style['restaurant-description']}>
         <span className={style['location_icon']}>
           <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
         </span>
         <input
-          className={style['description_text']}
+          className={style['restaurant-description_location-input']}
           type="text"
           placeholder={PlaceHolder.Location}
           value={location || ''}
@@ -87,7 +87,7 @@ const RestaurantDescription = ({
       </div>
 
       {/* Phone Number */}
-      <div className={style['restaurant_description']}>
+      <div className={style['restaurant-description']}>
         <span className={style['phone_icon']}>
           <FontAwesomeIcon icon={['fas', 'phone-alt']} />
         </span>
@@ -100,10 +100,10 @@ const RestaurantDescription = ({
         />
       </div>
 
-      {/* Emotions */}
-      <div className={style['restaurant_description']}>
+      {/* Emotion */}
+      <div className={style['restaurant-description']}>
         <span className={style['emotion_icon']}>
-          <FontAwesomeIcon icon={emojiIcon} />
+          <FontAwesomeIcon icon={emotionIcon} />
         </span>
         <Dropdown
           placeholder={PlaceHolder.Emotion}
@@ -116,7 +116,7 @@ const RestaurantDescription = ({
       </div>
 
       {/* Recommendation */}
-      <div className={style['restaurant_description']}>
+      <div className={style['restaurant-description']}>
         <span className={style['recommend_icon']}>
           <FontAwesomeIcon icon={recommendIcon} />
         </span>
