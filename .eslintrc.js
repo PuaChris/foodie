@@ -28,6 +28,7 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/dot-notation": "off",
     "@typescript-eslint/brace-style": "off",
+    "max-len": "off",
 
   },
   ignorePatterns: ['.eslintrc.js']

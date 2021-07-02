@@ -5,7 +5,7 @@ import styles from './styles/SearchBar.module.scss';
 const style: any = styles;
 
 const SearchBar: React.FC = (): JSX.Element => (
-  <form className={style['search-bar']} action="/" method="get">
+  <div className={style['search-bar_container']}>
     <label htmlFor="search-bar_form">
       <span className={style['visually-hidden']}>Search blog posts</span>
     </label>
@@ -22,7 +22,7 @@ const SearchBar: React.FC = (): JSX.Element => (
     <span className={style['search-bar_filter']}>
       <FontAwesomeIcon icon={['fas', 'sliders-h']} />
     </span>
-  </form>
+  </div>
 );
 
 export default SearchBar;

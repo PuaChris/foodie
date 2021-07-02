@@ -1,10 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Modal, Header } from 'semantic-ui-react';
 import Link from 'next/dist/client/link';
 import { uid } from 'react-uid';
 
-import Restaurant from './Restaurant';
-
+import RestaurantDialog from './RestaurantDialog';
 import { RestaurantData } from '../constant';
 import styles from './styles/RestaurantList.module.scss';
 
@@ -52,7 +52,7 @@ class RestaurantList extends React.Component<IProps, IState> {
 
     // TODO: Open a new restaurant dialog and fill in basic information
     this.setState({ restaurantList }, () => {
-      window.location.href = `/${newRestaurant.name}`;
+      // window.location.href = `/${newRestaurant.name}`;
     });
   };
 

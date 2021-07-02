@@ -1,4 +1,4 @@
-export const searchBar: string;
+export const searchBarContainer: string;
 export const searchBarFilter: string;
 export const searchBarInput: string;
 export const searchBarSearchIcon: string;

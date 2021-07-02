@@ -59,16 +59,3 @@ export enum RecommendType {
   Yes = 'yes',
   No = 'no',
 }
-
-export const RecommendDropdownOptions = [
-  {
-    key: 'yes',
-    text: 'I would go back',
-    value: 'yes',
-  },
-  {
-    key: 'no',
-    text: 'I would not go back',
-    value: 'no',
-  },
-];

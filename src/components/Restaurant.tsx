@@ -5,7 +5,6 @@ import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { uid } from 'react-uid';
 
-import { DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import RestaurantDescription from './RestaurantDescription';
 import RestaurantItem from './RestaurantItem';
 
@@ -52,10 +51,13 @@ class Restaurant extends React.Component<RestaurantData, IState> {
     };
 
     this.handleChangeText = this.handleChangeText.bind(this);
-    this.handleDropdown = this.handleDropdown.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   handleChangeText = (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => {
+    e.preventDefault();
+
+    // Update restaurant name/location/phone state
     const { value } = e.target;
     switch (type) {
       case DescriptionType.Name:
@@ -78,24 +80,21 @@ class Restaurant extends React.Component<RestaurantData, IState> {
     }
   };
 
-  handleDropdown = (e: SyntheticEvent, data: DropdownProps, type: DescriptionType) => {
-    e.persist();
-    if (data && data.options) {
-      // Retrieving selected key from dropdown
-      const { value } = data;
-      const key: DropdownItemProps | undefined = data.options.find(
-        (o) => o.value === value,
-      );
+  handleSelect = (e: SyntheticEvent, type: DescriptionType) => {
+    e.preventDefault();
 
-      if (key) {
-        if (type === DescriptionType.Emotion) {
-          const emotionKey: EmotionType = key.value as EmotionType;
-          this.setState({ emotion: emotionKey });
-        }
-        else if (type === DescriptionType.Recommend) {
-          const recommendKey: RecommendType = key.value as RecommendType;
-          this.setState({ recommend: recommendKey });
-        }
+    const inputEvent = e.target as HTMLInputElement;
+    const { value } = inputEvent;
+
+    // Updating emotion/recommend state
+    if (value) {
+      if (type === DescriptionType.Emotion) {
+        const emotion: EmotionType = value as EmotionType;
+        this.setState({ emotion }, () => console.log('Updated emotion.'));
+      }
+      else if (type === DescriptionType.Recommend) {
+        const recommend: RecommendType = value as RecommendType;
+        this.setState({ recommend }, () => console.log('Updated recommendation.'));
       }
     }
   };
@@ -138,7 +137,7 @@ class Restaurant extends React.Component<RestaurantData, IState> {
             emotion={emotion}
             recommend={recommend}
             handleChangeText={this.handleChangeText}
-            handleDropdown={this.handleDropdown}
+            handleSelect={this.handleSelect}
           />
 
           {/* Restaurant Items */}

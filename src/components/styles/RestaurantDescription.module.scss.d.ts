@@ -4,4 +4,7 @@ export const phoneIcon: string;
 export const recommendIcon: string;
 export const restaurantDescription: string;
 export const restaurantDescriptionContainer: string;
+export const restaurantDescriptionEmotionDropdown: string;
 export const restaurantDescriptionLocationInput: string;
+export const restaurantDescriptionPhoneInput: string;
+export const restaurantDescriptionRecommendDropdown: string;

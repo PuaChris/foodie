@@ -4,8 +4,6 @@
   grid-template-rows: auto;
   align-items: center;
   justify-items: left;
-
-  border: 3px purple dashed;
 }
 
 .restaurant-description {
@@ -16,23 +14,48 @@
   align-items: center;
 }
 
+.restaurant-description_location-input {
+  margin: 8px;
+  font-size: 14px;
+  border: none;
+  background: rgba(34, 36, 38, 0.35);
+}
+
 .location_icon {
   font-size: 30px;
+}
+
+.restaurant-description_phone-input {
+  margin: 8px;
+  font-size: 14px;
+  border: none;
+  background: rgba(34, 36, 38, 0.35);
 }
 
 .phone_icon {
   font-size: 30px;
 }
 
+.restaurant-description_emotion-dropdown {
+  margin: 8px;
+  font-size: 14px;
+
+  border: none;
+  background: rgba(34, 36, 38, 0.35);
+}
+
 .emotion_icon {
   font-size: 30px;
 }
 
-.recommend_icon {
-  font-size: 30px;
-}
-
-.restaurant-description_location-input {
+.restaurant-description_recommend-dropdown {
   margin: 8px;
   font-size: 14px;
+
+  border: none;
+  background: rgba(34, 36, 38, 0.35);
+}
+
+.recommend_icon {
+  font-size: 30px;
 }

@@ -2,14 +2,11 @@ import React, { SyntheticEvent } from 'react';
 import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NumberFormat from 'react-number-format';
-import { Dropdown, DropdownProps } from 'semantic-ui-react';
 
 import {
   PlaceHolder,
   DescriptionType,
-  EmotionDropdownOptions,
   EmotionType,
-  RecommendDropdownOptions,
   RecommendType,
 } from '../constant';
 
@@ -24,7 +21,7 @@ type IProps = {
   recommend: RecommendType | null;
 
   handleChangeText: (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => void;
-  handleDropdown: (e: SyntheticEvent, data: DropdownProps, type: DescriptionType) => void;
+  handleSelect: (e: SyntheticEvent, type: DescriptionType) => void;
 };
 
 const RestaurantDescription = ({
@@ -33,7 +30,7 @@ const RestaurantDescription = ({
   emotion,
   recommend,
   handleChangeText,
-  handleDropdown,
+  handleSelect,
 }: IProps) => {
   let emotionIcon: [IconPrefix, IconName];
   let recommendIcon: [IconPrefix, IconName];
@@ -70,8 +67,12 @@ const RestaurantDescription = ({
   }
 
   return (
-    <div className={style['restaurant-description_container']}>
-
+    // TODO: Add onSubmit here
+    <form
+      className={style['restaurant-description_container']}
+      action="/"
+      method="get"
+    >
       {/* Location */}
       <div className={style['restaurant-description']}>
         <span className={style['location_icon']}>
@@ -92,6 +93,7 @@ const RestaurantDescription = ({
           <FontAwesomeIcon icon={['fas', 'phone-alt']} />
         </span>
         <NumberFormat
+          className={style['restaurant-description_phone-input']}
           format="(###) ###-####"
           placeholder={PlaceHolder.Phone}
           mask="_"
@@ -105,14 +107,19 @@ const RestaurantDescription = ({
         <span className={style['emotion_icon']}>
           <FontAwesomeIcon icon={emotionIcon} />
         </span>
-        <Dropdown
-          placeholder={PlaceHolder.Emotion}
-          value={emotion || ''}
-          scrolling
-          selection
-          options={EmotionDropdownOptions}
-          onChange={(e, data) => handleDropdown(e, data, DescriptionType.Emotion)}
-        />
+
+        {/* Dropdown */}
+        <select
+          className={style['restaurant-description_emotion-dropdown']}
+          onChange={(e) => handleSelect(e, DescriptionType.Emotion)}
+          defaultValue="placeholder"
+        >
+          <option value="placeholder" disabled hidden>How was it?</option>
+          <option value="love">I loved it!</option>
+          <option value="happy">It was good</option>
+          <option value="meh">It was okay</option>
+          <option value="sad">It was not good</option>
+        </select>
       </div>
 
       {/* Recommendation */}
@@ -120,16 +127,20 @@ const RestaurantDescription = ({
         <span className={style['recommend_icon']}>
           <FontAwesomeIcon icon={recommendIcon} />
         </span>
-        <Dropdown
-          placeholder={PlaceHolder.Recommend}
-          value={recommend || ''}
-          scrolling
-          selection
-          options={RecommendDropdownOptions}
-          onChange={(e, data) => handleDropdown(e, data, DescriptionType.Recommend)}
-        />
+
+        {/* Dropdown */}
+        <select
+          className={style['restaurant-description_recommend-dropdown']}
+          onChange={(e) => handleSelect(e, DescriptionType.Recommend)}
+          defaultValue="placeholder"
+        >
+          <option value="placeholder" disabled hidden>Would I go back?</option>
+          <option value="yes">I would go back</option>
+          <option value="no">I would not go back</option>
+        </select>
+
       </div>
-    </div>
+    </form>
 
   );
 };
