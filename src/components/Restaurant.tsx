@@ -55,6 +55,7 @@ class Restaurant extends React.Component<RestaurantData, IState> {
 
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   handleChangeText = (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => {
@@ -106,6 +107,10 @@ class Restaurant extends React.Component<RestaurantData, IState> {
     this.setState({ isModalOpen: true });
   };
 
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   render(): JSX.Element {
     const {
       id,
@@ -123,6 +128,7 @@ class Restaurant extends React.Component<RestaurantData, IState> {
       <div className={style['container']}>
         <RestaurantModal
           open={isModalOpen}
+          closeModal={this.closeModal}
         />
         {/* Profile */}
         <div className={style['profile']}>

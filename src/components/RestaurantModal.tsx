@@ -7,11 +7,12 @@ const style = styles;
 
 type IProps = {
   open: boolean;
+  closeModal:() => void;
 };
 
 const RestaurantModal = (props: IProps) => {
   // Setting initial state similar to constructor
-  const { open } = props;
+  const { open, closeModal } = props;
   const [isOpen, setOpen] = useState(open);
 
   // Updating state on prop change
@@ -21,7 +22,10 @@ const RestaurantModal = (props: IProps) => {
 
   return (
     <Modal
-      onClose={() => setOpen(false)}
+      onClose={() => {
+        setOpen(false);
+        closeModal();
+      }}
       open={isOpen}
     >
       <Modal.Content>
