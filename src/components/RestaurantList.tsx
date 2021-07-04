@@ -4,7 +4,7 @@ import { Modal, Header } from 'semantic-ui-react';
 import Link from 'next/dist/client/link';
 import { uid } from 'react-uid';
 
-import RestaurantDialog from './RestaurantDialog';
+import RestaurantModal from './RestaurantModal';
 import { RestaurantData } from '../constant';
 import styles from './styles/RestaurantList.module.scss';
 

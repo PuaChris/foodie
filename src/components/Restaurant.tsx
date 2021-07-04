@@ -7,6 +7,7 @@ import { uid } from 'react-uid';
 
 import RestaurantDescription from './RestaurantDescription';
 import RestaurantItem from './RestaurantItem';
+import RestaurantModal from './RestaurantModal';
 
 import {
   RestaurantData,
@@ -25,12 +26,13 @@ type IProps = RestaurantData;
 
 // Declaring State interface
 type IState = {
-  id: string | undefined;
-  name: string | null;
-  location: string | null;
-  phone: string | null;
-  emotion: EmotionType | null;
-  recommend: RecommendType | null;
+  id?: string;
+  name?: string;
+  location?: string;
+  phone?: string;
+  emotion?: EmotionType;
+  recommend?: RecommendType;
+  isModalOpen: boolean;
   itemList: number[];
   comments: string[];
 };
@@ -41,11 +43,12 @@ class Restaurant extends React.Component<RestaurantData, IState> {
 
     this.state = {
       id: props.id,
-      name: props.name || null,
-      location: props.location || null,
-      phone: props.phone || null,
-      emotion: props.emotion || null,
-      recommend: props.recommend || null,
+      name: props.name,
+      location: props.location,
+      phone: props.phone,
+      emotion: props.emotion,
+      recommend: props.recommend,
+      isModalOpen: false,
       itemList: [],
       comments: [],
     };
@@ -100,9 +103,7 @@ class Restaurant extends React.Component<RestaurantData, IState> {
   };
 
   addItem = () => {
-    const { itemList } = this.state;
-    itemList.push(8);
-    this.setState({ itemList });
+    this.setState({ isModalOpen: true });
   };
 
   render(): JSX.Element {
@@ -113,13 +114,16 @@ class Restaurant extends React.Component<RestaurantData, IState> {
       phone,
       emotion,
       recommend,
+      isModalOpen,
       itemList,
       comments,
     } = this.state;
 
     return (
       <div className={style['restaurant_container']}>
-
+        <RestaurantModal
+          open={isModalOpen}
+        />
         {/* Profile */}
         <div className={style['restaurant_profile']}>
           <input

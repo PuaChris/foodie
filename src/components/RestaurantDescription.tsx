@@ -15,10 +15,10 @@ import styles from './styles/RestaurantDescription.module.scss';
 const style: any = styles;
 
 type IProps = {
-  location: string | null;
-  phone: string | null;
-  emotion: EmotionType | null;
-  recommend: RecommendType | null;
+  location?: string;
+  phone?: string;
+  emotion?: EmotionType;
+  recommend?: RecommendType;
 
   handleChangeText: (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => void;
   handleSelect: (e: SyntheticEvent, type: DescriptionType) => void;
@@ -79,7 +79,7 @@ const RestaurantDescription = ({
           <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
         </span>
         <input
-          className={style['restaurant-description_location-input']}
+          className={style['restaurant-description_location_input']}
           type="text"
           placeholder={PlaceHolder.Location}
           value={location || ''}
@@ -93,7 +93,7 @@ const RestaurantDescription = ({
           <FontAwesomeIcon icon={['fas', 'phone-alt']} />
         </span>
         <NumberFormat
-          className={style['restaurant-description_phone-input']}
+          className={style['restaurant-description_phone_input']}
           format="(###) ###-####"
           placeholder={PlaceHolder.Phone}
           mask="_"
@@ -110,7 +110,7 @@ const RestaurantDescription = ({
 
         {/* Dropdown */}
         <select
-          className={style['restaurant-description_emotion-dropdown']}
+          className={style['restaurant-description_emotion_dropdown']}
           onChange={(e) => handleSelect(e, DescriptionType.Emotion)}
           defaultValue="placeholder"
         >
@@ -130,7 +130,7 @@ const RestaurantDescription = ({
 
         {/* Dropdown */}
         <select
-          className={style['restaurant-description_recommend-dropdown']}
+          className={style['restaurant-description_recommend_dropdown']}
           onChange={(e) => handleSelect(e, DescriptionType.Recommend)}
           defaultValue="placeholder"
         >

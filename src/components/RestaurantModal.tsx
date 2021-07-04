@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Header, Button } from 'semantic-ui-react';
-import RestaurantDescription from './RestaurantDescription';
 
-import styles from './styles/RestaurantDialog.module.scss';
+import styles from './styles/RestaurantModal.module.scss';
 
 const style = styles;
 
-const RestaurantDialog = () => {
-  const [open, setOpen] = useState(false);
+type IProps = {
+  open: boolean;
+};
+
+const RestaurantModal = (props: IProps) => {
+  // Setting initial state similar to constructor
+  const { open } = props;
+  const [isOpen, setOpen] = useState(open);
+
+  // Updating state on prop change
+  useEffect(() => {
+    setOpen(open);
+  }, [open]);
 
   return (
     <Modal
       onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
-      trigger={<Button>Show Modal</Button>}
+      open={isOpen}
     >
       <Modal.Header>New Restaurant</Modal.Header>
       <Modal.Content>
@@ -36,4 +44,4 @@ const RestaurantDialog = () => {
   );
 };
 
-export default RestaurantDialog;
+export default RestaurantModal;

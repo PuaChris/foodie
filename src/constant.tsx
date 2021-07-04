@@ -1,5 +1,5 @@
 export type RestaurantData = {
-  id?: string | undefined;
+  id?: string;
   name?: string;
   location?: string;
   phone?: string;

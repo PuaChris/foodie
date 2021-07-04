@@ -29,6 +29,7 @@ module.exports = {
     "@typescript-eslint/dot-notation": "off",
     "@typescript-eslint/brace-style": "off",
     "max-len": "off",
+    "react/require-default-props": "warn",
 
   },
   ignorePatterns: ['.eslintrc.js']
