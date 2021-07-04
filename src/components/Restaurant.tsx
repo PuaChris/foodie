@@ -120,14 +120,14 @@ class Restaurant extends React.Component<RestaurantData, IState> {
     } = this.state;
 
     return (
-      <div className={style['restaurant_container']}>
+      <div className={style['container']}>
         <RestaurantModal
           open={isModalOpen}
         />
         {/* Profile */}
-        <div className={style['restaurant_profile']}>
+        <div className={style['profile']}>
           <input
-            className={style['restaurant_profile-title']}
+            className={style['profile-title']}
             type="text"
             placeholder={PlaceHolder.Name}
             value={name || ''}
@@ -145,10 +145,10 @@ class Restaurant extends React.Component<RestaurantData, IState> {
           />
 
           {/* Restaurant Items */}
-          <ul className={style['restaurant_item-list']}>
+          <ul className={style['item-list']}>
             {itemList.map((item) => {
               return (
-                <li key={uid(item)} className={style['restaurant_item-list_item']}>
+                <li key={uid(item)} className={style['item']}>
                   <RestaurantItem />
                 </li>
               );

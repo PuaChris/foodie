@@ -1,10 +1,10 @@
-#restaurant-list_container {
+.container {
   // Size
   width: 90%;
   padding: 0;
 }
 
-.restaurant-list_list {
+.restaurant-list {
   // Remove bullet in front of <li>
   list-style-type: none;
 
@@ -19,7 +19,7 @@
   justify-items: center;
 }
 
-.restaurant-list_card {
+.restaurant-card {
   border-radius: 8px;
   border: rgba(34, 36, 38, 0.35) 3px solid;
 
@@ -39,14 +39,14 @@
 }
 
 @media screen and (min-width: 641px) {
-  .restaurant-list_list {
+  .restaurant-list {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 18px;
   }
 }
 
 @media screen and (min-width: 1008px) {
-  .restaurant-list_list {
+  .restaurant-list {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 30px;
   }

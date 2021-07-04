@@ -24,21 +24,55 @@ const RestaurantModal = (props: IProps) => {
       onClose={() => setOpen(false)}
       open={isOpen}
     >
-      <Modal.Header>New Restaurant</Modal.Header>
       <Modal.Content>
-        <Header>Default Profile Image</Header>
+        <Header>New Restaurant Item</Header>
       </Modal.Content>
       <Modal.Actions>
+        <form onSubmit={(e) => {
+          setOpen(false);
+        }}
+        >
+          <label htmlFor="name">Name</label>
+          <input
+            name="name"
+            className={style['name-input']}
+            required
+          />
+          <label htmlFor="price">How much was it?</label>
+          <input
+            name="price"
+            className={style['price-input']}
+            required
+          />
+          <label htmlFor="tax">Tax?</label>
+          <input
+            name="tax"
+            className={style['tax-dropdown']}
+            required
+          />
+          <label htmlFor="emotion">How was it?</label>
+          <input
+            name="emotion"
+            className={style['emotion-dropdown']}
+            required
+          />
+          <label htmlFor="recommend">Would I order again?</label>
+          <input
+            name="recommend"
+            className={style['recommend-dropdown']}
+            required
+          />
+        </form>
         <Button color="black" onClick={() => setOpen(false)}>
           Nope
         </Button>
         <Button
-          content="Yep, that's me"
-          labelPosition="right"
-          icon="checkmark"
-          onClick={() => setOpen(false)}
+          type="submit"
+          onClick={() => console.log('New item added')}
           positive
-        />
+        >
+          Save
+        </Button>
       </Modal.Actions>
     </Modal>
   );

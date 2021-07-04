@@ -69,17 +69,17 @@ const RestaurantDescription = ({
   return (
     // TODO: Add onSubmit here
     <form
-      className={style['restaurant-description_container']}
+      className={style['container']}
       action="/"
       method="get"
     >
       {/* Location */}
       <div className={style['restaurant-description']}>
-        <span className={style['location_icon']}>
+        <span className={style['location-icon']}>
           <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
         </span>
         <input
-          className={style['restaurant-description_location_input']}
+          className={style['location-input']}
           type="text"
           placeholder={PlaceHolder.Location}
           value={location || ''}
@@ -89,11 +89,11 @@ const RestaurantDescription = ({
 
       {/* Phone Number */}
       <div className={style['restaurant-description']}>
-        <span className={style['phone_icon']}>
+        <span className={style['phone-icon']}>
           <FontAwesomeIcon icon={['fas', 'phone-alt']} />
         </span>
         <NumberFormat
-          className={style['restaurant-description_phone_input']}
+          className={style['phone-input']}
           format="(###) ###-####"
           placeholder={PlaceHolder.Phone}
           mask="_"
@@ -104,13 +104,13 @@ const RestaurantDescription = ({
 
       {/* Emotion */}
       <div className={style['restaurant-description']}>
-        <span className={style['emotion_icon']}>
+        <span className={style['emotion-icon']}>
           <FontAwesomeIcon icon={emotionIcon} />
         </span>
 
         {/* Dropdown */}
         <select
-          className={style['restaurant-description_emotion_dropdown']}
+          className={style['emotion-dropdown']}
           onChange={(e) => handleSelect(e, DescriptionType.Emotion)}
           defaultValue="placeholder"
         >
@@ -124,13 +124,13 @@ const RestaurantDescription = ({
 
       {/* Recommendation */}
       <div className={style['restaurant-description']}>
-        <span className={style['recommend_icon']}>
+        <span className={style['recommend-icon']}>
           <FontAwesomeIcon icon={recommendIcon} />
         </span>
 
         {/* Dropdown */}
         <select
-          className={style['restaurant-description_recommend_dropdown']}
+          className={style['recommend-dropdown']}
           onChange={(e) => handleSelect(e, DescriptionType.Recommend)}
           defaultValue="placeholder"
         >

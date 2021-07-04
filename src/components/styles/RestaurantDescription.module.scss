@@ -1,5 +1,5 @@
 
-.restaurant-description_container {
+.container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
@@ -15,29 +15,29 @@
   align-items: center;
 }
 
-.restaurant-description_location_input {
+.location-input {
   margin: 8px;
   font-size: 14px;
   border: none;
   background: rgba(34, 36, 38, 0.35);
 }
 
-.location_icon {
+.location-icon {
   font-size: 30px;
 }
 
-.restaurant-description_phone_input {
+.phone-input {
   margin: 8px;
   font-size: 14px;
   border: none;
   background: rgba(34, 36, 38, 0.35);
 }
 
-.phone_icon {
+.phone-icon {
   font-size: 30px;
 }
 
-.restaurant-description_emotion_dropdown {
+.emotion-dropdown {
   margin: 8px;
   font-size: 14px;
 
@@ -45,11 +45,11 @@
   background: rgba(34, 36, 38, 0.35);
 }
 
-.emotion_icon {
+.emotion-icon {
   font-size: 30px;
 }
 
-.restaurant-description_recommend_dropdown {
+.recommend-dropdown {
   margin: 8px;
   font-size: 14px;
 
@@ -57,6 +57,6 @@
   background: rgba(34, 36, 38, 0.35);
 }
 
-.recommend_icon {
+.recommend-icon {
   font-size: 30px;
 }

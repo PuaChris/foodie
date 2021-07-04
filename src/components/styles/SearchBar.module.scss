@@ -8,7 +8,7 @@
   width: 1px;
 }
 
-.search-bar_container {
+.container {
   position: relative;
 
   width: 85%;
@@ -16,7 +16,7 @@
   margin: 20px;
 }
 
-.search-bar_input {
+.search-input {
   width: 85%;
   height: 23px;
 
@@ -24,7 +24,7 @@
   border: none;
 }
 
-.search-bar_search-icon {
+.search-icon {
   font-size: 20px;
 
   // Placement of icon inside form
@@ -33,28 +33,28 @@
   top: 2px;
 }
 
-.search-bar_filter {
+.search-filter {
   font-size: 20px;
 
   padding-left: 7%;
 }
 
 @media screen and (min-width: 640px) {
-  .search-bar_input {
+  .search-input {
     width: 85%;
   }
 }
 
 @media screen and (min-width: 1008px) {
-  .search-bar_input {
+  .search-input {
     width: 91%;
   }
 
-  .search-bar_search-icon {
+  .search-icon {
     right: 10%;
   }
 
-  .search-bar_filter {
+  .search-filter {
     font-size: 20px;
 
     padding-left: 3%;

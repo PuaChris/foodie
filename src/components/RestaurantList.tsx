@@ -60,11 +60,11 @@ class RestaurantList extends React.Component<IProps, IState> {
     const { restaurantList } = this.state;
 
     return (
-      <div id={style['restaurant-list_container']}>
-        <ul className={style['restaurant-list_list']}>
+      <div className={style['container']}>
+        <ul className={style['restaurant-list']}>
           {restaurantList.map((restaurant) => {
             return (
-              <li key={restaurant.id} className={style['restaurant-list_card']}>
+              <li key={restaurant.id} className={style['restaurant-card']}>
                 {/* Adding dynamic ID to new links */}
                 <Link href={`/${restaurant.name}`}>Restaurant</Link>
               </li>

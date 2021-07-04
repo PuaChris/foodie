@@ -1,4 +1,4 @@
-.restaurant_container {
+.container {
   // Center element
   margin: 0 auto;
   width: 60%;
@@ -8,7 +8,7 @@
   color: black;
 }
 
-.restaurant_profile-title {
+.profile-title {
   font-family: "Poppins", sans-serif;
   color: black;
 
@@ -17,11 +17,11 @@
   border: none;
 }
 
-.restaurant_profile-title:focus {
+.profile-title:focus {
   outline: none;
 }
 
-.restaurant_item-list {
+.item-list {
   // Remove bullet in front of <li>
   list-style-type: none;
 
