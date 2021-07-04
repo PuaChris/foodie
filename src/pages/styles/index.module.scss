@@ -36,7 +36,7 @@
 }
 
 @media screen and (min-width: 640px) {
-  #home_container {
+  .home_container {
     // Size
     width: 60%;
     margin-left: auto;
@@ -48,7 +48,7 @@
     justify-content: space-between;
     align-items: center;
   }
-  #header_container {
+  .header_container {
     // Size
     margin: 10px 20px;
 
@@ -74,7 +74,7 @@
 }
 
 @media screen and (min-width: 1008px) {
-  #home_container {
+  .home_container {
     // Size
     width: 60%;
 
@@ -84,7 +84,7 @@
     justify-content: space-between;
     align-items: center;
   }
-  #header_container {
+  .header_container {
     // Size
     margin: 10px 20px;
 

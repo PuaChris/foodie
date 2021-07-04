@@ -20,13 +20,17 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "sourceMap": true
+    "sourceMap": true,
+    "plugins": [
+      { "name": "typescript-plugin-css-modules" }
+    ]
   },
   "include": [
     "next-env.d.ts",
+    "**/*.module.scss.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/pages/styles/restaurants.js"  ],
+    "**/*.tsx",
+  ],
   "exclude": [
     "node_modules",
     "src/ssr-server.ts"

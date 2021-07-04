@@ -3,6 +3,10 @@ import { useRouter } from 'next/dist/client/router';
 
 import Restaurant from '../components/Restaurant';
 
+type ID = {
+  id: string | undefined;
+};
+
 const Post: any = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -10,7 +14,11 @@ const Post: any = () => {
   console.log(router, 'routes');
   console.log(id, 'id');
 
-  return <Restaurant id={id} />;
+  if (typeof id === 'string') {
+    return <Restaurant id={id} />;
+  }
+
+  return <Restaurant id="idk" />;
 };
 
 export default Post;
