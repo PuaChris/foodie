@@ -5,18 +5,16 @@ import Link from 'next/dist/client/link';
 import { uid } from 'react-uid';
 
 import RestaurantModal from './RestaurantModal';
-import { RestaurantData } from '../constant';
+import { IRestaurantData } from '../constant';
 import styles from './styles/RestaurantList.module.scss';
 
-// Declaring Prop interface
-type IProps = {
-
-};
-
 // Declaring State interface
-type IState = {
-  restaurantList: RestaurantData[];
-};
+interface IProps {
+
+}
+interface IState {
+  restaurantList: IRestaurantData[],
+}
 
 const style: any = styles;
 class RestaurantList extends React.Component<IProps, IState> {
@@ -42,7 +40,7 @@ class RestaurantList extends React.Component<IProps, IState> {
 
   addRestaurant = () => {
     // Create a new restaurant ID
-    const newRestaurant: RestaurantData = { };
+    const newRestaurant: IRestaurantData = { };
     newRestaurant.id = uid(newRestaurant);
     newRestaurant.name = 'new-restaurant';
 
@@ -71,8 +69,8 @@ class RestaurantList extends React.Component<IProps, IState> {
             );
           })}
         </ul>
-        <button type="button" className="add-btn" onClick={this.addRestaurant}>
-          <span className="add-btn_icon">
+        <button type="button" className="add-button" onClick={this.addRestaurant}>
+          <span className="add-button_icon">
             <FontAwesomeIcon icon={['fas', 'plus']} />
           </span>
         </button>

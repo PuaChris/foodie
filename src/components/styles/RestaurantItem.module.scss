@@ -1,4 +1,4 @@
-.restaurant-item_container{
+.container{
   width: 85%;
   
   border: black 1px solid;
@@ -8,18 +8,18 @@
   margin: 10px;
 }
 
-.restaurant-item_header{
+.header{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.restaurant-item_title{
+.title{
 
 }
 
-.restaurant-item_price{
+.price{
 
 }
 

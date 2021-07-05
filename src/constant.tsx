@@ -1,18 +1,25 @@
-export type RestaurantData = {
-  id?: string;
-  name?: string;
-  location?: string;
-  phone?: string;
-  emotion?: EmotionType;
-  recommend?: RecommendType;
-  itemList?: number[];
-  comments?: string[];
-};
+export interface IRestaurantData {
+  id?: string,
+  name?: string,
+  location?: string,
+  phone?: string,
+  emotion?: EmotionType,
+  recommend?: RecommendType,
+  itemList?: number[],
+  comments?: string[],
+}
+
+export interface IRestaurantItem {
+  name: string,
+  price?: number,
+  emotion?: EmotionType,
+  recommend?: RecommendType,
+}
 
 export enum PlaceHolder {
   Name = 'Restaurant Name',
   Location = 'Location',
-  Phone = 'Phone Number',
+  Phone = 'Phone number',
   Emotion = 'How was it?',
   Recommend = 'Would I go back?',
 }

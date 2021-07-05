@@ -9,20 +9,20 @@ import {
   EmotionType,
   RecommendType,
 } from '../constant';
-
+import { checkEmotion, checkRecommend } from '../helper/checkIcon';
 import styles from './styles/RestaurantDescription.module.scss';
 
 const style: any = styles;
 
-type IProps = {
-  location?: string;
-  phone?: string;
-  emotion?: EmotionType;
-  recommend?: RecommendType;
+interface IProps {
+  location?: string,
+  phone?: string,
+  emotion?: EmotionType,
+  recommend?: RecommendType,
 
   handleChangeText: (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => void;
   handleSelect: (e: SyntheticEvent, type: DescriptionType) => void;
-};
+}
 
 const RestaurantDescription = ({
   location,
@@ -32,39 +32,9 @@ const RestaurantDescription = ({
   handleChangeText,
   handleSelect,
 }: IProps) => {
-  let emotionIcon: [IconPrefix, IconName];
-  let recommendIcon: [IconPrefix, IconName];
-
   // Matching icon with selected option
-  switch (emotion) {
-    case EmotionType.Love:
-      emotionIcon = ['far', 'grin-hearts'];
-      break;
-    case EmotionType.Happy:
-      emotionIcon = ['far', 'smile'];
-      break;
-    case EmotionType.Meh:
-      emotionIcon = ['far', 'meh'];
-      break;
-    case EmotionType.Sad:
-      emotionIcon = ['far', 'frown'];
-      break;
-    default:
-      emotionIcon = ['far', 'surprise'];
-      break;
-  }
-
-  switch (recommend) {
-    case RecommendType.Yes:
-      recommendIcon = ['far', 'check-circle'];
-      break;
-    case RecommendType.No:
-      recommendIcon = ['far', 'times-circle'];
-      break;
-    default:
-      recommendIcon = ['far', 'question-circle'];
-      break;
-  }
+  const emotionIcon: [IconPrefix, IconName] = checkEmotion(emotion);
+  const recommendIcon: [IconPrefix, IconName] = checkRecommend(recommend);
 
   return (
     // TODO: Add onSubmit here
@@ -87,7 +57,7 @@ const RestaurantDescription = ({
         />
       </div>
 
-      {/* Phone Number */}
+      {/* Phone number */}
       <div className={style['restaurant-description']}>
         <span className={style['phone-icon']}>
           <FontAwesomeIcon icon={['fas', 'phone-alt']} />

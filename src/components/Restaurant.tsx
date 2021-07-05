@@ -10,7 +10,8 @@ import RestaurantItem from './RestaurantItem';
 import RestaurantModal from './RestaurantModal';
 
 import {
-  RestaurantData,
+  IRestaurantData,
+  IRestaurantItem,
   PlaceHolder,
   DescriptionType,
   EmotionType,
@@ -22,22 +23,24 @@ import styles from './styles/Restaurant.module.scss';
 const style: any = styles;
 
 // Declaring Prop interface
-type IProps = RestaurantData;
+interface IProps extends IRestaurantData {
+
+}
 
 // Declaring State interface
-type IState = {
-  id?: string;
-  name?: string;
-  location?: string;
-  phone?: string;
-  emotion?: EmotionType;
-  recommend?: RecommendType;
-  isModalOpen: boolean;
-  itemList: number[];
-  comments: string[];
-};
+interface IState {
+  id?: string,
+  name?: string,
+  location?: string,
+  phone?: string,
+  emotion?: EmotionType,
+  recommend?: RecommendType,
+  isModalOpen: boolean,
+  itemList: IRestaurantItem[],
+  comments: string[],
+}
 
-class Restaurant extends React.Component<RestaurantData, IState> {
+class Restaurant extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
@@ -53,6 +56,7 @@ class Restaurant extends React.Component<RestaurantData, IState> {
       comments: [],
     };
 
+    this.addNewItem = this.addNewItem.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -103,7 +107,15 @@ class Restaurant extends React.Component<RestaurantData, IState> {
     }
   };
 
-  addItem = () => {
+  addNewItem = (item: IRestaurantItem) => {
+    // Using `unshift` to push a newly added item to the front of the array and display items in that order
+    const { itemList } = this.state;
+    itemList.unshift(item);
+
+    this.setState({ itemList }, () => console.log('Successfully added new comment.'));
+  };
+
+  openModal = () => {
     this.setState({ isModalOpen: true });
   };
 
@@ -128,6 +140,7 @@ class Restaurant extends React.Component<RestaurantData, IState> {
       <div className={style['container']}>
         <RestaurantModal
           open={isModalOpen}
+          addNewItem={this.addNewItem}
           closeModal={this.closeModal}
         />
         {/* Profile */}
@@ -155,13 +168,13 @@ class Restaurant extends React.Component<RestaurantData, IState> {
             {itemList.map((item) => {
               return (
                 <li key={uid(item)} className={style['item']}>
-                  <RestaurantItem />
+                  <RestaurantItem item={item} />
                 </li>
               );
             })}
           </ul>
-          <button type="button" className="add-btn" onClick={this.addItem}>
-            <span className="add-btn_icon">
+          <button type="button" className="add-button" onClick={this.openModal}>
+            <span className="add-button_icon">
               <FontAwesomeIcon icon={['fas', 'plus']} />
             </span>
           </button>
