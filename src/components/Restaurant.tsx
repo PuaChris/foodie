@@ -56,7 +56,8 @@ class Restaurant extends React.Component<IProps, IState> {
       comments: [],
     };
 
-    this.addNewItem = this.addNewItem.bind(this);
+    this.addItem = this.addItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -107,12 +108,20 @@ class Restaurant extends React.Component<IProps, IState> {
     }
   };
 
-  addNewItem = (item: IRestaurantItem) => {
+  addItem = (item: IRestaurantItem) => {
     // Using `unshift` to push a newly added item to the front of the array and display items in that order
     const { itemList } = this.state;
     itemList.unshift(item);
 
     this.setState({ itemList }, () => console.log('Successfully added new comment.'));
+  };
+
+  deleteItem = (itemToDelete: IRestaurantItem) => {
+    this.setState(
+      (prevState) => ({
+        itemList: prevState.itemList.filter((item) => item !== itemToDelete),
+      }),
+    );
   };
 
   openModal = () => {
@@ -140,7 +149,7 @@ class Restaurant extends React.Component<IProps, IState> {
       <div className={style['container']}>
         <RestaurantModal
           open={isModalOpen}
-          addNewItem={this.addNewItem}
+          addItem={this.addItem}
           closeModal={this.closeModal}
         />
         {/* Profile */}
@@ -168,7 +177,7 @@ class Restaurant extends React.Component<IProps, IState> {
             {itemList.map((item) => {
               return (
                 <li key={uid(item)} className={style['item']}>
-                  <RestaurantItem item={item} />
+                  <RestaurantItem item={item} deleteItem={this.deleteItem} />
                 </li>
               );
             })}

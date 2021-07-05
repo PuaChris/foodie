@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { Modal, Header } from 'semantic-ui-react';
 
@@ -14,20 +14,17 @@ const style = styles;
 
 interface IProps {
   open: boolean,
-  addNewItem: (item: IRestaurantItem) => void,
+  addItem: (item: IRestaurantItem) => void,
   closeModal: () => void,
 }
 
 const RestaurantModal = (props: IProps) => {
-  // Setting initial state similar to constructor
-  const { open, addNewItem, closeModal } = props;
+  const { open, addItem, closeModal } = props;
   const [isOpen, setOpen] = useState<boolean>(open);
   const [name, setName] = useState<string>();
   const [price, setPrice] = useState<string>();
   const [emotion, setEmotion] = useState<EmotionType>();
   const [recommend, setRecommend] = useState<RecommendType>();
-
-  const emotionRef = useRef(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,7 +34,7 @@ const RestaurantModal = (props: IProps) => {
       emotion,
       recommend,
     } as IRestaurantItem;
-    addNewItem(item);
+    addItem(item);
     console.log('Form submitted');
     closeModal();
   };
@@ -80,7 +77,6 @@ const RestaurantModal = (props: IProps) => {
             <label htmlFor="price">How much was it?</label>
             <NumberFormat
               name="price"
-              ref={emotionRef}
               prefix="$"
               thousandSeparator
               decimalScale={2}

@@ -1,4 +1,4 @@
-.add-btn {
+.add-button {
   // Positioning
   position: fixed;
   bottom: 8%;
@@ -16,25 +16,25 @@
   display: inline-block;
 }
 
-.add-btn_icon {
+.add-button_icon {
   color: white;
   font-size: 35px;
 }
 
-.back-btn {
+.back-button {
   background-color: white;
   border: none;
 
   display: inline-block;
 }
 
-.back-btn_icon {
+.back-button_icon {
   color: black;
   font-size: 35px;
 }
 
 @media screen and (min-width: 641px) {
-  .add-btn {
+  .add-button {
     // Positioning
     bottom: 8%;
     right: 10%;
@@ -46,7 +46,7 @@
 }
 
 @media screen and (min-width: 1008px) {
-  .add-btn {
+  .add-button {
     // Positioning
     bottom: 8%;
     right: 25%;

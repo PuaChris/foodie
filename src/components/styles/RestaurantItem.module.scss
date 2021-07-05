@@ -1,4 +1,4 @@
-.container{
+.container {
   width: 85%;
   
   border: black 1px solid;
@@ -8,21 +8,29 @@
   margin: 10px;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.title{
+.title {
 
 }
 
-.price{
+.price {
 
 }
 
-.emotion_icon{
+.emotion-icon {
+  font-size: 30px;
+}
+
+.recommend-icon {
+
+}
+
+.delete-icon {
   font-size: 30px;
 }
