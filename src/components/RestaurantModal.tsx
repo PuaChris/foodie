@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { uid } from 'react-uid';
-import { Modal, Header } from 'semantic-ui-react';
+import { Modal, Header, Item } from 'semantic-ui-react';
 
 import {
   EmotionType,
@@ -31,10 +31,10 @@ const RestaurantModal = (props: IProps) => {
   } = props;
 
   const [isOpen, setOpen] = useState<boolean>(open);
-  const [name, setName] = useState<string>(item ? item.name : '');
-  const [price, setPrice] = useState<string | undefined>(item ? item.price : '');
-  const [emotion, setEmotion] = useState<EmotionType | undefined>(item ? item.emotion : EmotionType.Surprise);
-  const [recommend, setRecommend] = useState<RecommendType | undefined>(item ? item.recommend : RecommendType.Question);
+  const [name, setName] = useState<string>();
+  const [price, setPrice] = useState<string>();
+  const [emotion, setEmotion] = useState<EmotionType | undefined>(EmotionType.Surprise);
+  const [recommend, setRecommend] = useState<RecommendType | undefined>(RecommendType.Question);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,6 +60,11 @@ const RestaurantModal = (props: IProps) => {
   // useEffect runs after render finishes
   useEffect(() => {
     setOpen(open);
+
+    setName(item ? item.name : '');
+    setPrice(item ? item.price : '');
+    setEmotion(item ? item.emotion : EmotionType.Surprise);
+    setRecommend(item ? item.recommend : RecommendType.Question);
   }, [open]);
 
   return (

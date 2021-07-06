@@ -147,7 +147,10 @@ class Restaurant extends React.Component<IProps, IState> {
   };
 
   openModal = () => {
-    this.setState({ isModalOpen: true });
+    this.setState({
+      isModalOpen: true,
+      selectedItem: undefined,
+    });
   };
 
   closeModal = () => {
