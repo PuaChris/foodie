@@ -1,3 +1,4 @@
+import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { uid } from 'react-uid';
@@ -17,7 +18,8 @@ interface IProps {
   open: boolean,
   item?: IRestaurantItem,
   addItem: (item: IRestaurantItem) => void,
-  deleteItem: (item: IRestaurantItem) => void,
+  editItem: (item: IRestaurantItem) => void,
+  deleteItem: (id: string) => void,
   closeModal: () => void,
 }
 
@@ -26,6 +28,7 @@ const RestaurantModal = (props: IProps) => {
     open,
     item,
     addItem,
+    editItem,
     deleteItem,
     closeModal,
   } = props;
@@ -45,14 +48,21 @@ const RestaurantModal = (props: IProps) => {
       recommend,
     } as IRestaurantItem;
 
-    newItem.id = uid(newItem);
-    addItem(newItem);
+    if (item) {
+      newItem.id = item.id;
+      editItem(newItem);
+    }
+    else {
+      newItem.id = uid(newItem);
+      addItem(newItem);
+    }
+
     console.log('Form submitted');
     closeModal();
   };
 
   const handleDelete = () => {
-    if (item) deleteItem(item);
+    if (item) deleteItem(item.id);
     closeModal();
   };
 

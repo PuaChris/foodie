@@ -10,11 +10,11 @@ const style: any = styles;
 
 interface IProps {
   item: IRestaurantItem,
-  editItem: (itemId: string) => void,
+  selectItem: (itemId: string) => void,
 }
 
 const RestaurantItem = (props: IProps) => {
-  const { item, editItem } = props;
+  const { item, selectItem } = props;
 
   // Matching icon with selected option
   const emotionIcon: [IconPrefix, IconName] = checkEmotion(item.emotion);
@@ -22,7 +22,7 @@ const RestaurantItem = (props: IProps) => {
 
   const handleMouseClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
-    editItem(item.id);
+    selectItem(item.id);
   };
 
   return (

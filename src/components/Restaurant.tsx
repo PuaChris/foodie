@@ -3,6 +3,7 @@
 
 import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import update from 'immutability-helper';
 
 import RestaurantDescription from './RestaurantDescription';
 import RestaurantItem from './RestaurantItem';
@@ -68,6 +69,7 @@ class Restaurant extends React.Component<IProps, IState> {
 
     this.addItem = this.addItem.bind(this);
     this.editItem = this.editItem.bind(this);
+    this.selectItem = this.selectItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -127,8 +129,25 @@ class Restaurant extends React.Component<IProps, IState> {
     this.setState({ itemList }, () => console.log('Successfully added new comment.'));
   };
 
+  editItem = (newItem: IRestaurantData) => {
+    const { itemList } = this.state;
+    const matchingItem: IRestaurantItem | undefined = itemList.find((item) => item.id === newItem.id);
+
+    if (matchingItem) {
+      const index = itemList.indexOf(matchingItem);
+
+      // Updating element at the same index
+      const updatedItems = update(itemList, { $splice: [[index, 1, newItem]] });
+
+      this.setState({
+        isModalOpen: true,
+        itemList: updatedItems,
+      });
+    }
+  };
+
   // TODO: Something...does not seem right here. Something something bad code, testing will fail, etc.
-  editItem = (itemId: string) => {
+  selectItem = (itemId: string) => {
     const { itemList } = this.state;
     const selectedItem: IRestaurantItem | undefined = itemList.find((item) => item.id === itemId);
 
@@ -138,10 +157,10 @@ class Restaurant extends React.Component<IProps, IState> {
     });
   };
 
-  deleteItem = (itemToDelete: IRestaurantItem) => {
+  deleteItem = (itemId: string) => {
     this.setState(
       (prevState) => ({
-        itemList: prevState.itemList.filter((item) => item !== itemToDelete),
+        itemList: prevState.itemList.filter((item) => item.id !== itemId),
       }),
     );
   };
@@ -177,6 +196,7 @@ class Restaurant extends React.Component<IProps, IState> {
           open={isModalOpen}
           item={selectedItem}
           addItem={this.addItem}
+          editItem={this.editItem}
           deleteItem={this.deleteItem}
           closeModal={this.closeModal}
         />
@@ -205,7 +225,7 @@ class Restaurant extends React.Component<IProps, IState> {
             {itemList.map((item) => {
               return (
                 <li key={item.id} className={style['item']}>
-                  <RestaurantItem item={item} editItem={this.editItem} />
+                  <RestaurantItem item={item} selectItem={this.selectItem} />
                 </li>
               );
             })}
