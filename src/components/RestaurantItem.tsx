@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -10,22 +10,28 @@ const style: any = styles;
 
 interface IProps {
   item: IRestaurantItem,
-  deleteItem:(item: IRestaurantItem) => void
+  editItem: (itemId: string) => void,
 }
 
 const RestaurantItem = (props: IProps) => {
-  const { item, deleteItem } = props;
+  const { item, editItem } = props;
 
   // Matching icon with selected option
   const emotionIcon: [IconPrefix, IconName] = checkEmotion(item.emotion);
   const recommendIcon: [IconPrefix, IconName] = checkRecommend(item.recommend);
 
-  const handleDelete = () => {
-    deleteItem(item);
+  const handleMouseClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    editItem(item.id);
   };
 
   return (
-    <div className={style['container']}>
+    <div
+      className={style['container']}
+      onMouseUp={(e) => handleMouseClick(e)}
+      role="button"
+      tabIndex={-1}
+    >
       {/* Title + Emotion */}
       <header className={style['header']}>
         <h1 className={style['title']}>{item.name}</h1>
@@ -42,11 +48,6 @@ const RestaurantItem = (props: IProps) => {
       <span className={style['recommend-icon']}>
         <FontAwesomeIcon icon={recommendIcon} />
       </span>
-      <button type="button" className="remove-button" onClick={handleDelete}>
-        <span className={style['remove-icon']}>
-          <FontAwesomeIcon icon={['far', 'trash-alt']} />
-        </span>
-      </button>
     </div>
   );
 };

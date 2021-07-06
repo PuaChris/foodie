@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
+import { uid } from 'react-uid';
 import { Modal, Header } from 'semantic-ui-react';
 
 import {
@@ -14,28 +15,44 @@ const style = styles;
 
 interface IProps {
   open: boolean,
+  item?: IRestaurantItem,
   addItem: (item: IRestaurantItem) => void,
+  deleteItem: (item: IRestaurantItem) => void,
   closeModal: () => void,
 }
 
 const RestaurantModal = (props: IProps) => {
-  const { open, addItem, closeModal } = props;
+  const {
+    open,
+    item,
+    addItem,
+    deleteItem,
+    closeModal,
+  } = props;
+
   const [isOpen, setOpen] = useState<boolean>(open);
-  const [name, setName] = useState<string>();
-  const [price, setPrice] = useState<string>();
-  const [emotion, setEmotion] = useState<EmotionType>();
-  const [recommend, setRecommend] = useState<RecommendType>();
+  const [name, setName] = useState<string>(item ? item.name : '');
+  const [price, setPrice] = useState<string | undefined>(item ? item.price : '');
+  const [emotion, setEmotion] = useState<EmotionType | undefined>(item ? item.emotion : EmotionType.Surprise);
+  const [recommend, setRecommend] = useState<RecommendType | undefined>(item ? item.recommend : RecommendType.Question);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const item = {
+    const newItem = {
       name,
       price,
       emotion,
       recommend,
     } as IRestaurantItem;
-    addItem(item);
+
+    newItem.id = uid(newItem);
+    addItem(newItem);
     console.log('Form submitted');
+    closeModal();
+  };
+
+  const handleDelete = () => {
+    if (item) deleteItem(item);
     closeModal();
   };
 
@@ -68,6 +85,7 @@ const RestaurantModal = (props: IProps) => {
               className={style['name-input']}
               required
               autoComplete="off"
+              defaultValue={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -83,6 +101,7 @@ const RestaurantModal = (props: IProps) => {
               fixedDecimalScale
               className={style['price-input']}
               autoComplete="off"
+              defaultValue={price}
               onValueChange={(e) => {
                 const newPrice: string | undefined = e.value;
                 setPrice(newPrice);
@@ -98,7 +117,7 @@ const RestaurantModal = (props: IProps) => {
               name="emotion"
               className={style['emotion-dropdown']}
               required
-              defaultValue="placeholder"
+              defaultValue={emotion === EmotionType.Surprise ? 'placeholder' : emotion as string}
               onChange={(e) => {
                 const newEmotion: EmotionType = e.target.value as EmotionType;
                 setEmotion(newEmotion);
@@ -119,7 +138,7 @@ const RestaurantModal = (props: IProps) => {
               name="recommend"
               className={style['recommend-dropdown']}
               required
-              defaultValue="placeholder"
+              defaultValue={recommend === RecommendType.Question ? 'placeholder' : recommend as string}
               onChange={(e) => {
                 const newRecommend: RecommendType = e.target.value as RecommendType;
                 setRecommend(newRecommend);
@@ -144,6 +163,14 @@ const RestaurantModal = (props: IProps) => {
               type="submit"
               value="Save"
             />
+            {item ? (
+              <input
+                className="delete-button"
+                type="button"
+                value="Delete"
+                onClick={handleDelete}
+              />
+            ) : null}
           </div>
 
         </form>

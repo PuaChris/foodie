@@ -1,6 +1,6 @@
 export interface IRestaurantData {
-  id?: string,
-  name?: string,
+  id: string,
+  name: string,
   location?: string,
   phone?: string,
   emotion?: EmotionType,
@@ -10,8 +10,9 @@ export interface IRestaurantData {
 }
 
 export interface IRestaurantItem {
+  id: string,
   name: string,
-  price?: number,
+  price?: string,
   emotion?: EmotionType,
   recommend?: RecommendType,
 }
@@ -33,36 +34,15 @@ export enum DescriptionType {
 }
 
 export enum EmotionType {
+  Surprise = 'surprise',
   Love = 'love',
   Happy = 'happy',
   Meh = 'meh',
   Sad = 'sad',
 }
 
-export const EmotionDropdownOptions = [
-  {
-    key: 'love',
-    text: 'I loved it!',
-    value: 'love',
-  },
-  {
-    key: 'happy',
-    text: 'It was good',
-    value: 'happy',
-  },
-  {
-    key: 'meh',
-    text: 'It was okay',
-    value: 'meh',
-  },
-  {
-    key: 'sad',
-    text: 'It was not good',
-    value: 'sad',
-  },
-];
-
 export enum RecommendType {
+  Question = 'question',
   Yes = 'yes',
   No = 'no',
 }

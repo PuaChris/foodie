@@ -3,7 +3,6 @@
 
 import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { uid } from 'react-uid';
 
 import RestaurantDescription from './RestaurantDescription';
 import RestaurantItem from './RestaurantItem';
@@ -36,6 +35,7 @@ interface IState {
   emotion?: EmotionType,
   recommend?: RecommendType,
   isModalOpen: boolean,
+  selectedItem?: IRestaurantItem,
   itemList: IRestaurantItem[],
   comments: string[],
 }
@@ -44,19 +44,30 @@ class Restaurant extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
+    const {
+      id,
+      name,
+      location,
+      phone,
+      emotion,
+      recommend,
+    } = props;
+
     this.state = {
-      id: props.id,
-      name: props.name,
-      location: props.location,
-      phone: props.phone,
-      emotion: props.emotion,
-      recommend: props.recommend,
+      id,
+      name,
+      location,
+      phone,
+      emotion,
+      recommend,
       isModalOpen: false,
+      selectedItem: undefined,
       itemList: [],
       comments: [],
     };
 
     this.addItem = this.addItem.bind(this);
+    this.editItem = this.editItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -108,12 +119,23 @@ class Restaurant extends React.Component<IProps, IState> {
     }
   };
 
-  addItem = (item: IRestaurantItem) => {
+  addItem = (newItem: IRestaurantItem) => {
     // Using `unshift` to push a newly added item to the front of the array and display items in that order
     const { itemList } = this.state;
-    itemList.unshift(item);
+    itemList.unshift(newItem);
 
     this.setState({ itemList }, () => console.log('Successfully added new comment.'));
+  };
+
+  // TODO: Something...does not seem right here. Something something bad code, testing will fail, etc.
+  editItem = (itemId: string) => {
+    const { itemList } = this.state;
+    const selectedItem: IRestaurantItem | undefined = itemList.find((item) => item.id === itemId);
+
+    this.setState({
+      isModalOpen: true,
+      selectedItem,
+    });
   };
 
   deleteItem = (itemToDelete: IRestaurantItem) => {
@@ -141,6 +163,7 @@ class Restaurant extends React.Component<IProps, IState> {
       emotion,
       recommend,
       isModalOpen,
+      selectedItem,
       itemList,
       comments,
     } = this.state;
@@ -149,7 +172,9 @@ class Restaurant extends React.Component<IProps, IState> {
       <div className={style['container']}>
         <RestaurantModal
           open={isModalOpen}
+          item={selectedItem}
           addItem={this.addItem}
+          deleteItem={this.deleteItem}
           closeModal={this.closeModal}
         />
         {/* Profile */}
@@ -176,13 +201,17 @@ class Restaurant extends React.Component<IProps, IState> {
           <ul className={style['item-list']}>
             {itemList.map((item) => {
               return (
-                <li key={uid(item)} className={style['item']}>
-                  <RestaurantItem item={item} deleteItem={this.deleteItem} />
+                <li key={item.id} className={style['item']}>
+                  <RestaurantItem item={item} editItem={this.editItem} />
                 </li>
               );
             })}
           </ul>
-          <button type="button" className="add-button" onClick={this.openModal}>
+          <button
+            type="button"
+            className="add-button"
+            onClick={this.openModal}
+          >
             <span className="add-button_icon">
               <FontAwesomeIcon icon={['fas', 'plus']} />
             </span>
