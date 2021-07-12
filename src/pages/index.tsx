@@ -2,7 +2,6 @@ import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -14,7 +13,7 @@ library.add(fab, fas);
 
 const style: any = styles;
 
-const index: React.FC = (): JSX.Element => {
+const index = () => {
   return (
     <div className={style['home_container']}>
       {/* Remove horizontal scroll bar in mobile */}

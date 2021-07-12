@@ -20,7 +20,6 @@ const style: any = styles;
 class RestaurantList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-
     // Retrieving cache
     // const oldRestaurants: number[] = JSON.parse(localStorage.getItem('restaurantList') || '{}');
 
@@ -40,9 +39,8 @@ class RestaurantList extends React.Component<IProps, IState> {
 
   addRestaurant = () => {
     // Create a new restaurant ID
-    const newRestaurant: IRestaurantData = { };
+    const newRestaurant: IRestaurantData = { id: '-1', name: 'new-restaurant' };
     newRestaurant.id = uid(newRestaurant);
-    newRestaurant.name = 'new-restaurant';
 
     const { restaurantList } = this.state;
 

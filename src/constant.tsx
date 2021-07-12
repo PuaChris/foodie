@@ -1,6 +1,6 @@
 export interface IRestaurantData {
   id: string,
-  name: string,
+  name?: string,
   location?: string,
   phone?: string,
   emotion?: EmotionType,
@@ -11,7 +11,7 @@ export interface IRestaurantData {
 
 export interface IRestaurantItem {
   id: string,
-  name: string,
+  name?: string,
   price?: string,
   emotion?: EmotionType,
   recommend?: RecommendType,

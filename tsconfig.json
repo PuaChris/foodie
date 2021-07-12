@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -9,30 +9,35 @@
     "checkJs": false,
     "allowJs": true,
     "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
+    "newLine": "LF",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
     "sourceMap": true,
     "plugins": [
-      { "name": "typescript-plugin-css-modules" }
-    ]
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ],
+    "strictPropertyInitialization": false,
   },
   "include": [
     "next-env.d.ts",
     "**/*.module.scss.d.ts",
     "**/*.ts",
-    "**/*.tsx",
+    "**/*.tsx", "src/pages/_document.js",
   ],
   "exclude": [
     "node_modules",
-    "src/ssr-server.ts"
   ]
 }

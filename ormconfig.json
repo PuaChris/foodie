@@ -1,0 +1,18 @@
+{
+  "name": "default",
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "my_user",
+  "password": "psql",
+  "database": "foodie_db",
+  "synchronize": true,
+  "logging": true,
+  "entities": [
+    "src/entities/**/*.ts",
+    "dist/entities/**/*.js"
+  ],
+  "migrations": [
+    "src/migrations/**/*.ts"
+  ]
+}
