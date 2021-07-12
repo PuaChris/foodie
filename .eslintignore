@@ -1,6 +1,5 @@
 node_modules/
 *.d.ts
 next.config.js
-src/ssr-server.ts
 src/pages/_app.tsx
 src/pages/_document.js

@@ -12,7 +12,7 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 
 library.add(fas, far);
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>

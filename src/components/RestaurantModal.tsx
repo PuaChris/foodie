@@ -1,8 +1,7 @@
-import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { uid } from 'react-uid';
-import { Modal, Header, Item } from 'semantic-ui-react';
+import { Modal, Header } from 'semantic-ui-react';
 
 import {
   EmotionType,

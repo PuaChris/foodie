@@ -29,7 +29,7 @@ interface IProps extends IRestaurantData {
 
 // Declaring State interface
 interface IState {
-  id?: string,
+  id: string,
   name?: string,
   location?: string,
   phone?: string,
