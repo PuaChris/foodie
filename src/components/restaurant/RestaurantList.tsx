@@ -38,12 +38,15 @@ class RestaurantList extends React.Component<IProps, IState> {
     this.closeModal = this.closeModal.bind(this);
   }
 
-  // setState(state: any) {
-  //   if (typeof window !== undefined) {
-  //     window.localStorage.setItem('state', JSON.stringify(state));
-  //   }
-  //   super.setState(state);
-  // }
+  saveState = (state: any, callback?: () => void) => {
+    if (typeof window !== undefined) {
+      window.localStorage.setItem('state', JSON.stringify(state));
+    }
+    this.setState(state);
+    if (callback) {
+      callback();
+    }
+  };
 
   componentDidMount = () => {
     if (typeof window !== undefined) {
@@ -61,14 +64,11 @@ class RestaurantList extends React.Component<IProps, IState> {
 
   getRestaurants = async () => {
     const restList: Restaurant[] = await this.control.getRestaurants();
-    console.log(restList);
-    this.setState({
-      restList,
-    });
+    console.log(restList, 'Client-side POV');
+    this.saveState(restList);
   };
 
   openModal = () => {
-    // ! Could have repercussions with caching but unsure
     this.setState({ isModalOpen: true });
   };
 
@@ -80,7 +80,7 @@ class RestaurantList extends React.Component<IProps, IState> {
     const { restList } = this.state;
     restList.unshift(newRest);
 
-    this.setState({ restList }, () => console.log('Successfully added new restaurant.'));
+    this.saveState(restList, () => console.log('New restaurant added.'));
 
     // TODO: Make POST request to API
     // TODO: Remove adding a new uuid from RestaurantModal
@@ -106,11 +106,11 @@ class RestaurantList extends React.Component<IProps, IState> {
           closeModal={this.closeModal}
         />
         <ul className={style['restaurant-list']}>
-          {restList.map((rest) => {
+          {restList?.map((rest) => {
             return (
               <li key={rest.id} className={style['restaurant-card']}>
                 {/* Adding dynamic ID to new links */}
-                <Link href={`/${rest.name}`}>{rest.name}</Link>
+                <Link href={`/${rest.name || 'New Restaurant'}`}>{rest.name || 'New Restaurant'}</Link>
               </li>
             );
           })}
