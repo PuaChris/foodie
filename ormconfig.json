@@ -5,7 +5,7 @@
   "port": 5432,
   "username": "my_user",
   "password": "psql",
-  "database": "foodie_db",
+  "database": "test",
   "synchronize": true,
   "logging": true,
   "entities": [
