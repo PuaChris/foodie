@@ -9,20 +9,20 @@ import styles from '../styles/item/Item.module.scss';
 const style: any = styles;
 
 interface IProps {
-  item: IRestaurantItem,
+  itemData: IRestaurantItem,
   selectItem: (itemId: string) => void,
 }
 
 const RestaurantItem = (props: IProps) => {
-  const { item, selectItem } = props;
+  const { itemData, selectItem } = props;
 
   // Matching icon with selected option
-  const emotionIcon: [IconPrefix, IconName] = checkEmotion(item.emotion);
-  const recommendIcon: [IconPrefix, IconName] = checkRecommend(item.recommend);
+  const emotionIcon: [IconPrefix, IconName] = checkEmotion(itemData.emotion);
+  const recommendIcon: [IconPrefix, IconName] = checkRecommend(itemData.recommend);
 
   const handleMouseClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
-    selectItem(item.id);
+    selectItem(itemData.id);
   };
 
   return (
@@ -34,7 +34,7 @@ const RestaurantItem = (props: IProps) => {
     >
       {/* Title + Emotion */}
       <header className={style['header']}>
-        <h1 className={style['title']}>{item.name}</h1>
+        <h1 className={style['title']}>{itemData.name}</h1>
 
         <span className={style['emotion-icon']}>
           <FontAwesomeIcon icon={emotionIcon} />
@@ -43,7 +43,7 @@ const RestaurantItem = (props: IProps) => {
 
       {/* Price */}
       <h2 className={style['price']}>
-        {item.price ? `$${item.price}` : '$0.00'}
+        {itemData.price ? `$${itemData.price}` : '$0.00'}
       </h2>
       <span className={style['recommend-icon']}>
         <FontAwesomeIcon icon={recommendIcon} />

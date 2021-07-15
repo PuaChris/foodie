@@ -3,9 +3,10 @@ import NumberFormat from 'react-number-format';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal, Header } from 'semantic-ui-react';
 
+import Restaurant from '../../entities/Restaurant';
+
 import {
   EmotionType,
-  IRestaurantItem,
   RecommendType,
 } from '../../constant';
 
@@ -15,53 +16,44 @@ const style = styles;
 
 interface IProps {
   open: boolean,
-  item?: IRestaurantItem,
-  addItem: (item: IRestaurantItem) => void,
-  editItem: (item: IRestaurantItem) => void,
-  deleteItem: (id: string) => void,
+  addRestaurant: (item: Restaurant) => void,
   closeModal: () => void,
 }
 
 const RestaurantModal = (props: IProps) => {
   const {
     open,
-    item,
-    addItem,
-    editItem,
-    deleteItem,
+    addRestaurant,
     closeModal,
   } = props;
 
   const [isOpen, setOpen] = useState<boolean>(open);
   const [name, setName] = useState<string>();
-  const [price, setPrice] = useState<string>();
+  const [location, setLocation] = useState<string>();
+  const [phone, setPhone] = useState<string>();
   const [emotion, setEmotion] = useState<EmotionType | undefined>(EmotionType.Surprise);
   const [recommend, setRecommend] = useState<RecommendType | undefined>(RecommendType.Question);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newItem = {
+    const newRest = {
       name,
-      price,
+      location,
+      phone,
       emotion,
       recommend,
-    } as IRestaurantItem;
+    } as Restaurant;
 
-    if (item) {
-      newItem.id = item.id;
-      editItem(newItem);
-    }
-    else {
-      newItem.id = uuidv4();
-      addItem(newItem);
-    }
+    // TODO: Remove this after making POST request
+    newRest.id = uuidv4();
+
+    addRestaurant(newRest);
 
     console.log('Form submitted');
     closeModal();
   };
 
   const handleDelete = () => {
-    if (item) deleteItem(item.id);
     closeModal();
   };
 
@@ -70,10 +62,11 @@ const RestaurantModal = (props: IProps) => {
   useEffect(() => {
     setOpen(open);
 
-    setName(item ? item.name : '');
-    setPrice(item ? item.price : '');
-    setEmotion(item ? item.emotion : EmotionType.Surprise);
-    setRecommend(item ? item.recommend : RecommendType.Question);
+    setName('');
+    setLocation('');
+    setPhone('');
+    setEmotion(EmotionType.Surprise);
+    setRecommend(RecommendType.Question);
   }, [open]);
 
   return (
@@ -84,14 +77,14 @@ const RestaurantModal = (props: IProps) => {
       open={isOpen}
     >
       <Modal.Content>
-        <Header>New Restaurant Item</Header>
+        <Header>New Restaurant</Header>
       </Modal.Content>
       <Modal.Actions>
         <form
           className={style['container']}
           onSubmit={(e) => handleSubmit(e)}
         >
-          {/* Item name */}
+          {/* Restaurant name */}
           <div className={style['name-container']}>
             <label htmlFor="name">Name</label>
             <input
@@ -104,22 +97,29 @@ const RestaurantModal = (props: IProps) => {
             />
           </div>
 
-          {/* Item price */}
-          <div className={style['price-container']}>
-            <label htmlFor="price">How much was it?</label>
-            <NumberFormat
-              name="price"
-              prefix="$"
-              thousandSeparator
-              decimalScale={2}
-              fixedDecimalScale
-              className={style['price-input']}
+          {/* Restaurant location */}
+          <div className={style['location-container']}>
+            <label htmlFor="location">Where are they located</label>
+            <input
+              name="location"
+              className={style['location-input']}
+              required
               autoComplete="off"
-              defaultValue={price}
-              onValueChange={(e) => {
-                const newPrice: string | undefined = e.value;
-                setPrice(newPrice);
-              }}
+              defaultValue={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+
+          </div>
+
+          {/* Restaurant phone number */}
+          <div className={style['phone-container']}>
+            <label htmlFor="phone">Phone number</label>
+            <NumberFormat
+              className={style['phone-input']}
+              format="(###) ###-####"
+              mask="_"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
 
           </div>
@@ -177,14 +177,13 @@ const RestaurantModal = (props: IProps) => {
               type="submit"
               value="Save"
             />
-            {item ? (
-              <input
-                className="delete-button"
-                type="button"
-                value="Delete"
-                onClick={handleDelete}
-              />
-            ) : null}
+            <input
+              className="delete-button"
+              type="button"
+              value="Delete"
+              onClick={handleDelete}
+            />
+
           </div>
 
         </form>

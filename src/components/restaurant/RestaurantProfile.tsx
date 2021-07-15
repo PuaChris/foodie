@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import update from 'immutability-helper';
 
 import Restaurant from '../../entities/Restaurant';
-import RestaurantItem from '../item/Item';
+import Item from '../item/Item';
 import RestaurantDescription from './RestaurantDescription';
-import RestaurantModal from '../item/ItemModal';
+import ItemModal from '../item/ItemModal';
 
 import {
   IRestaurantItem,
@@ -112,7 +112,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     const { itemList } = this.state;
     itemList.unshift(newItem);
 
-    this.setState({ itemList }, () => console.log('Successfully added new comment.'));
+    this.setState({ itemList }, () => console.log('Successfully added new item.'));
   };
 
   editItem = (newItem: IRestaurantItem) => {
@@ -176,7 +176,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
 
     return (
       <div className={style['container']}>
-        <RestaurantModal
+        <ItemModal
           open={isModalOpen}
           item={selectedItem}
           addItem={this.addItem}
@@ -209,7 +209,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
             {itemList.map((item) => {
               return (
                 <li key={item.id} className={style['item']}>
-                  <RestaurantItem item={item} selectItem={this.selectItem} />
+                  <Item itemData={item} selectItem={this.selectItem} />
                 </li>
               );
             })}

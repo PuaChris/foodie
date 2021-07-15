@@ -6,6 +6,8 @@ import Link from 'next/dist/client/link';
 import Restaurant from '../../entities/Restaurant';
 import Controller from '../../routes/controller';
 
+import RestaurantModal from './RestaurantModal';
+
 import styles from '../styles/restaurant/RestaurantList.module.scss';
 
 // Declaring State interface
@@ -13,6 +15,7 @@ interface IProps {
 
 }
 interface IState {
+  isModalOpen: boolean,
   restList: Restaurant[],
 }
 
@@ -27,16 +30,20 @@ class RestaurantList extends React.Component<IProps, IState> {
     this.control = new Controller();
 
     this.state = {
+      isModalOpen: false,
       restList: [],
     };
+
+    this.addRestaurant = this.addRestaurant.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
-  setState(state: any) {
-    if (typeof window !== undefined) {
-      window.localStorage.setItem('state', JSON.stringify(state));
-    }
-    super.setState(state);
-  }
+  // setState(state: any) {
+  //   if (typeof window !== undefined) {
+  //     window.localStorage.setItem('state', JSON.stringify(state));
+  //   }
+  //   super.setState(state);
+  // }
 
   componentDidMount = () => {
     if (typeof window !== undefined) {
@@ -60,8 +67,23 @@ class RestaurantList extends React.Component<IProps, IState> {
     });
   };
 
-  addRestaurant = () => {
+  openModal = () => {
+    // ! Could have repercussions with caching but unsure
+    this.setState({ isModalOpen: true });
+  };
 
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
+  addRestaurant = (newRest: Restaurant) => {
+    const { restList } = this.state;
+    restList.unshift(newRest);
+
+    this.setState({ restList }, () => console.log('Successfully added new restaurant.'));
+
+    // TODO: Make POST request to API
+    // TODO: Remove adding a new uuid from RestaurantModal
     // const newRestaurant: Partial<Restaurant> = { name: 'new-restaurant' };
     // newRestaurant.id = uid(newRestaurant);
 
@@ -71,21 +93,29 @@ class RestaurantList extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { restList: restaurantList } = this.state;
+    const {
+      isModalOpen,
+      restList,
+    } = this.state;
 
     return (
       <div className={style['container']}>
+        <RestaurantModal
+          open={isModalOpen}
+          addRestaurant={this.addRestaurant}
+          closeModal={this.closeModal}
+        />
         <ul className={style['restaurant-list']}>
-          {restaurantList.map((restaurant) => {
+          {restList.map((rest) => {
             return (
-              <li key={restaurant.id} className={style['restaurant-card']}>
+              <li key={rest.id} className={style['restaurant-card']}>
                 {/* Adding dynamic ID to new links */}
-                <Link href={`/${restaurant.name}`}>Restaurant</Link>
+                <Link href={`/${rest.name}`}>{rest.name}</Link>
               </li>
             );
           })}
         </ul>
-        <button type="button" className="add-button" onClick={this.addRestaurant}>
+        <button type="button" className="add-button" onClick={this.openModal}>
           <span className="add-button_icon">
             <FontAwesomeIcon icon={['fas', 'plus']} />
           </span>
