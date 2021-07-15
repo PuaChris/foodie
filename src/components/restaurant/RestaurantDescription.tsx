@@ -8,9 +8,9 @@ import {
   DescriptionType,
   EmotionType,
   RecommendType,
-} from '../constant';
-import { checkEmotion, checkRecommend } from '../helper/checkIcon';
-import styles from './styles/RestaurantDescription.module.scss';
+} from '../../constant';
+import { checkEmotion, checkRecommend } from '../../helper/checkIcon';
+import styles from '../styles/restaurant/RestaurantDescription.module.scss';
 
 const style: any = styles;
 

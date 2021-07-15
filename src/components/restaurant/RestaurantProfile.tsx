@@ -5,10 +5,10 @@ import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import update from 'immutability-helper';
 
-import Restaurant from '../entities/Restaurant';
-import RestaurantItem from './RestaurantItem';
+import Restaurant from '../../entities/Restaurant';
+import RestaurantItem from '../item/Item';
 import RestaurantDescription from './RestaurantDescription';
-import RestaurantModal from './RestaurantModal';
+import RestaurantModal from '../item/ItemModal';
 
 import {
   IRestaurantItem,
@@ -16,9 +16,9 @@ import {
   DescriptionType,
   EmotionType,
   RecommendType,
-} from '../constant';
+} from '../../constant';
 
-import styles from './styles/Restaurant.module.scss';
+import styles from '../styles/restaurant/RestaurantProfile.module.scss';
 
 const style: any = styles;
 

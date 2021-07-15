@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './styles/SearchBar.module.scss';
+import styles from '../styles/util/SearchBar.module.scss';
 
 const style: any = styles;
 

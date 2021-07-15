@@ -2,9 +2,9 @@ import React from 'react';
 import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IRestaurantItem } from '../constant';
-import { checkEmotion, checkRecommend } from '../helper/checkIcon';
-import styles from './styles/RestaurantItem.module.scss';
+import { IRestaurantItem } from '../../constant';
+import { checkEmotion, checkRecommend } from '../../helper/checkIcon';
+import styles from '../styles/item/Item.module.scss';
 
 const style: any = styles;
 

@@ -10,13 +10,13 @@ class Restaurant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
+  @Column({ nullable: true })
   name: string;
 
-  @Column('text')
+  @Column({ nullable: true })
   location: string;
 
-  @Column('text')
+  @Column({ nullable: true })
   phone: string;
 
   @Column({

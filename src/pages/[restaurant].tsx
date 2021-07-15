@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/dist/client/router';
 
-import RestaurantProfile from '../components/RestaurantProfile';
+import RestaurantProfile from '../components/restaurant/RestaurantProfile';
 
 type ID = {
   id: string | undefined;

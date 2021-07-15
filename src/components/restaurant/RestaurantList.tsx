@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/dist/client/link';
 
 // https://stackoverflow.com/questions/63353141/for-typescript-the-error-for-decorators-legacy-isnt-currently-enabled-event
-import Restaurant from '../entities/Restaurant';
-import Controller from '../pages/routes/controller';
+import Restaurant from '../../entities/Restaurant';
+import Controller from '../../routes/controller';
 
-import styles from './styles/RestaurantList.module.scss';
+import styles from '../styles/restaurant/RestaurantList.module.scss';
 
 // Declaring State interface
 interface IProps {
@@ -45,6 +45,10 @@ class RestaurantList extends React.Component<IProps, IState> {
         const state = JSON.parse(cache);
         this.setState(state);
       }
+
+      else {
+        this.getRestaurants();
+      }
     }
   };
 
@@ -57,7 +61,7 @@ class RestaurantList extends React.Component<IProps, IState> {
   };
 
   addRestaurant = () => {
-    this.getRestaurants();
+
     // const newRestaurant: Partial<Restaurant> = { name: 'new-restaurant' };
     // newRestaurant.id = uid(newRestaurant);
 

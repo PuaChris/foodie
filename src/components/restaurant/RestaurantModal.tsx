@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
-import { uid } from 'react-uid';
+import { v4 as uuidv4 } from 'uuid';
 import { Modal, Header } from 'semantic-ui-react';
 
 import {
   EmotionType,
   IRestaurantItem,
   RecommendType,
-} from '../constant';
+} from '../../constant';
 
-import styles from './styles/RestaurantModal.module.scss';
+import styles from '../styles/restaurant/RestaurantModal.module.scss';
 
 const style = styles;
 
@@ -52,7 +52,7 @@ const RestaurantModal = (props: IProps) => {
       editItem(newItem);
     }
     else {
-      newItem.id = uid(newItem);
+      newItem.id = uuidv4();
       addItem(newItem);
     }
 

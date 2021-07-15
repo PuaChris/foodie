@@ -6,8 +6,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styles from './styles/index.module.scss';
-import SearchBar from '../components/SearchBar';
-import RestaurantList from '../components/RestaurantList';
+import SearchBar from '../components/util/SearchBar';
+import RestaurantList from '../components/restaurant/RestaurantList';
 
 library.add(fab, fas);
 
