@@ -3,26 +3,35 @@ import {
   PrimaryGeneratedColumn,
   Column,
 } from 'typeorm';
+import { EmotionType, RecommendType } from '../constant';
 
 @Entity()
 class Restaurant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    length: 255,
-  })
+  @Column('text')
   name: string;
 
-  @Column({
-    length: 255,
-  })
+  @Column('text')
   location: string;
 
-  @Column({
-    length: 255,
-  })
+  @Column('text')
   phone: string;
+
+  @Column({
+    type: 'enum',
+    enum: EmotionType,
+    default: EmotionType.Surprise,
+  })
+  emotion: EmotionType;
+
+  @Column({
+    type: 'enum',
+    enum: RecommendType,
+    default: RecommendType.Question,
+  })
+  recommend: RecommendType;
 }
 
 export default Restaurant;

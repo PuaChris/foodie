@@ -6,7 +6,6 @@ export interface IRestaurantData {
   emotion?: EmotionType,
   recommend?: RecommendType,
   itemList?: number[],
-  comments?: string[],
 }
 
 export interface IRestaurantItem {

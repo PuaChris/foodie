@@ -5,12 +5,12 @@ import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import update from 'immutability-helper';
 
-import RestaurantDescription from './RestaurantDescription';
+import Restaurant from '../entities/Restaurant';
 import RestaurantItem from './RestaurantItem';
+import RestaurantDescription from './RestaurantDescription';
 import RestaurantModal from './RestaurantModal';
 
 import {
-  IRestaurantData,
   IRestaurantItem,
   PlaceHolder,
   DescriptionType,
@@ -23,13 +23,16 @@ import styles from './styles/Restaurant.module.scss';
 const style: any = styles;
 
 // Declaring Prop interface
-interface IProps extends IRestaurantData {
+// interface IProps extends Restaurant {
+//   itemList?: IRestaurantItem[],
+// }
+interface IProps {
 
 }
 
 // Declaring State interface
 interface IState {
-  id: string,
+  id?: string,
   name?: string,
   location?: string,
   phone?: string,
@@ -38,33 +41,16 @@ interface IState {
   isModalOpen: boolean,
   selectedItem?: IRestaurantItem,
   itemList: IRestaurantItem[],
-  comments: string[],
 }
 
-class Restaurant extends React.Component<IProps, IState> {
+class RestaurantProfile extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    const {
-      id,
-      name,
-      location,
-      phone,
-      emotion,
-      recommend,
-    } = props;
-
     this.state = {
-      id,
-      name,
-      location,
-      phone,
-      emotion,
-      recommend,
       isModalOpen: false,
       selectedItem: undefined,
       itemList: [],
-      comments: [],
     };
 
     this.addItem = this.addItem.bind(this);
@@ -129,7 +115,7 @@ class Restaurant extends React.Component<IProps, IState> {
     this.setState({ itemList }, () => console.log('Successfully added new comment.'));
   };
 
-  editItem = (newItem: IRestaurantData) => {
+  editItem = (newItem: IRestaurantItem) => {
     const { itemList } = this.state;
     const matchingItem: IRestaurantItem | undefined = itemList.find((item) => item.id === newItem.id);
 
@@ -178,7 +164,6 @@ class Restaurant extends React.Component<IProps, IState> {
 
   render(): JSX.Element {
     const {
-      id,
       name,
       location,
       phone,
@@ -187,7 +172,6 @@ class Restaurant extends React.Component<IProps, IState> {
       isModalOpen,
       selectedItem,
       itemList,
-      comments,
     } = this.state;
 
     return (
@@ -245,4 +229,4 @@ class Restaurant extends React.Component<IProps, IState> {
   }
 }
 
-export default Restaurant;
+export default RestaurantProfile;
