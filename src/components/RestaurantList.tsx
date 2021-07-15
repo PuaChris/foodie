@@ -1,11 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Modal, Header } from 'semantic-ui-react';
 import Link from 'next/dist/client/link';
-import { uid } from 'react-uid';
 
-import RestaurantModal from './RestaurantModal';
-import { IRestaurantData } from '../constant';
+// https://stackoverflow.com/questions/63353141/for-typescript-the-error-for-decorators-legacy-isnt-currently-enabled-event
+import Restaurant from '../entities/Restaurant';
+import Controller from '../pages/routes/controller';
+
 import styles from './styles/RestaurantList.module.scss';
 
 // Declaring State interface
@@ -13,47 +13,61 @@ interface IProps {
 
 }
 interface IState {
-  restaurantList: IRestaurantData[],
+  restList: Restaurant[],
 }
 
 const style: any = styles;
 class RestaurantList extends React.Component<IProps, IState> {
+  private control: Controller;
+
   constructor(props: IProps) {
     super(props);
-    // Retrieving cache
-    // const oldRestaurants: number[] = JSON.parse(localStorage.getItem('restaurantList') || '{}');
+
+    // Initialize API controller
+    this.control = new Controller();
 
     this.state = {
-      restaurantList: [],
+      restList: [],
     };
   }
 
-  componentDidMount = () => {
-    // const { restaurants } = this.state;
+  setState(state: any) {
+    if (typeof window !== undefined) {
+      window.localStorage.setItem('state', JSON.stringify(state));
+    }
+    super.setState(state);
+  }
 
-    // // setter
-    // localStorage.setItem('restaurantList', JSON.stringify(restaurants));
+  componentDidMount = () => {
+    if (typeof window !== undefined) {
+      const cache = window.localStorage.getItem('state') || undefined;
+      if (cache !== undefined) {
+        const state = JSON.parse(cache);
+        this.setState(state);
+      }
+    }
   };
 
-  // onClick(event: React.MouseEvent<HTMLButtonElement>): void;
-
-  addRestaurant = () => {
-    // Create a new restaurant ID
-    const newRestaurant: IRestaurantData = { id: '-1', name: 'new-restaurant' };
-    newRestaurant.id = uid(newRestaurant);
-
-    const { restaurantList } = this.state;
-
-    restaurantList.push(newRestaurant);
-
-    // TODO: Open a new restaurant dialog and fill in basic information
-    this.setState({ restaurantList }, () => {
-      // window.location.href = `/${newRestaurant.name}`;
+  getRestaurants = async () => {
+    const restList: Restaurant[] = await this.control.getRestaurants();
+    console.log(restList);
+    this.setState({
+      restList,
     });
   };
 
+  addRestaurant = () => {
+    this.getRestaurants();
+    // const newRestaurant: Partial<Restaurant> = { name: 'new-restaurant' };
+    // newRestaurant.id = uid(newRestaurant);
+
+    // const { restList } = this.state;
+
+    // restaurantList.push(newRestaurant);
+  };
+
   render() {
-    const { restaurantList } = this.state;
+    const { restList: restaurantList } = this.state;
 
     return (
       <div className={style['container']}>
