@@ -7,6 +7,7 @@ import Restaurant from '../../entities/Restaurant';
 
 import {
   EmotionType,
+  IRestaurant,
   RecommendType,
 } from '../../constant';
 
@@ -16,7 +17,7 @@ const style = styles;
 
 interface IProps {
   open: boolean,
-  addRestaurant: (item: Restaurant) => void,
+  addRestaurant: (item: IRestaurant) => void,
   closeModal: () => void,
 }
 
@@ -42,10 +43,7 @@ const RestaurantModal = (props: IProps) => {
       phone,
       emotion,
       recommend,
-    } as Restaurant;
-
-    // TODO: Remove this after making POST request
-    newRest.id = uuidv4();
+    } as IRestaurant;
 
     addRestaurant(newRest);
 
@@ -103,7 +101,6 @@ const RestaurantModal = (props: IProps) => {
             <input
               name="location"
               className={style['location-input']}
-              required
               autoComplete="off"
               defaultValue={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -130,7 +127,6 @@ const RestaurantModal = (props: IProps) => {
             <select
               name="emotion"
               className={style['emotion-dropdown']}
-              required
               defaultValue={emotion === EmotionType.Surprise ? 'placeholder' : emotion as string}
               onChange={(e) => {
                 const newEmotion: EmotionType = e.target.value as EmotionType;
@@ -151,7 +147,6 @@ const RestaurantModal = (props: IProps) => {
             <select
               name="recommend"
               className={style['recommend-dropdown']}
-              required
               defaultValue={recommend === RecommendType.Question ? 'placeholder' : recommend as string}
               onChange={(e) => {
                 const newRecommend: RecommendType = e.target.value as RecommendType;

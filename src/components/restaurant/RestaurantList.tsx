@@ -2,13 +2,12 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/dist/client/link';
 
-// https://stackoverflow.com/questions/63353141/for-typescript-the-error-for-decorators-legacy-isnt-currently-enabled-event
-import Restaurant from '../../entities/Restaurant';
 import Controller from '../../routes/controller';
 
 import RestaurantModal from './RestaurantModal';
 
 import styles from '../styles/restaurant/RestaurantList.module.scss';
+import { IRestaurant } from '../../constant';
 
 // Declaring State interface
 interface IProps {
@@ -16,7 +15,7 @@ interface IProps {
 }
 interface IState {
   isModalOpen: boolean,
-  restList: Restaurant[],
+  restList: IRestaurant[],
 }
 
 const style: any = styles;
@@ -38,34 +37,38 @@ class RestaurantList extends React.Component<IProps, IState> {
     this.closeModal = this.closeModal.bind(this);
   }
 
-  saveState = (state: any, callback?: () => void) => {
-    if (typeof window !== undefined) {
-      window.localStorage.setItem('state', JSON.stringify(state));
-    }
-    this.setState(state);
-    if (callback) {
-      callback();
-    }
-  };
+  // saveState = (state: any, callback?: () => void) => {
+  //   // Save state in cache
+  //   if (typeof window !== undefined) {
+  //     window.localStorage.setItem('state', JSON.stringify(state));
+  //   }
+  //   this.setState(state);
+  //   if (callback) {
+  //     callback();
+  //   }
+  // };
 
   componentDidMount = () => {
-    if (typeof window !== undefined) {
-      const cache = window.localStorage.getItem('state') || undefined;
-      if (cache !== undefined) {
-        const state = JSON.parse(cache);
-        this.setState(state);
-      }
+    this.getRestaurants();
 
-      else {
-        this.getRestaurants();
-      }
-    }
+    // // Check cache first before calling API for restaurants
+    // if (typeof window !== undefined) {
+    //   const cache = window.localStorage.getItem('state') || undefined;
+    //   if (cache !== undefined) {
+    //     const state = JSON.parse(cache);
+    //     this.setState(state);
+    //   }
+
+    //   else {
+    //     this.getRestaurants();
+    //   }
+    // }
   };
 
   getRestaurants = async () => {
-    const restList: Restaurant[] = await this.control.getRestaurants();
-    console.log(restList, 'Client-side POV');
-    this.saveState(restList);
+    const restList: IRestaurant[] = await this.control.getRestaurants();
+
+    this.setState({ restList });
   };
 
   openModal = () => {
@@ -76,20 +79,20 @@ class RestaurantList extends React.Component<IProps, IState> {
     this.setState({ isModalOpen: false });
   };
 
-  addRestaurant = (newRest: Restaurant) => {
-    const { restList } = this.state;
-    restList.unshift(newRest);
+  addRestaurant = async (newRest: IRestaurant) => {
+    // Inserting into DB and retrieving uuid as confirmation
+    const id: string = await this.control.addRestaurant(newRest);
+    if (id) {
+      newRest.id = id;
 
-    this.saveState(restList, () => console.log('New restaurant added.'));
-
-    // TODO: Make POST request to API
-    // TODO: Remove adding a new uuid from RestaurantModal
-    // const newRestaurant: Partial<Restaurant> = { name: 'new-restaurant' };
-    // newRestaurant.id = uid(newRestaurant);
-
-    // const { restList } = this.state;
-
-    // restaurantList.push(newRestaurant);
+      // Updating UI with newly added restaurant
+      const { restList } = this.state;
+      restList.unshift(newRest);
+      this.setState({ restList }, () => console.log('New restaurant added.'));
+    }
+    else {
+      console.error('Error: Could not save new restaurant');
+    }
   };
 
   render() {
@@ -106,14 +109,12 @@ class RestaurantList extends React.Component<IProps, IState> {
           closeModal={this.closeModal}
         />
         <ul className={style['restaurant-list']}>
-          {restList?.map((rest) => {
-            return (
-              <li key={rest.id} className={style['restaurant-card']}>
-                {/* Adding dynamic ID to new links */}
-                <Link href={`/${rest.name || 'New Restaurant'}`}>{rest.name || 'New Restaurant'}</Link>
-              </li>
-            );
-          })}
+          {restList?.map((rest) => (
+            <li key={rest.id} className={style['restaurant-card']}>
+              {/* Adding dynamic ID to new links */}
+              <Link href={`/${rest.name || 'New Restaurant'}`}>{rest.name || 'New Restaurant'}</Link>
+            </li>
+          ))}
         </ul>
         <button type="button" className="add-button" onClick={this.openModal}>
           <span className="add-button_icon">

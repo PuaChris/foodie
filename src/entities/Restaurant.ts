@@ -3,35 +3,62 @@ import {
   PrimaryGeneratedColumn,
   Column,
 } from 'typeorm';
-import { EmotionType, RecommendType } from '../constant';
+import { EmotionType, IRestaurant, RecommendType } from '../constant';
 
 @Entity()
 class Restaurant {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  public id: string;
 
-  @Column({ nullable: true })
-  name: string;
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  public name: string;
 
-  @Column({ nullable: true })
-  location: string;
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  public location: string;
 
-  @Column({ nullable: true })
-  phone: string;
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  public phone: string;
 
+  // TODO: Change column type to string for enums after learning migrations
   @Column({
     type: 'enum',
     enum: EmotionType,
     default: EmotionType.Surprise,
   })
-  emotion: EmotionType;
+  public emotion: EmotionType;
 
   @Column({
     type: 'enum',
     enum: RecommendType,
     default: RecommendType.Question,
   })
-  recommend: RecommendType;
+  public recommend: RecommendType;
+
+  static getReqInfo({
+    name,
+    location,
+    phone,
+    emotion,
+    recommend,
+  }: IRestaurant) {
+    const rest = new Restaurant();
+
+    if (name) rest.name = name;
+    if (location) rest.location = location;
+    if (phone) rest.phone = phone;
+    if (emotion) rest.emotion = emotion;
+    if (recommend) rest.recommend = recommend;
+    return rest;
+  }
 }
 
 export default Restaurant;

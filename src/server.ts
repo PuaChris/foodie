@@ -3,7 +3,7 @@ import express from 'express';
 import cors, { CorsOptions } from 'cors';
 import 'reflect-metadata';
 import { connectDB } from './database';
-import router from './pages/routes/router';
+import router from './routes/router';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -18,15 +18,12 @@ app.prepare()
     // Routes
     // https://github.com/vercel/next.js/issues/8544
     const server = express();
+    server.use(cors());
+    server.use(express.urlencoded({
+      extended: true,
+    }));
+    server.use(express.json());
     server.use(router);
-
-    const corsOptions: CorsOptions = {
-      origin: true,
-      methods: 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS',
-      credentials: true, // required to pass
-      allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
-    };
-    server.use(cors(corsOptions));
 
     // Lets Next.js handle the rest of the endpoints (assuming these are front-end routes)
     // Next requires getRequestHandler()

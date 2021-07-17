@@ -19,26 +19,23 @@ export const getRestaurants = async () => {
   let restList: Restaurant[] = [];
   await getRepository(Restaurant).find().then(
     (result) => {
-      console.log('>> Loaded restaurants: ', result);
       restList = result;
     },
   ).catch((e) => console.error(e));
-  return restList;
+
+  // Return in order of most recently added restaurants
+  return restList.reverse();
 };
 
-export const addRestaurant = async () => {
+export const addRestaurant = async (newRest: Restaurant): Promise<string> => {
   // Here you can start to work with your entities
   console.log('>> Inserting a new record into the Restaurant database...');
 
-  // Create Restaurant object
-  const rest = new Restaurant();
-  rest.name = 'anh dao';
-  rest.location = 'dundas';
-  rest.phone = '123';
-
   // Save Restaurant object in connection
-  await getRepository(Restaurant).save(rest);
-  console.log(`>> Saved a new restaurant with name: ${rest.name}`);
+  const rest = await getRepository(Restaurant).save(newRest);
+  console.log(`>> Saved a new restaurant: ${rest.id} --> ${rest.name}`);
+
+  return rest.id;
 };
 
 export const getItems = async () => {

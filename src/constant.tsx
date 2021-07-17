@@ -1,11 +1,10 @@
-export interface IRestaurantData {
+export interface IRestaurant {
   id: string,
-  name?: string,
+  name: string,
   location?: string,
   phone?: string,
   emotion?: EmotionType,
   recommend?: RecommendType,
-  itemList?: number[],
 }
 
 export interface IRestaurantItem {
