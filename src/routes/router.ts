@@ -6,7 +6,7 @@ import {
   getItems,
   addItem,
 } from '../database';
-import Restaurant from '../entities/Restaurant';
+import Restaurant from '../entities/restaurant.entity';
 
 const router = express.Router();
 

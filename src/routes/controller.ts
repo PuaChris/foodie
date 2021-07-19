@@ -1,17 +1,37 @@
 import { IRestaurant } from '../constant';
 
+enum MethodType {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
 export default class Controller {
+  public initFetchOptions = (method: MethodType, requestBody?: string): RequestInit => {
+    const requestHeaders = new Headers();
+    requestHeaders.set('Accept', 'application/json');
+
+    if (method === MethodType.POST || method === MethodType.PUT) {
+      requestHeaders.set('Content-Type', 'application/json');
+      return {
+        method,
+        headers: requestHeaders,
+        body: requestBody,
+      };
+    }
+
+    // GET Requests
+    return {
+      method,
+      headers: requestHeaders,
+    };
+  };
+
   public getRestaurants = async (): Promise<IRestaurant[]> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = (new URL(`${domain}/restaurants`)).toString();
 
-    const requestHeaders = new Headers();
-    requestHeaders.set('Accept', 'application/json');
-
-    const fetchOptions = {
-      method: 'GET',
-      headers: requestHeaders,
-    };
+    const fetchOptions = this.initFetchOptions(MethodType.GET);
 
     // Get list of restaurants
     let restList: IRestaurant[] = [];
@@ -36,19 +56,11 @@ export default class Controller {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = (new URL(`${domain}/restaurants`)).toString();
 
-    const requestHeaders = new Headers();
-    requestHeaders.set('Accept', 'application/json');
-    requestHeaders.set('Content-Type', 'application/json');
-
     // Passing new restaurant information
     const requestBody = JSON.stringify(restData);
     console.log(`Saving restaurant into database: ${requestBody}`);
 
-    const fetchOptions = {
-      method: 'POST',
-      headers: requestHeaders,
-      body: requestBody,
-    };
+    const fetchOptions = this.initFetchOptions(MethodType.POST, requestBody);
 
     // Return new uuid for the restaurant to client as confirmation
     let id: string = '';
@@ -58,24 +70,40 @@ export default class Controller {
         if (res.status !== 200) {
           throw new Error(res.statusText);
         }
-        console.log(`Request data: ${res}`);
         return res.json();
       }).then((data) => {
         if (data) {
-          console.log(`Request data JSON: ${data}`);
           id = data.id;
-          console.log(`Restaurant data successfully saved with ID: ${id}`);
+          console.log(`Restaurant successfully saved with ID: ${id}`);
         }
       }).catch((e) => console.error(e));
 
     return id;
   };
 
-  // public getItems = async (req: Request, res: Response) => {
+  public editRestaurant = async (restData: IRestaurant): Promise<Boolean> => {
+    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const url = (new URL(`${domain}/restaurants`)).toString();
 
-  // };
+    // Passing new restaurant information
+    const requestBody = JSON.stringify(restData);
+    console.log(`Editing restaurant with new info: ${requestBody}`);
 
-  // public addItem = async (req: Request, res: Response) => {
+    const fetchOptions = this.initFetchOptions(MethodType.PUT, requestBody);
 
-  // };
+    await fetch(url, fetchOptions)
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      }).then((data) => {
+        if (data) {
+          console.log(`Request data JSON: ${data}`);
+          return true;
+        }
+        throw new Error('No edited restaurant data returned from the server');
+      }).catch((e) => console.error(e));
+    return false;
+  };
 }
