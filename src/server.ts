@@ -1,6 +1,6 @@
 import next from 'next';
 import express from 'express';
-import cors, { CorsOptions } from 'cors';
+import cors from 'cors';
 import 'reflect-metadata';
 import { connectDB } from './database';
 import router from './routes/router';

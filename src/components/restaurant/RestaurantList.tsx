@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/dist/client/link';
 
+import _ from 'lodash';
 import Controller from '../../routes/controller';
 
 import RestaurantModal from './RestaurantModal';
@@ -91,7 +92,34 @@ class RestaurantList extends React.Component<IProps, IState> {
       this.setState({ restList }, () => console.log('New restaurant added.'));
     }
     else {
-      console.error('Error: Could not save new restaurant');
+      console.error('Could not save new restaurant');
+    }
+  };
+
+  editRestaurant = async (editRest: IRestaurant) => {
+    const { restList } = this.state;
+    const oldRest = restList.find((rest) => rest.id === editRest.id);
+
+    if (editRest
+      && oldRest
+      && _.isEqual(editRest, oldRest)
+      && await this.control.editRestaurant(editRest)
+    ) {
+      const matchingIndex = restList.indexOf(oldRest);
+
+      // Replacing with new data at the same index as the restaurant to be edited
+      if (matchingIndex !== 0) {
+        restList.splice(matchingIndex, 1);
+        restList.unshift(editRest);
+      }
+
+      this.setState({ restList }, () => console.log('Successfully edited restaurant'));
+
+      restList.unshift(editRest);
+      this.setState({ restList }, () => console.log('New restaurant added.'));
+    }
+    else {
+      console.error('Could not edit restaurant');
     }
   };
 
@@ -112,11 +140,26 @@ class RestaurantList extends React.Component<IProps, IState> {
           {restList?.map((rest) => (
             <li key={rest.id} className={style['restaurant-card']}>
               {/* Adding dynamic ID to new links */}
-              <Link href={`/${rest.name || 'New Restaurant'}`}>{rest.name || 'New Restaurant'}</Link>
+              <Link
+                href={{
+                  pathname: '/[restaurant]',
+                  query: {
+                    id: rest.id,
+                    name: rest.name || 'New Restaurant',
+                    location: rest.location || '',
+                    phone: rest.phone || '',
+                    emotion: rest.emotion,
+                    recommend: rest.recommend,
+                  },
+                }}
+                as={`/${rest.id || 'new-restaurant'}`}
+              >
+                {rest.name || 'New Restaurant'}
+              </Link>
             </li>
           ))}
         </ul>
-        <button type="button" className="add-button" onClick={this.openModal}>
+        <button type="button" className="add-button" onClick={() => this.openModal}>
           <span className="add-button_icon">
             <FontAwesomeIcon icon={['fas', 'plus']} />
           </span>
