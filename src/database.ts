@@ -2,7 +2,7 @@ import {
   createConnection,
   getRepository,
 } from 'typeorm';
-import Restaurant from './entities/Restaurant';
+import Restaurant from './entities/restaurant.entity';
 
 export const connectDB = async () => {
   console.log('>> Connecting to database...');

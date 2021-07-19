@@ -3,7 +3,7 @@ import NumberFormat from 'react-number-format';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal, Header } from 'semantic-ui-react';
 
-import Restaurant from '../../entities/Restaurant';
+import Restaurant from '../../entities/restaurant.entity';
 
 import {
   EmotionType,
