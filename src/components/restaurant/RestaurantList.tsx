@@ -67,7 +67,7 @@ class RestaurantList extends React.Component<IProps, IState> {
   };
 
   getRestaurants = async () => {
-    const restList: IRestaurant[] = await this.control.getRestaurants();
+    const restList: IRestaurant[] = await this.control.getRestaurantList();
 
     this.setState({ restList });
   };
@@ -116,7 +116,7 @@ class RestaurantList extends React.Component<IProps, IState> {
       this.setState({ restList }, () => console.log('Successfully edited restaurant'));
 
       restList.unshift(editRest);
-      this.setState({ restList }, () => console.log('New restaurant added.'));
+      this.setState({ restList }, () => console.log('New restaurant added'));
     }
     else {
       console.error('Could not edit restaurant');
@@ -137,27 +137,26 @@ class RestaurantList extends React.Component<IProps, IState> {
           closeModal={this.closeModal}
         />
         <ul className={style['restaurant-list']}>
-          {restList?.map((rest) => (
-            <li key={rest.id} className={style['restaurant-card']}>
-              {/* Adding dynamic ID to new links */}
-              <Link
-                href={{
-                  pathname: '/[restaurant]',
-                  query: {
-                    id: rest.id,
-                    name: rest.name || 'New Restaurant',
-                    location: rest.location || '',
-                    phone: rest.phone || '',
-                    emotion: rest.emotion,
-                    recommend: rest.recommend,
-                  },
-                }}
-                as={`/${rest.id || 'new-restaurant'}`}
-              >
-                {rest.name || 'New Restaurant'}
-              </Link>
-            </li>
-          ))}
+          {restList?.map((rest) => {
+            // TODO: See link below for loading initial props for dynamic routing
+            // https://stackoverflow.com/questions/55014235/next-js-express-dynamic-routing-causes-page-reload
+            return (
+              <li key={rest.id} className={style['restaurant-card']}>
+                {/* Adding dynamic ID to new links */}
+                <Link
+                  href={{
+                    pathname: '/[restaurant]',
+                    query: {
+                      id: rest.id,
+                    },
+                  }}
+                  as={`/${rest.name.replace(/\s+/g, '-').toLowerCase() || 'new-restaurant'}`}
+                >
+                  {rest.name || 'New Restaurant'}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
         <button type="button" className="add-button" onClick={() => this.openModal}>
           <span className="add-button_icon">

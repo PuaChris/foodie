@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'url';
 import { IRestaurant } from '../constant';
 
 enum MethodType {
@@ -27,7 +28,7 @@ export default class Controller {
     };
   };
 
-  public getRestaurants = async (): Promise<IRestaurant[]> => {
+  public getRestaurantList = async (): Promise<IRestaurant[]> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = (new URL(`${domain}/restaurants`)).toString();
 
@@ -44,12 +45,40 @@ export default class Controller {
         return res.json();
       })
       .then((data) => {
-        if (data) {
-          restList = data;
-        }
+        if (data) restList = data;
       }).catch((e) => console.error(e));
 
     return restList;
+  };
+
+  public getRestaurant = async (restId: string): Promise<IRestaurant> => {
+    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const url = new URL(`${domain}/restaurant/${restId}`);
+
+    const fetchOptions = this.initFetchOptions(MethodType.GET);
+
+    let rest: IRestaurant = {
+      id: '',
+      name: '',
+    };
+
+    console.log(url.toString());
+    await fetch(url.toString(), fetchOptions)
+      .then((res) => {
+        console.log(res);
+        if (res.status !== 200) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data) rest = data;
+        console.log('Controller getRestaurant(): ', rest.id);
+      }).catch((e) => console.error(e));
+
+    if (rest.id) return rest;
+    throw new Error(`Could not retrieve restaurant profile for --> ${restId}`);
   };
 
   public addRestaurant = async (restData: IRestaurant): Promise<string> => {

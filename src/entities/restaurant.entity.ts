@@ -43,7 +43,18 @@ class Restaurant {
   })
   public recommend: RecommendType;
 
-  static getReqInfo({
+  getInfo(): IRestaurant {
+    return {
+      id: this.id,
+      name: this.name,
+      location: this.location,
+      phone: this.phone,
+      emotion: this.emotion,
+      recommend: this.recommend,
+    };
+  }
+
+  static fillInfo({
     name,
     location,
     phone,

@@ -8,6 +8,7 @@ import update from 'immutability-helper';
 import Item from '../item/Item';
 import RestaurantDescription from './RestaurantDescription';
 import ItemModal from '../item/ItemModal';
+import Controller from '../../routes/controller';
 
 import {
   IRestaurant,
@@ -27,7 +28,7 @@ const style: any = styles;
 //   itemList?: IRestaurantItem[],
 // }
 interface IProps {
-  restData: IRestaurant
+  id: string,
 }
 
 // Declaring State interface
@@ -39,11 +40,18 @@ interface IState {
 }
 
 class RestaurantProfile extends React.Component<IProps, IState> {
+  private control: Controller;
+
   constructor(props: IProps) {
     super(props);
 
+    this.control = new Controller();
+
     this.state = {
-      restData: props.restData,
+      restData: {
+        id: props.id,
+        name: '',
+      },
       isModalOpen: false,
       selectedItem: undefined,
       itemList: [],
@@ -57,6 +65,20 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     this.handleSelect = this.handleSelect.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
+
+  componentDidMount = async () => {
+    await this.getProfile();
+  };
+
+  getProfile = async () => {
+    const { restData } = this.state;
+    const { id } = restData;
+
+    if (id) {
+      const newRestData: IRestaurant = await this.control.getRestaurant(id);
+      this.setState({ restData: newRestData });
+    }
+  };
 
   handleChangeText = (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => {
     e.preventDefault();

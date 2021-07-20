@@ -1,10 +1,12 @@
 import express from 'express';
 import { IRestaurant } from '../constant';
 import {
-  getRestaurants,
+  getRestaurantList,
   addRestaurant,
   getItems,
   addItem,
+  editRestaurant,
+  getRestaurant,
 } from '../database';
 import Restaurant from '../entities/restaurant.entity';
 
@@ -14,7 +16,7 @@ const router = express.Router();
 router.route('/restaurants')
   // Get all restaurants
   .get(async (req, res) => {
-    const result = await getRestaurants().catch((e) => {
+    const result = await getRestaurantList().catch((e) => {
       console.error(e);
       return res.status(400);
     });
@@ -24,7 +26,6 @@ router.route('/restaurants')
 
   // Add new restaurant
   .post(async (req, res) => {
-    console.log(req.body);
     if (!req.body) return res.status(400).send('Request body is undefined');
 
     const {
@@ -36,7 +37,7 @@ router.route('/restaurants')
     } = req.body;
 
     // Sending new uuid for received restaurant back to client side as confirmation
-    const newRest = Restaurant.getReqInfo({
+    const newRest = Restaurant.fillInfo({
       name,
       location,
       phone,
@@ -48,6 +49,49 @@ router.route('/restaurants')
       return res.status(400);
     });
     return res.status(200).json({ id });
+  });
+
+router.route('/restaurant/:id')
+  .get(async (req, res) => {
+    const { id } = req.params;
+
+    if (id) {
+      const result = await getRestaurant(id)
+        .catch((e) => {
+          console.error(e);
+          return res.status(400);
+        });
+
+      console.log(`Router: ${result}`);
+      return res.status(200).json(result);
+    }
+    return res.status(400);
+  })
+
+  // Edit restaurant
+  .put(async (req, res) => {
+    if (!req.body) return res.status(400).send('Request body is undefined');
+    const {
+      name,
+      location,
+      phone,
+      emotion,
+      recommend,
+    } = req.body;
+
+    const editRest = Restaurant.fillInfo({
+      name,
+      location,
+      phone,
+      emotion,
+      recommend,
+    } as IRestaurant);
+
+    await editRestaurant(editRest).catch((e) => {
+      console.error(e);
+      return res.status(400);
+    });
+    return res.status(200);
   });
 
 router.route('/items')
