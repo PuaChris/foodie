@@ -62,7 +62,6 @@ router.route('/restaurant/:id')
           return res.status(400);
         });
 
-      console.log(`Router: ${result}`);
       return res.status(200).json(result);
     }
     return res.status(400);
@@ -71,7 +70,9 @@ router.route('/restaurant/:id')
   // Edit restaurant
   .put(async (req, res) => {
     if (!req.body) return res.status(400).send('Request body is undefined');
+
     const {
+      id,
       name,
       location,
       phone,
@@ -80,6 +81,7 @@ router.route('/restaurant/:id')
     } = req.body;
 
     const editRest = Restaurant.fillInfo({
+      id,
       name,
       location,
       phone,
@@ -87,11 +89,13 @@ router.route('/restaurant/:id')
       recommend,
     } as IRestaurant);
 
-    await editRestaurant(editRest).catch((e) => {
-      console.error(e);
-      return res.status(400);
-    });
-    return res.status(200);
+    await editRestaurant(editRest)
+      .catch((e) => {
+        console.error(e);
+        return res.status(400);
+      });
+
+    return res.status(204).send('Successfully updated restaurant.');
   });
 
 router.route('/items')

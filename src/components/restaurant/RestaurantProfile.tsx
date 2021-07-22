@@ -23,10 +23,6 @@ import styles from '../styles/restaurant/RestaurantProfile.module.scss';
 
 const style: any = styles;
 
-// Declaring Prop interface
-// interface IProps extends Restaurant {
-//   itemList?: IRestaurantItem[],
-// }
 interface IProps {
   id: string,
 }
@@ -63,6 +59,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     this.deleteItem = this.deleteItem.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.editRestaurant = this.editRestaurant.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -74,6 +71,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     const { restData } = this.state;
     const { id } = restData;
 
+    // Only retrieve
     if (id) {
       const newRestData: IRestaurant = await this.control.getRestaurant(id);
       this.setState({ restData: newRestData });
@@ -86,24 +84,26 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     // Update restaurant name/location/phone state
     const { value } = e.target;
     const { restData } = this.state;
+
     switch (type) {
       case DescriptionType.Name:
         restData.name = value;
-        this.setState({ restData });
+        this.setState({ restData }, () => console.log('Updated name.'));
         break;
       case DescriptionType.Location:
         restData.location = value;
-        this.setState({ restData });
+        this.setState({ restData }, () => console.log('Updated location.'));
         break;
       case DescriptionType.Phone:
         restData.phone = value;
-        this.setState({ restData });
+        this.setState({ restData }, () => console.log('Updated phone number.'));
         break;
       default:
         break;
     }
   };
 
+  // TODO: Have an on submit button
   handleSelect = (e: SyntheticEvent, type: DescriptionType) => {
     e.preventDefault();
 
@@ -125,6 +125,19 @@ class RestaurantProfile extends React.Component<IProps, IState> {
       }
     }
   };
+
+  editRestaurant = async (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    e.preventDefault();
+    const { restData } = this.state;
+
+    // Only update the profile if changes were made
+    if (await this.control.editRestaurant(restData)) {
+      console.log('Successfully edited restaurant');
+    }
+    else console.log('Restaurant could not be edited');
+  };
+
+  // * Functions related to restaurant items
 
   addItem = (newItem: IRestaurantItem) => {
     // Using `unshift` to push a newly added item to the front of the array and display items in that order
@@ -218,7 +231,15 @@ class RestaurantProfile extends React.Component<IProps, IState> {
             handleChangeText={this.handleChangeText}
             handleSelect={this.handleSelect}
           />
-
+          {/* Confirmation buttons */}
+          <div className={style['button-container']}>
+            <input
+              className="save-button"
+              type="button"
+              value="Save"
+              onClick={(e) => this.editRestaurant(e)}
+            />
+          </div>
           {/* Restaurant Items */}
           <ul className={style['item-list']}>
             {itemList.map((item) => {

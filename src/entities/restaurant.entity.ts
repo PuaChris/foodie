@@ -55,6 +55,7 @@ class Restaurant {
   }
 
   static fillInfo({
+    id,
     name,
     location,
     phone,
@@ -62,7 +63,7 @@ class Restaurant {
     recommend,
   }: IRestaurant) {
     const rest = new Restaurant();
-
+    if (id && id !== rest.id) rest.id = id;
     if (name) rest.name = name;
     if (location) rest.location = location;
     if (phone) rest.phone = phone;

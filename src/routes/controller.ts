@@ -1,4 +1,3 @@
-import { URLSearchParams } from 'url';
 import { IRestaurant } from '../constant';
 
 enum MethodType {
@@ -62,19 +61,15 @@ export default class Controller {
       name: '',
     };
 
-    console.log(url.toString());
     await fetch(url.toString(), fetchOptions)
       .then((res) => {
-        console.log(res);
         if (res.status !== 200) {
           throw new Error(res.statusText);
         }
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         if (data) rest = data;
-        console.log('Controller getRestaurant(): ', rest.id);
       }).catch((e) => console.error(e));
 
     if (rest.id) return rest;
@@ -112,7 +107,8 @@ export default class Controller {
 
   public editRestaurant = async (restData: IRestaurant): Promise<Boolean> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
-    const url = (new URL(`${domain}/restaurants`)).toString();
+    const url = (new URL(`${domain}/restaurant/${restData.id}`)).toString();
+    let isEdited: Boolean = false;
 
     // Passing new restaurant information
     const requestBody = JSON.stringify(restData);
@@ -122,17 +118,11 @@ export default class Controller {
 
     await fetch(url, fetchOptions)
       .then((res) => {
-        if (res.status !== 200) {
-          throw new Error(res.statusText);
-        }
-        return res.json();
-      }).then((data) => {
-        if (data) {
-          console.log(`Request data JSON: ${data}`);
-          return true;
-        }
-        throw new Error('No edited restaurant data returned from the server');
-      }).catch((e) => console.error(e));
-    return false;
+        console.log(res.status);
+        if (res.status === 200 || res.status === 204) isEdited = true;
+        else console.error(res.statusText);
+      })
+      .catch((e) => console.error(e));
+    return isEdited;
   };
 }

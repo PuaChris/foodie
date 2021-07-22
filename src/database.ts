@@ -38,7 +38,6 @@ export const getRestaurant = async (restId: string) => {
         // Empty arrays are not null or undefined
         if (result && result.length > 0) {
           [rest] = result;
-          console.log(`>> ${rest}`);
         }
       },
     ).catch((e) => console.error(e));
@@ -66,33 +65,25 @@ export const addRestaurant = async (newRest: Restaurant): Promise<string> => {
 
 // TODO: Only update when data is different from the previous version
 export const editRestaurant = async (editRest: Restaurant) => {
-  console.log(`>> Editing restaurant: ${editRest.name}`);
-  if (editRest) {
-    const {
-      id,
-      name,
-      location,
-      phone,
-      emotion,
-      recommend,
-    } = editRest;
+  console.log(`>> Editing restaurant: ${editRest.id}...`);
 
+  if (editRest && editRest.id) {
     // UPDATE restaurant SET name = ... WHERE id = ...
     await getRepository(Restaurant)
-      .update(id, {
-        name,
-        location,
-        phone,
-        emotion,
-        recommend,
+      .update(editRest.id, {
+        name: editRest.name,
+        location: editRest.location,
+        phone: editRest.phone,
+        emotion: editRest.emotion,
+        recommend: editRest.recommend,
       })
       .then(() => {
-        console.log(`>> Updated restaurant: ${id} --> ${name}`);
+        console.log(`>> Updated restaurant: ${editRest.id} --> ${editRest.name}`);
       })
       .catch((e) => console.error(e));
   }
   else {
-    console.error('Cannot update invalid restaurant data');
+    console.error('>> Cannot update invalid restaurant data');
   }
 };
 

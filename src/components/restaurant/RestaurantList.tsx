@@ -2,7 +2,6 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/dist/client/link';
 
-import _ from 'lodash';
 import Controller from '../../routes/controller';
 
 import RestaurantModal from './RestaurantModal';
@@ -73,6 +72,7 @@ class RestaurantList extends React.Component<IProps, IState> {
   };
 
   openModal = () => {
+    console.log('Opening restaurant modal');
     this.setState({ isModalOpen: true });
   };
 
@@ -96,33 +96,6 @@ class RestaurantList extends React.Component<IProps, IState> {
     }
   };
 
-  editRestaurant = async (editRest: IRestaurant) => {
-    const { restList } = this.state;
-    const oldRest = restList.find((rest) => rest.id === editRest.id);
-
-    if (editRest
-      && oldRest
-      && _.isEqual(editRest, oldRest)
-      && await this.control.editRestaurant(editRest)
-    ) {
-      const matchingIndex = restList.indexOf(oldRest);
-
-      // Replacing with new data at the same index as the restaurant to be edited
-      if (matchingIndex !== 0) {
-        restList.splice(matchingIndex, 1);
-        restList.unshift(editRest);
-      }
-
-      this.setState({ restList }, () => console.log('Successfully edited restaurant'));
-
-      restList.unshift(editRest);
-      this.setState({ restList }, () => console.log('New restaurant added'));
-    }
-    else {
-      console.error('Could not edit restaurant');
-    }
-  };
-
   render() {
     const {
       isModalOpen,
@@ -138,19 +111,12 @@ class RestaurantList extends React.Component<IProps, IState> {
         />
         <ul className={style['restaurant-list']}>
           {restList?.map((rest) => {
-            // TODO: See link below for loading initial props for dynamic routing
-            // https://stackoverflow.com/questions/55014235/next-js-express-dynamic-routing-causes-page-reload
             return (
               <li key={rest.id} className={style['restaurant-card']}>
                 {/* Adding dynamic ID to new links */}
                 <Link
-                  href={{
-                    pathname: '/[restaurant]',
-                    query: {
-                      id: rest.id,
-                    },
-                  }}
-                  as={`/${rest.name.replace(/\s+/g, '-').toLowerCase() || 'new-restaurant'}`}
+                  href="/[restaurant]"
+                  as={`/${rest.id}`}
                 >
                   {rest.name || 'New Restaurant'}
                 </Link>

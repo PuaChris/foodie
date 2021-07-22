@@ -82,7 +82,8 @@ const RestaurantDescription = ({
         <select
           className={style['emotion-dropdown']}
           onChange={(e) => handleSelect(e, DescriptionType.Emotion)}
-          defaultValue="placeholder"
+          defaultValue={emotion || 'placeholder'}
+          value={emotion}
         >
           <option value="placeholder" disabled hidden>How was it?</option>
           <option value="love">I loved it!</option>
@@ -102,16 +103,15 @@ const RestaurantDescription = ({
         <select
           className={style['recommend-dropdown']}
           onChange={(e) => handleSelect(e, DescriptionType.Recommend)}
-          defaultValue="placeholder"
+          defaultValue={recommend || 'placeholder'}
+          value={recommend}
         >
           <option value="placeholder" disabled hidden>Would I go back?</option>
           <option value="yes">I would go back</option>
           <option value="no">I would not go back</option>
         </select>
-
       </div>
     </form>
-
   );
 };
 

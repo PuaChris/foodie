@@ -5,17 +5,16 @@ import RestaurantProfile from '../components/restaurant/RestaurantProfile';
 
 const Post: any = () => {
   const router = useRouter();
-
-  let id: string = '';
-
-  if (router.query && router.query.id) {
-    id = router.query.id as string;
-  }
-
-  console.log(`ID for restaurant: ${id || '<undefined ID>'}`);
+  const id: string = router.query['restaurant'] as string;
 
   // TODO: Return error page for non-existing ID
   return <RestaurantProfile id={id} />;
 };
 
 export default Post;
+
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
