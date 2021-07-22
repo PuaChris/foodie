@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import 'reflect-metadata';
 import { connectDB } from './database';
-import router from './routes/router';
+import router from './routes/restaurantRouter';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });

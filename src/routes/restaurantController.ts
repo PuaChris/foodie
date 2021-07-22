@@ -78,7 +78,7 @@ export default class Controller {
 
   public addRestaurant = async (restData: IRestaurant): Promise<string> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
-    const url = (new URL(`${domain}/restaurants`)).toString();
+    const url = (new URL(`${domain}/restaurant`)).toString();
 
     // Passing new restaurant information
     const requestBody = JSON.stringify(restData);
@@ -124,5 +124,25 @@ export default class Controller {
       })
       .catch((e) => console.error(e));
     return isEdited;
+  };
+
+  public deleteRestaurant = async (id: string): Promise<Boolean> => {
+    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const url = (new URL(`${domain}/restaurant/${id}`)).toString();
+    let isDeleted: Boolean = false;
+
+    // Passing new restaurant information
+    console.log(`Deleting restaurant: ${id}`);
+
+    const fetchOptions = this.initFetchOptions(MethodType.DELETE);
+
+    await fetch(url, fetchOptions)
+      .then((res) => {
+        console.log(res.status);
+        if (res.status === 200 || res.status === 204) isDeleted = true;
+        else console.error(res.statusText);
+      })
+      .catch((e) => console.error(e));
+    return isDeleted;
   };
 }

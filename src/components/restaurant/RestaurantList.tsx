@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/dist/client/link';
 
-import Controller from '../../routes/controller';
+import Controller from '../../routes/restaurantController';
 
 import RestaurantModal from './RestaurantModal';
 
@@ -34,6 +34,7 @@ class RestaurantList extends React.Component<IProps, IState> {
     };
 
     this.addRestaurant = this.addRestaurant.bind(this);
+    this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 

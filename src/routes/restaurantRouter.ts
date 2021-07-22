@@ -2,11 +2,12 @@ import express from 'express';
 import { IRestaurant } from '../constant';
 import {
   getRestaurantList,
+  getRestaurant,
   addRestaurant,
+  editRestaurant,
+  deleteRestaurant,
   getItems,
   addItem,
-  editRestaurant,
-  getRestaurant,
 } from '../database';
 import Restaurant from '../entities/restaurant.entity';
 
@@ -22,8 +23,9 @@ router.route('/restaurants')
     });
 
     return res.status(200).json(result);
-  })
+  });
 
+router.route('/restaurant/')
   // Add new restaurant
   .post(async (req, res) => {
     if (!req.body) return res.status(400).send('Request body is undefined');
@@ -92,10 +94,25 @@ router.route('/restaurant/:id')
     await editRestaurant(editRest)
       .catch((e) => {
         console.error(e);
-        return res.status(400);
+        return res.status(400).send(`Error while trying to edit restaurant ${id}`);
       });
 
     return res.status(204).send('Successfully updated restaurant.');
+  })
+
+  // Delete restaurant
+  .delete(async (req, res) => {
+    if (!req.params) return res.status(400).send('Request params are undefined');
+
+    const { id } = req.params;
+
+    await deleteRestaurant(id)
+      .catch((e) => {
+        console.error(e);
+        return res.status(400).send(`Error while trying to delete restaurant ${id}`);
+      });
+
+    return res.status(204).send('Successfully deleted restaurant');
   });
 
 router.route('/items')

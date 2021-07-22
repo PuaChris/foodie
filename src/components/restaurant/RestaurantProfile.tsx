@@ -5,10 +5,14 @@ import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import update from 'immutability-helper';
 
-import Item from '../item/Item';
 import RestaurantDescription from './RestaurantDescription';
+
+import Item from '../item/Item';
 import ItemModal from '../item/ItemModal';
-import Controller from '../../routes/controller';
+
+import Controller from '../../routes/restaurantController';
+
+import DeleteModal from '../util/DeleteModal';
 
 import {
   IRestaurant,
@@ -30,7 +34,8 @@ interface IProps {
 // Declaring State interface
 interface IState {
   restData: IRestaurant,
-  isModalOpen: boolean,
+  addModal: boolean,
+  deleteModal: boolean,
   selectedItem?: IRestaurantItem,
   itemList: IRestaurantItem[],
 }
@@ -48,19 +53,24 @@ class RestaurantProfile extends React.Component<IProps, IState> {
         id: props.id,
         name: '',
       },
-      isModalOpen: false,
+      addModal: false,
+      deleteModal: false,
       selectedItem: undefined,
       itemList: [],
     };
+
+    this.closeModal = this.closeModal.bind(this);
+
+    this.handleChangeText = this.handleChangeText.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+
+    this.editRestaurant = this.editRestaurant.bind(this);
+    this.deleteRestaurant = this.deleteRestaurant.bind(this);
 
     this.addItem = this.addItem.bind(this);
     this.editItem = this.editItem.bind(this);
     this.selectItem = this.selectItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
-    this.handleChangeText = this.handleChangeText.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.editRestaurant = this.editRestaurant.bind(this);
-    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount = async () => {
@@ -137,7 +147,16 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     else console.log('Restaurant could not be edited');
   };
 
-  // * Functions related to restaurant items
+  deleteRestaurant = async () => {
+    const { restData } = this.state;
+    const { id } = restData;
+    if (id && await this.control.deleteRestaurant(id)) {
+      console.log('Successfully deleted restaurant');
+    }
+    else console.log('Restaurant could not be deleted');
+  };
+
+  // * FUNCTIONS RELATED TO ITEMS
 
   addItem = (newItem: IRestaurantItem) => {
     // Using `unshift` to push a newly added item to the front of the array and display items in that order
@@ -158,7 +177,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
       const updatedItems = update(itemList, { $splice: [[index, 1, newItem]] });
 
       this.setState({
-        isModalOpen: true,
+        addModal: true,
         itemList: updatedItems,
       });
     }
@@ -170,7 +189,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     const selectedItem: IRestaurantItem | undefined = itemList.find((item) => item.id === itemId);
 
     this.setState({
-      isModalOpen: true,
+      addModal: true,
       selectedItem,
     });
   };
@@ -183,21 +202,29 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     );
   };
 
-  openModal = () => {
+  openAddModal = () => {
     this.setState({
-      isModalOpen: true,
+      addModal: true,
       selectedItem: undefined,
     });
   };
 
+  openDeleteModal = () => {
+    this.setState({ deleteModal: true });
+  };
+
   closeModal = () => {
-    this.setState({ isModalOpen: false });
+    this.setState({
+      addModal: false,
+      deleteModal: false,
+    });
   };
 
   render(): JSX.Element {
     const {
       restData,
-      isModalOpen,
+      addModal,
+      deleteModal,
       selectedItem,
       itemList,
     } = this.state;
@@ -205,11 +232,17 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     return (
       <div className={style['container']}>
         <ItemModal
-          open={isModalOpen}
+          open={addModal}
           item={selectedItem}
           addItem={this.addItem}
           editItem={this.editItem}
           deleteItem={this.deleteItem}
+          closeModal={this.closeModal}
+        />
+        <DeleteModal
+          open={deleteModal}
+          name={restData.name}
+          deleteRestaurant={this.deleteRestaurant}
           closeModal={this.closeModal}
         />
         {/* Profile */}
@@ -221,6 +254,15 @@ class RestaurantProfile extends React.Component<IProps, IState> {
             value={restData.name || ''}
             onChange={(e) => this.handleChangeText(e, DescriptionType.Name)}
           />
+          <button
+            type="button"
+            className="delete-button"
+            onClick={this.openDeleteModal}
+          >
+            <span className="delete-button_icon">
+              <FontAwesomeIcon icon={['fas', 'trash']} />
+            </span>
+          </button>
 
           {/* Descriptions */}
           <RestaurantDescription
@@ -253,7 +295,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
           <button
             type="button"
             className="add-button"
-            onClick={this.openModal}
+            onClick={this.openAddModal}
           >
             <span className="add-button_icon">
               <FontAwesomeIcon icon={['fas', 'plus']} />

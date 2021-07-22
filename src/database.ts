@@ -87,6 +87,22 @@ export const editRestaurant = async (editRest: Restaurant) => {
   }
 };
 
+export const deleteRestaurant = async (id: string) => {
+  console.log(`>> Deleting restaurant: ${id}...`);
+
+  if (id) {
+    await getRepository(Restaurant)
+      .delete(id)
+      .then(() => {
+        console.log(`>> Deleted restaurant ${id}`);
+      })
+      .catch((e) => console.error(e));
+  }
+  else {
+    console.error('>> Invalid restaurant ID; could not delete');
+  }
+};
+
 export const getItems = async () => {
 
 };
