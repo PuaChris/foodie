@@ -19,7 +19,10 @@ export const getRestaurantList = async () => {
   let restList: Restaurant[] = [];
   await getRepository(Restaurant).find().then(
     (result) => {
-      restList = result;
+      if (result) {
+        restList = result;
+        console.log('>> Loading complete');
+      }
     },
   ).catch((e) => console.error(e));
 
@@ -38,6 +41,7 @@ export const getRestaurant = async (restId: string) => {
         // Empty arrays are not null or undefined
         if (result && result.length > 0) {
           [rest] = result;
+          console.log('>> Loading complete');
         }
       },
     ).catch((e) => console.error(e));

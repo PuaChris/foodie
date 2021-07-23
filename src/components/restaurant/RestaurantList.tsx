@@ -34,41 +34,37 @@ class RestaurantList extends React.Component<IProps, IState> {
     };
 
     this.addRestaurant = this.addRestaurant.bind(this);
-    this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  // saveState = (state: any, callback?: () => void) => {
-  //   // Save state in cache
-  //   if (typeof window !== undefined) {
-  //     window.localStorage.setItem('state', JSON.stringify(state));
-  //   }
-  //   this.setState(state);
-  //   if (callback) {
-  //     callback();
-  //   }
-  // };
+  componentDidMount = async () => {
+    // Check cache first before calling API for restaurants
+    if (typeof window !== undefined) {
+      const cache = window.localStorage.getItem(process.env.NEXT_PUBLIC_RESTLIST_CACHE as string) || undefined;
+      if (cache !== undefined) {
+        const restList = JSON.parse(cache);
+        this.setState({ restList }, () => console.log('Retrieved restaurant list from cache'));
+      }
 
-  componentDidMount = () => {
-    this.getRestaurants();
+      else {
+        await this.getRestaurants();
+      }
+    }
+    else {
+      await this.getRestaurants();
+    }
+  };
 
-    // // Check cache first before calling API for restaurants
-    // if (typeof window !== undefined) {
-    //   const cache = window.localStorage.getItem('state') || undefined;
-    //   if (cache !== undefined) {
-    //     const state = JSON.parse(cache);
-    //     this.setState(state);
-    //   }
-
-    //   else {
-    //     this.getRestaurants();
-    //   }
-    // }
+  cache = (restList: IRestaurant[]) => {
+    if (typeof window !== undefined) {
+      window.localStorage.setItem(process.env.NEXT_PUBLIC_RESTLIST_CACHE as string, JSON.stringify(restList));
+      console.log('Caching restaurant list');
+    }
   };
 
   getRestaurants = async () => {
     const restList: IRestaurant[] = await this.control.getRestaurantList();
-
+    this.cache(restList);
     this.setState({ restList });
   };
 
@@ -91,6 +87,7 @@ class RestaurantList extends React.Component<IProps, IState> {
       const { restList } = this.state;
       restList.unshift(newRest);
       this.setState({ restList }, () => console.log('New restaurant added.'));
+      this.cache(restList);
     }
     else {
       console.error('Could not save new restaurant');
@@ -125,7 +122,7 @@ class RestaurantList extends React.Component<IProps, IState> {
             );
           })}
         </ul>
-        <button type="button" className="add-button" onClick={() => this.openModal}>
+        <button type="button" className="add-button" onClick={this.openModal}>
           <span className="add-button_icon">
             <FontAwesomeIcon icon={['fas', 'plus']} />
           </span>

@@ -21,9 +21,8 @@ const RestaurantModal = (props: IProps) => {
     closeModal,
   } = props;
 
-  const [isOpen, setOpen] = useState<boolean>(open);
-
   const router = useRouter();
+  const [isOpen, setOpen] = useState<boolean>(open);
 
   const handleDelete = async (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     e.preventDefault();
@@ -32,6 +31,7 @@ const RestaurantModal = (props: IProps) => {
 
     console.log('Form submitted');
     closeModal();
+
     router.push('/');
   };
 

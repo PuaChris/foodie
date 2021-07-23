@@ -74,7 +74,32 @@ class RestaurantProfile extends React.Component<IProps, IState> {
   }
 
   componentDidMount = async () => {
-    await this.getProfile();
+    // Check cache first before calling API for restaurants
+    if (typeof window !== undefined) {
+      const { restData } = this.state;
+      const { id } = restData;
+
+      const cache = window.localStorage.getItem(id) || undefined;
+      if (cache !== undefined) {
+        const cachedRestData = JSON.parse(cache);
+        this.setState({ restData: cachedRestData }, () => console.log(`Retrieved ${cachedRestData.name} data from cache`));
+      }
+
+      else {
+        await this.getProfile();
+      }
+    }
+    else {
+      await this.getProfile();
+    }
+  };
+
+  cache = (restData: IRestaurant) => {
+    if (typeof window !== undefined) {
+      const { id } = restData;
+      window.localStorage.setItem(id, JSON.stringify(restData));
+      console.log(`Caching ${restData.name} data`);
+    }
   };
 
   getProfile = async () => {
@@ -85,6 +110,8 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     if (id) {
       const newRestData: IRestaurant = await this.control.getRestaurant(id);
       this.setState({ restData: newRestData });
+
+      this.cache(newRestData);
     }
   };
 
@@ -143,6 +170,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     // Only update the profile if changes were made
     if (await this.control.editRestaurant(restData)) {
       console.log('Successfully edited restaurant');
+      this.cache(restData);
     }
     else console.log('Restaurant could not be edited');
   };
@@ -152,12 +180,20 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     const { id } = restData;
     if (id && await this.control.deleteRestaurant(id)) {
       console.log('Successfully deleted restaurant');
+
+      // Deleting from cache
+      if (typeof window !== undefined) {
+        window.localStorage.removeItem(id);
+
+        // Deleting restaurant list from cache
+        const restListCache: string = process.env.NEXT_PUBLIC_RESTLIST_CACHE as string;
+        window.localStorage.removeItem(restListCache);
+      }
     }
     else console.log('Restaurant could not be deleted');
   };
 
   // * FUNCTIONS RELATED TO ITEMS
-
   addItem = (newItem: IRestaurantItem) => {
     // Using `unshift` to push a newly added item to the front of the array and display items in that order
     const { itemList } = this.state;
