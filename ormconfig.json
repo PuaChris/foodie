@@ -6,7 +6,7 @@
   "username": "my_user",
   "password": "psql",
   "database": "test",
-  "synchronize": true,
+  "synchronize": false,
   "logging": true,
   "entities": [
     "src/entities/**/*.ts",

@@ -6,15 +6,13 @@ import {
   addRestaurant,
   editRestaurant,
   deleteRestaurant,
-  getItems,
-  addItem,
 } from '../database';
 import Restaurant from '../entities/restaurant.entity';
 
-const router = express.Router();
+const RestaurantRouter = express.Router();
 
 // * DEFINING API ROUTES + HANDLERS:
-router.route('/restaurants')
+RestaurantRouter.route('/restaurants')
   // Get all restaurants
   .get(async (req, res) => {
     const result = await getRestaurantList().catch((e) => {
@@ -25,7 +23,7 @@ router.route('/restaurants')
     return res.status(200).json(result);
   });
 
-router.route('/restaurant/')
+RestaurantRouter.route('/restaurant/')
   // Add new restaurant
   .post(async (req, res) => {
     if (!req.body) return res.status(400).send('Request body is undefined');
@@ -53,12 +51,12 @@ router.route('/restaurant/')
     return res.status(200).json({ id });
   });
 
-router.route('/restaurant/:id')
+RestaurantRouter.route('/restaurant/:restId')
   .get(async (req, res) => {
-    const { id } = req.params;
+    const { restId } = req.params;
 
-    if (id) {
-      const result = await getRestaurant(id)
+    if (restId) {
+      const result = await getRestaurant(restId)
         .catch((e) => {
           console.error(e);
           return res.status(400);
@@ -104,27 +102,15 @@ router.route('/restaurant/:id')
   .delete(async (req, res) => {
     if (!req.params) return res.status(400).send('Request params are undefined');
 
-    const { id } = req.params;
+    const { restId } = req.params;
 
-    await deleteRestaurant(id)
+    await deleteRestaurant(restId)
       .catch((e) => {
         console.error(e);
-        return res.status(400).send(`Error while trying to delete restaurant ${id}`);
+        return res.status(400).send(`Error while trying to delete restaurant ${restId}`);
       });
 
     return res.status(204).send('Successfully deleted restaurant');
   });
 
-router.route('/items')
-  // Get all items for restaurant
-  .get(async (req, res) => {
-    const result = await getItems();
-    return res.status(200).json(result);
-  })
-
-  // Add new item for restaurant
-  .post((req, res) => {
-    addItem();
-  });
-
-export default router;
+export default RestaurantRouter;

@@ -1,9 +1,12 @@
+/* eslint-disable import/no-cycle */
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  OneToMany,
 } from 'typeorm';
-import { EmotionType, IRestaurant, RecommendType } from '../constant';
+import { IRestaurant, EmotionType, RecommendType } from '../constant';
+import Item from './item.entity';
 
 @Entity()
 class Restaurant {
@@ -42,6 +45,9 @@ class Restaurant {
     default: RecommendType.Question,
   })
   public recommend: RecommendType;
+
+  @OneToMany((type) => Item, (item) => item.restaurant, { cascade: true })
+  items: Item[];
 
   getInfo(): IRestaurant {
     return {

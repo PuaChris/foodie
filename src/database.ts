@@ -2,6 +2,7 @@ import {
   createConnection,
   getRepository,
 } from 'typeorm';
+import Item from './entities/item.entity';
 import Restaurant from './entities/restaurant.entity';
 
 export const connectDB = async () => {
@@ -13,6 +14,8 @@ export const connectDB = async () => {
       console.log('\n\n>> Database connected.\n\n');
     }).catch((error) => console.log(error));
 };
+
+// * DEFINING CRUD OPERATIONS FOR RESTAURANTS * //
 
 export const getRestaurantList = async () => {
   console.log('>> Loading restaurants from the database...');
@@ -27,7 +30,7 @@ export const getRestaurantList = async () => {
   ).catch((e) => console.error(e));
 
   // Return in order of most recently added restaurants
-  if (restList) return restList.reverse();
+  if (restList.length > 0) return restList.reverse();
   throw new Error('>> Could not retrieve restaurants');
 };
 
@@ -50,12 +53,12 @@ export const getRestaurant = async (restId: string) => {
   throw new Error(`>> Could not retrieve restaurant profile ${restId}`);
 };
 
-export const addRestaurant = async (newRest: Restaurant): Promise<string> => {
+export const addRestaurant = async (rest: Restaurant): Promise<string> => {
   console.log('>> Inserting a new record into the Restaurant database...');
 
   // Save Restaurant object in connection
   let id: string = '';
-  await getRepository(Restaurant).save(newRest)
+  await getRepository(Restaurant).save(rest)
     .then((result) => {
       id = result.id;
       console.log(`>> Saved a new restaurant: ${id} --> ${result.name}`);
@@ -68,21 +71,21 @@ export const addRestaurant = async (newRest: Restaurant): Promise<string> => {
 };
 
 // TODO: Only update when data is different from the previous version
-export const editRestaurant = async (editRest: Restaurant) => {
-  console.log(`>> Editing restaurant: ${editRest.id}...`);
+export const editRestaurant = async (rest: Restaurant) => {
+  console.log(`>> Editing restaurant: ${rest.id}...`);
 
-  if (editRest && editRest.id) {
+  if (rest && rest.id) {
     // UPDATE restaurant SET name = ... WHERE id = ...
     await getRepository(Restaurant)
-      .update(editRest.id, {
-        name: editRest.name,
-        location: editRest.location,
-        phone: editRest.phone,
-        emotion: editRest.emotion,
-        recommend: editRest.recommend,
+      .update(rest.id, {
+        name: rest.name,
+        location: rest.location,
+        phone: rest.phone,
+        emotion: rest.emotion,
+        recommend: rest.recommend,
       })
       .then(() => {
-        console.log(`>> Updated restaurant: ${editRest.id} --> ${editRest.name}`);
+        console.log(`>> Updated restaurant: ${rest.id} --> ${rest.name}`);
       })
       .catch((e) => console.error(e));
   }
@@ -107,13 +110,37 @@ export const deleteRestaurant = async (id: string) => {
   }
 };
 
-export const getItems = async () => {
+// * DEFINING CRUD OPERATIONS FOR ITEMS * //
 
+export const getItemList = async (restId: string) => {
+  console.log(`>> Retrieving items for: ${restId}`);
+
+  let itemList: Item[] = [];
+  if (restId) {
+    await getRepository(Item)
+      .createQueryBuilder('item')
+      .innerJoinAndSelect('item.restId', 'restaurant')
+      .getMany()
+      .then((result) => {
+        itemList = result;
+        console.log('>> Loading complete');
+      })
+      .catch((e) => console.error(e));
+  }
+
+  // Return in order of most recently added items
+  if (itemList.length > 0) return itemList.reverse();
+  throw new Error('>> Could not retrieve items');
 };
 
-export const addItem = async () => {
+// export const addItem = async (newItem: Item) => {
+// };
 
-};
+// export const editItem = async (item: Item) => {
+// };
+
+// export const deleteItem = async (itemId: string) => {
+// };
 
 export const closeDB = () => {
 

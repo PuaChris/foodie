@@ -3,7 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import 'reflect-metadata';
 import { connectDB } from './database';
-import router from './routes/restaurantRouter';
+import RestaurantRouter from './routes/restaurantRouter';
+import ItemRouter from './routes/itemRouter';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -23,7 +24,8 @@ app.prepare()
       extended: true,
     }));
     server.use(express.json());
-    server.use(router);
+    server.use(RestaurantRouter);
+    server.use(ItemRouter);
 
     // Lets Next.js handle the rest of the endpoints (assuming these are front-end routes)
     // Next requires getRequestHandler()

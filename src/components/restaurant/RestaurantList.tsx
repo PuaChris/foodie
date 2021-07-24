@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/dist/client/link';
 
-import Controller from '../../routes/restaurantController';
+import RestaurantController from '../../routes/restaurantController';
 
 import RestaurantModal from './RestaurantModal';
 
@@ -20,13 +20,13 @@ interface IState {
 
 const style: any = styles;
 class RestaurantList extends React.Component<IProps, IState> {
-  private control: Controller;
+  private control: RestaurantController;
 
   constructor(props: IProps) {
     super(props);
 
     // Initialize API controller
-    this.control = new Controller();
+    this.control = new RestaurantController();
 
     this.state = {
       isModalOpen: false,
@@ -47,11 +47,11 @@ class RestaurantList extends React.Component<IProps, IState> {
       }
 
       else {
-        await this.getRestaurants();
+        await this.getRestaurantList();
       }
     }
     else {
-      await this.getRestaurants();
+      await this.getRestaurantList();
     }
   };
 
@@ -62,7 +62,7 @@ class RestaurantList extends React.Component<IProps, IState> {
     }
   };
 
-  getRestaurants = async () => {
+  getRestaurantList = async () => {
     const restList: IRestaurant[] = await this.control.getRestaurantList();
     this.cache(restList);
     this.setState({ restList });

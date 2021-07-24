@@ -44,3 +44,10 @@ export enum RecommendType {
   Yes = 'yes',
   No = 'no',
 }
+
+export enum HTTPMethodType {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}

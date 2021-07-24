@@ -1,37 +1,12 @@
-import { IRestaurant } from '../constant';
+import { IRestaurant, HTTPMethodType } from '../constant';
+import Controller from './controller';
 
-enum MethodType {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}
-export default class Controller {
-  public initFetchOptions = (method: MethodType, requestBody?: string): RequestInit => {
-    const requestHeaders = new Headers();
-    requestHeaders.set('Accept', 'application/json');
-
-    if (method === MethodType.POST || method === MethodType.PUT) {
-      requestHeaders.set('Content-Type', 'application/json');
-      return {
-        method,
-        headers: requestHeaders,
-        body: requestBody,
-      };
-    }
-
-    // GET Requests
-    return {
-      method,
-      headers: requestHeaders,
-    };
-  };
-
+export default class RestaurantController extends Controller {
   public getRestaurantList = async (): Promise<IRestaurant[]> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = (new URL(`${domain}/restaurants`)).toString();
 
-    const fetchOptions = this.initFetchOptions(MethodType.GET);
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.GET);
 
     // Get list of restaurants
     let restList: IRestaurant[] = [];
@@ -54,7 +29,7 @@ export default class Controller {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = new URL(`${domain}/restaurant/${restId}`);
 
-    const fetchOptions = this.initFetchOptions(MethodType.GET);
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.GET);
 
     let rest: IRestaurant = {
       id: '',
@@ -84,7 +59,7 @@ export default class Controller {
     const requestBody = JSON.stringify(restData);
     console.log(`Saving restaurant into database: ${requestBody}`);
 
-    const fetchOptions = this.initFetchOptions(MethodType.POST, requestBody);
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.POST, requestBody);
 
     // Return new uuid for the restaurant to client as confirmation
     let id: string = '';
@@ -107,14 +82,15 @@ export default class Controller {
 
   public editRestaurant = async (restData: IRestaurant): Promise<Boolean> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
-    const url = (new URL(`${domain}/restaurant/${restData.id}`)).toString();
+    const restId: string = restData.id;
+    const url = (new URL(`${domain}/restaurant/${restId}`)).toString();
     let isEdited: Boolean = false;
 
     // Passing new restaurant information
     const requestBody = JSON.stringify(restData);
     console.log(`Editing restaurant with new info: ${requestBody}`);
 
-    const fetchOptions = this.initFetchOptions(MethodType.PUT, requestBody);
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.PUT, requestBody);
 
     await fetch(url, fetchOptions)
       .then((res) => {
@@ -126,15 +102,15 @@ export default class Controller {
     return isEdited;
   };
 
-  public deleteRestaurant = async (id: string): Promise<Boolean> => {
+  public deleteRestaurant = async (restId: string): Promise<Boolean> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
-    const url = (new URL(`${domain}/restaurant/${id}`)).toString();
+    const url = (new URL(`${domain}/restaurant/${restId}`)).toString();
     let isDeleted: Boolean = false;
 
     // Passing new restaurant information
-    console.log(`Deleting restaurant: ${id}`);
+    console.log(`Deleting restaurant: ${restId}`);
 
-    const fetchOptions = this.initFetchOptions(MethodType.DELETE);
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.DELETE);
 
     await fetch(url, fetchOptions)
       .then((res) => {

@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Modal, Header } from 'semantic-ui-react';
 
 import {
-  EmotionType,
   IRestaurantItem,
+  EmotionType,
   RecommendType,
 } from '../../constant';
 
@@ -51,6 +51,7 @@ const RestaurantModal = (props: IProps) => {
       newItem.id = item.id;
       editItem(newItem);
     }
+    // TODO: Remove uuidv4 for new items
     else {
       newItem.id = uuidv4();
       addItem(newItem);
