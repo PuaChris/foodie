@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
-import { v4 as uuidv4 } from 'uuid';
 import { Modal, Header } from 'semantic-ui-react';
 
 import {
@@ -40,6 +39,7 @@ const RestaurantModal = (props: IProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const newItem = {
       name,
       price,
@@ -48,14 +48,11 @@ const RestaurantModal = (props: IProps) => {
     } as IRestaurantItem;
 
     if (item) {
+      // Have to also pass along the existing item ID or else it cannot be saved into the database
       newItem.id = item.id;
       editItem(newItem);
     }
-    // TODO: Remove uuidv4 for new items
-    else {
-      newItem.id = uuidv4();
-      addItem(newItem);
-    }
+    else addItem(newItem);
 
     console.log('Form submitted');
     closeModal();

@@ -30,51 +30,56 @@ export const getRestaurantList = async () => {
   ).catch((e) => console.error(e));
 
   // Return in order of most recently added restaurants
-  if (restList.length > 0) return restList.reverse();
+  if (restList.length) return restList.reverse();
   throw new Error('>> Could not retrieve restaurants');
 };
 
 export const getRestaurant = async (restId: string) => {
-  console.log(`>> Loading restaurant ${restId} from the database ...`);
+  if (restId) {
+    console.log(`>> Loading restaurant ${restId} from the database ...`);
 
-  let rest: Restaurant = new Restaurant();
-  await getRepository(Restaurant).find({ where: { id: restId } })
-    .then(
-      (result) => {
-        // Empty arrays are not null or undefined
-        if (result && result.length > 0) {
-          [rest] = result;
-          console.log('>> Loading complete');
-        }
-      },
-    ).catch((e) => console.error(e));
+    let rest: Restaurant = new Restaurant();
+    await getRepository(Restaurant).find({ where: { id: restId } })
+      .then(
+        (result) => {
+          // Empty arrays are not null or undefined
+          if (result && result.length > 0) {
+            [rest] = result;
+            console.log('>> Loading complete');
+          }
+        },
+      ).catch((e) => console.error(e));
 
-  if (rest.id) return rest.getInfo();
-  throw new Error(`>> Could not retrieve restaurant profile ${restId}`);
+    if (rest.id) return rest.getInfo();
+    throw new Error(`>> Could not retrieve restaurant profile ${restId}`);
+  }
+  else throw new Error('>> Undefined restaurant ID');
 };
 
-export const addRestaurant = async (rest: Restaurant): Promise<string> => {
-  console.log('>> Inserting a new record into the Restaurant database...');
+export const addRestaurant = async (newRest: Restaurant): Promise<string> => {
+  if (newRest) {
+    console.log('>> Inserting a new record into the Restaurant database...');
 
-  // Save Restaurant object in connection
-  let id: string = '';
-  await getRepository(Restaurant).save(rest)
-    .then((result) => {
-      id = result.id;
-      console.log(`>> Saved a new restaurant: ${id} --> ${result.name}`);
-    })
-    .catch((e) => console.error(e));
+    // Save Restaurant object in connection
+    let id: string = '';
+    await getRepository(Restaurant).save(newRest)
+      .then((result) => {
+        id = result.id;
+        console.log(`>> Saved a new restaurant: ${id} --> ${result.name}`);
+      })
+      .catch((e) => console.error(e));
 
-  // Return new restaurant ID to client-side for confirmation
-  if (id) return id;
+    // Return new restaurant ID to client-side for confirmation
+    if (id) return id;
+  }
   throw new Error('>> Could not save restaurant data');
 };
 
 // TODO: Only update when data is different from the previous version
 export const editRestaurant = async (rest: Restaurant) => {
-  console.log(`>> Editing restaurant: ${rest.id}...`);
-
   if (rest && rest.id) {
+    console.log(`>> Editing restaurant: ${rest.id}...`);
+
     // UPDATE restaurant SET name = ... WHERE id = ...
     await getRepository(Restaurant)
       .update(rest.id, {
@@ -89,58 +94,112 @@ export const editRestaurant = async (rest: Restaurant) => {
       })
       .catch((e) => console.error(e));
   }
-  else {
-    console.error('>> Cannot update invalid restaurant data');
-  }
+  else throw new Error('>> Invalid restaurant data; cannot update restaurant');
 };
 
-export const deleteRestaurant = async (id: string) => {
-  console.log(`>> Deleting restaurant: ${id}...`);
+export const deleteRestaurant = async (restId: string) => {
+  if (restId) {
+    console.log(`>> Deleting restaurant: ${restId}...`);
 
-  if (id) {
     await getRepository(Restaurant)
-      .delete(id)
+      .delete(restId)
       .then(() => {
-        console.log(`>> Deleted restaurant ${id}`);
+        console.log(`>> Deleted restaurant ${restId}`);
       })
       .catch((e) => console.error(e));
   }
-  else {
-    console.error('>> Invalid restaurant ID; could not delete');
-  }
+  else throw new Error('>> Invalid restaurant ID; cannot delete restaurant');
 };
 
 // * DEFINING CRUD OPERATIONS FOR ITEMS * //
 
 export const getItemList = async (restId: string) => {
-  console.log(`>> Retrieving items for: ${restId}`);
-
-  let itemList: Item[] = [];
   if (restId) {
-    await getRepository(Item)
-      .createQueryBuilder('item')
-      .innerJoinAndSelect('item.restId', 'restaurant')
-      .getMany()
+    console.log(`>> Retrieving items for: ${restId}`);
+
+    let itemList: Item[] = [];
+    if (restId) {
+      await getRepository(Restaurant).findOne(restId, { relations: ['items'] })
+        .then((rest) => {
+          if (rest) {
+            itemList = rest.items;
+            console.log('>> Loading complete');
+          }
+        })
+        .catch((e) => console.error(e));
+    }
+
+    // Return in order of most recently added items
+    if (itemList) return itemList.reverse();
+    throw new Error('>> Could not retrieve items');
+  }
+  throw new Error('>> Invalid restaurant ID; cannot retrieve items');
+};
+
+export const addItem = async (restId: string, newItem: Item) => {
+  if (restId && newItem) {
+    console.log('>> Inserting a new record into the Item database...');
+
+    // Save Restaurant object in connection
+    let itemId: string = '';
+    await getRepository(Restaurant).findOne(restId)
       .then((result) => {
-        itemList = result;
-        console.log('>> Loading complete');
+        if (result) {
+          newItem.restaurant = result;
+        }
+        else {
+          throw new Error(`>> Could not find restaurant with ID ${restId}`);
+        }
+      })
+      .catch((e) => console.error(e));
+
+    await getRepository(Item).save(newItem)
+      .then((result) => {
+        itemId = result.id;
+        console.log(`>> Saved a new item: ${itemId} --> ${result.name}`);
+      })
+      .catch((e) => console.error(e));
+
+    // Return new restaurant ID to client-side for confirmation
+    if (itemId) return itemId;
+  }
+  throw new Error('>> Could not save item data');
+};
+
+export const editItem = async (item: Item) => {
+  if (item && item.id) {
+    console.log(`>> Editing item: ${item.id}...`);
+
+    // UPDATE restaurant SET name = ... WHERE id = ...
+    await getRepository(Item)
+      .update(item.id, {
+        name: item.name,
+        price: item.price,
+        emotion: item.emotion,
+        recommend: item.recommend,
+      })
+      .then(() => {
+        console.log(`>> Updated item: ${item.id} --> ${item.name}`);
       })
       .catch((e) => console.error(e));
   }
-
-  // Return in order of most recently added items
-  if (itemList.length > 0) return itemList.reverse();
-  throw new Error('>> Could not retrieve items');
+  else throw new Error('>> Invalid item data; cannot save into database');
 };
 
-// export const addItem = async (newItem: Item) => {
-// };
+// TODO: Not sure if I have to replicate in Restaurant as well (I shouldn't though...)
+export const deleteItem = async (itemId: string) => {
+  if (itemId) {
+    console.log(`>> Deleting item: ${itemId}...`);
 
-// export const editItem = async (item: Item) => {
-// };
-
-// export const deleteItem = async (itemId: string) => {
-// };
+    await getRepository(Item)
+      .delete(itemId)
+      .then(() => {
+        console.log(`>> Deleted item ${itemId}`);
+      })
+      .catch((e) => console.error(e));
+  }
+  else throw new Error('>> Invalid item ID; could not delete');
+};
 
 export const closeDB = () => {
 

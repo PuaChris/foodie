@@ -33,20 +33,18 @@ class Restaurant {
 
   // TODO: Change column type to string for enums after learning migrations
   @Column({
-    type: 'enum',
-    enum: EmotionType,
+    type: 'text',
     default: EmotionType.Surprise,
   })
   public emotion: EmotionType;
 
   @Column({
-    type: 'enum',
-    enum: RecommendType,
+    type: 'text',
     default: RecommendType.Question,
   })
   public recommend: RecommendType;
 
-  @OneToMany((type) => Item, (item) => item.restaurant, { cascade: true })
+  @OneToMany(() => Item, (item) => item.restaurant)
   items: Item[];
 
   getInfo(): IRestaurant {

@@ -62,7 +62,7 @@ export default class RestaurantController extends Controller {
     const fetchOptions = this.initFetchOptions(HTTPMethodType.POST, requestBody);
 
     // Return new uuid for the restaurant to client as confirmation
-    let id: string = '';
+    let restId: string = '';
 
     await fetch(url, fetchOptions)
       .then((res) => {
@@ -72,12 +72,12 @@ export default class RestaurantController extends Controller {
         return res.json();
       }).then((data) => {
         if (data) {
-          id = data.id;
-          console.log(`Restaurant successfully saved with ID: ${id}`);
+          restId = data.id;
+          console.log(`Restaurant successfully saved with ID: ${restId}`);
         }
       }).catch((e) => console.error(e));
 
-    return id;
+    return restId;
   };
 
   public editRestaurant = async (restData: IRestaurant): Promise<Boolean> => {

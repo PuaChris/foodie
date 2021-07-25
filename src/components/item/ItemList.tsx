@@ -75,28 +75,43 @@ class ItemList extends React.Component<IProps, IState> {
   };
 
   addItem = async (newItem: IRestaurantItem) => {
-    // Using `unshift` to push a newly added item to the front of the array and display items in that order
-    const { itemList } = this.state;
-    itemList.unshift(newItem);
+    const { restId } = this.props;
+    const itemId: string = await this.control.addItem(restId, newItem);
+    if (itemId) {
+      newItem.id = itemId;
+      // Using `unshift` to push a newly added item to the front of the array and display items in that order
+      const { itemList } = this.state;
+      itemList.unshift(newItem);
 
-    this.setState({ itemList }, () => console.log('Successfully added new item.'));
+      this.setState({ itemList }, () => console.log('Successfully added new item.'));
+    }
+    else console.error('Could not save new item');
   };
 
-  editItem = (newItem: IRestaurantItem) => {
+  editItem = async (newItem: IRestaurantItem) => {
     const { itemList } = this.state;
     const matchingItem: IRestaurantItem | undefined = itemList.find((item) => item.id === newItem.id);
-
-    if (matchingItem) {
-      const index = itemList.indexOf(matchingItem);
-
+    const { restId } = this.props;
+    if (matchingItem && await this.control.editItem(restId, newItem)) {
       // Updating element at the same index
+      const index = itemList.indexOf(matchingItem);
       const updatedItems = update(itemList, { $splice: [[index, 1, newItem]] });
 
-      this.setState({
-        isModalOpen: true,
-        itemList: updatedItems,
-      });
+      this.setState({ itemList: updatedItems });
     }
+    else console.error('Could not update item');
+  };
+
+  deleteItem = async (itemId: string) => {
+    const { restId } = this.props;
+    if (await this.control.deleteItem(restId, itemId)) {
+      this.setState(
+        (prevState) => ({
+          itemList: prevState.itemList.filter((item) => item.id !== itemId),
+        }),
+      );
+    }
+    else console.error('Could not delete item');
   };
 
   // TODO: Something...does not seem right here. Something something bad code, testing will fail, etc.
@@ -108,14 +123,6 @@ class ItemList extends React.Component<IProps, IState> {
       isModalOpen: true,
       selectedItem,
     });
-  };
-
-  deleteItem = (itemId: string) => {
-    this.setState(
-      (prevState) => ({
-        itemList: prevState.itemList.filter((item) => item.id !== itemId),
-      }),
-    );
   };
 
   render() {

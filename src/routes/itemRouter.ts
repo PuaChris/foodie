@@ -2,7 +2,11 @@ import express from 'express';
 import { IRestaurantItem } from '../constant';
 import {
   getItemList,
+  addItem,
+  editItem,
+  deleteItem,
 } from '../database';
+import Item from '../entities/item.entity';
 
 const ItemRouter = express.Router();
 
@@ -24,94 +28,78 @@ ItemRouter.route('/restaurant/:restId/items')
     return res.status(400);
   });
 
-// router.route('/restaurant/:restId/item')
-//   // Add new restaurant
-//   .post(async (req, res) => {
-//     if (!req.body) return res.status(400).send('Request body is undefined');
+ItemRouter.route('/restaurant/:restId/item')
+  // Add new item
+  .post(async (req, res) => {
+    if (!req.body) return res.status(400).send('Request body is undefined');
 
-//     const {
-//       name,
-//       location,
-//       phone,
-//       emotion,
-//       recommend,
-//     } = req.body;
+    const { restId } = req.params;
 
-//     // Sending new uuid for received restaurant back to client side as confirmation
-//     const newRest = Restaurant.fillInfo({
-//       name,
-//       location,
-//       phone,
-//       emotion,
-//       recommend,
-//     } as IRestaurant);
-//     const id = await addRestaurant(newRest).catch((e) => {
-//       console.error(e);
-//       return res.status(400);
-//     });
-//     return res.status(200).json({ id });
-//   });
+    const {
+      name,
+      price,
+      emotion,
+      recommend,
+    } = req.body;
 
-// router.route('/restaurant/:id')
-// .get(async (req, res) => {
-//   const { id } = req.params;
+    // Sending new uuid for received item back to client side as confirmation
+    const newItem = Item.fillInfo({
+      name,
+      price,
+      emotion,
+      recommend,
+    } as IRestaurantItem);
+    const itemId = await addItem(restId, newItem).catch((e) => {
+      console.error(e);
+      return res.status(400);
+    });
+    return res.status(200).json({ id: itemId });
+  });
 
-//   if (id) {
-//     const result = await getRestaurant(id)
-//       .catch((e) => {
-//         console.error(e);
-//         return res.status(400);
-//       });
+ItemRouter.route('/restaurant/:restId/item/:itemId')
 
-//     return res.status(200).json(result);
-//   }
-//   return res.status(400);
-// })
+  // Edit restaurant
+  .put(async (req, res) => {
+    if (!req.body) return res.status(400).send('Request body is undefined');
 
-// Edit restaurant
-// .put(async (req, res) => {
-//   if (!req.body) return res.status(400).send('Request body is undefined');
+    const {
+      id,
+      name,
+      price,
+      emotion,
+      recommend,
+    } = req.body;
 
-//   const {
-//     id,
-//     name,
-//     location,
-//     phone,
-//     emotion,
-//     recommend,
-//   } = req.body;
+    const updatedItem = Item.fillInfo({
+      id,
+      name,
+      price,
+      emotion,
+      recommend,
+    } as IRestaurantItem);
 
-//   const editRest = Restaurant.fillInfo({
-//     id,
-//     name,
-//     location,
-//     phone,
-//     emotion,
-//     recommend,
-//   } as IRestaurant);
+    await editItem(updatedItem)
+      .catch((e) => {
+        console.error(e);
+        return res.status(400).send(`Error while trying to edit restaurant ${id}`);
+      });
 
-//   await editRestaurant(editRest)
-//     .catch((e) => {
-//       console.error(e);
-//       return res.status(400).send(`Error while trying to edit restaurant ${id}`);
-//     });
+    return res.status(204).send('Successfully updated restaurant.');
+  })
 
-//   return res.status(204).send('Successfully updated restaurant.');
-// })
+  // Delete restaurant
+  .delete(async (req, res) => {
+    if (!req.params) return res.status(400).send('Request params are undefined');
 
-// Delete restaurant
-// .delete(async (req, res) => {
-//   if (!req.params) return res.status(400).send('Request params are undefined');
+    const { itemId } = req.params;
 
-//   const { id } = req.params;
+    await deleteItem(itemId)
+      .catch((e) => {
+        console.error(e);
+        return res.status(400).send(`Error while trying to delete restaurant ${itemId}`);
+      });
 
-//   await deleteRestaurant(id)
-//     .catch((e) => {
-//       console.error(e);
-//       return res.status(400).send(`Error while trying to delete restaurant ${id}`);
-//     });
-
-//   return res.status(204).send('Successfully deleted restaurant');
-// });
+    return res.status(204).send('Successfully deleted restaurant');
+  });
 
 export default ItemRouter;

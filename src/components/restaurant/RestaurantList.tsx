@@ -43,7 +43,10 @@ class RestaurantList extends React.Component<IProps, IState> {
       const cache = window.localStorage.getItem(process.env.NEXT_PUBLIC_RESTLIST_CACHE as string) || undefined;
       if (cache !== undefined) {
         const restList = JSON.parse(cache);
-        this.setState({ restList }, () => console.log('Retrieved restaurant list from cache'));
+        if (restList.length > 0) this.setState({ restList }, () => console.log('Retrieved restaurant list from cache'));
+        else {
+          await this.getRestaurantList();
+        }
       }
 
       else {

@@ -25,99 +25,72 @@ export default class ItemController extends Controller {
     return itemList;
   };
 
-  // public getRestaurant = async (restId: string): Promise<IRestaurantItem> => {
-  //   const domain = process.env.NEXT_PUBLIC_API_LINK;
-  //   const url = new URL(`${domain}/restaurant/${restId}`);
+  public addItem = async (restId: string, itemData: IRestaurantItem): Promise<string> => {
+    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const url = (new URL(`${domain}/restaurant/${restId}/item`)).toString();
 
-  //   const fetchOptions = this.initFetchOptions(HTTPMethodType.GET);
+    // Passing new restaurant information
+    const requestBody = JSON.stringify(itemData);
+    console.log(`Saving item into database: ${requestBody}`);
 
-  //   let rest: IRestaurantItem = {
-  //     id: '',
-  //     name: '',
-  //   };
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.POST, requestBody);
 
-  //   await fetch(url.toString(), fetchOptions)
-  //     .then((res) => {
-  //       if (res.status !== 200) {
-  //         throw new Error(res.statusText);
-  //       }
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       if (data) rest = data;
-  //     }).catch((e) => console.error(e));
+    // Return new uuid for the restaurant to client as confirmation
+    let itemId: string = '';
 
-  //   if (rest.id) return rest;
-  //   throw new Error(`Could not retrieve restaurant profile for --> ${restId}`);
-  // };
+    await fetch(url, fetchOptions)
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      }).then((data) => {
+        if (data) {
+          itemId = data.id;
+          console.log(`Item successfully saved with ID: ${itemId}`);
+        }
+      }).catch((e) => console.error(e));
 
-  // public addRestaurant = async (restData: IRestaurant): Promise<string> => {
-  //   const domain = process.env.NEXT_PUBLIC_API_LINK;
-  //   const url = (new URL(`${domain}/restaurant`)).toString();
+    return itemId;
+  };
 
-  //   // Passing new restaurant information
-  //   const requestBody = JSON.stringify(restData);
-  //   console.log(`Saving restaurant into database: ${requestBody}`);
+  public editItem = async (restId: string, itemData: IRestaurantItem): Promise<Boolean> => {
+    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const url = (new URL(`${domain}/restaurant/${restId}/item/${itemData.id}`)).toString();
+    let isEdited: Boolean = false;
 
-  //   const fetchOptions = this.initFetchOptions(HTTPMethodType.POST, requestBody);
+    // Passing new item information
+    const requestBody = JSON.stringify(itemData);
+    console.log(`Editing item with new info: ${requestBody}`);
 
-  //   // Return new uuid for the restaurant to client as confirmation
-  //   let id: string = '';
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.PUT, requestBody);
 
-  //   await fetch(url, fetchOptions)
-  //     .then((res) => {
-  //       if (res.status !== 200) {
-  //         throw new Error(res.statusText);
-  //       }
-  //       return res.json();
-  //     }).then((data) => {
-  //       if (data) {
-  //         id = data.id;
-  //         console.log(`Restaurant successfully saved with ID: ${id}`);
-  //       }
-  //     }).catch((e) => console.error(e));
+    await fetch(url, fetchOptions)
+      .then((res) => {
+        console.log(res.status);
+        if (res.status === 200 || res.status === 204) isEdited = true;
+        else console.error(res.statusText);
+      })
+      .catch((e) => console.error(e));
+    return isEdited;
+  };
 
-  //   return id;
-  // };
+  public deleteItem = async (restId: string, itemId: string): Promise<Boolean> => {
+    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const url = (new URL(`${domain}/restaurant/${restId}/item/${itemId}`)).toString();
+    let isDeleted: Boolean = false;
 
-  // public editRestaurant = async (restData: IRestaurant): Promise<Boolean> => {
-  //   const domain = process.env.NEXT_PUBLIC_API_LINK;
-  //   const url = (new URL(`${domain}/restaurant/${restData.id}`)).toString();
-  //   let isEdited: Boolean = false;
+    console.log(`Deleting item: ${itemId}`);
 
-  //   // Passing new restaurant information
-  //   const requestBody = JSON.stringify(restData);
-  //   console.log(`Editing restaurant with new info: ${requestBody}`);
+    const fetchOptions = this.initFetchOptions(HTTPMethodType.DELETE);
 
-  //   const fetchOptions = this.initFetchOptions(HTTPMethodType.PUT, requestBody);
-
-  //   await fetch(url, fetchOptions)
-  //     .then((res) => {
-  //       console.log(res.status);
-  //       if (res.status === 200 || res.status === 204) isEdited = true;
-  //       else console.error(res.statusText);
-  //     })
-  //     .catch((e) => console.error(e));
-  //   return isEdited;
-  // };
-
-  // public deleteRestaurant = async (id: string): Promise<Boolean> => {
-  //   const domain = process.env.NEXT_PUBLIC_API_LINK;
-  //   const url = (new URL(`${domain}/restaurant/${id}`)).toString();
-  //   let isDeleted: Boolean = false;
-
-  //   // Passing new restaurant information
-  //   console.log(`Deleting restaurant: ${id}`);
-
-  //   const fetchOptions = this.initFetchOptions(HTTPMethodType.DELETE);
-
-  //   await fetch(url, fetchOptions)
-  //     .then((res) => {
-  //       console.log(res.status);
-  //       if (res.status === 200 || res.status === 204) isDeleted = true;
-  //       else console.error(res.statusText);
-  //     })
-  //     .catch((e) => console.error(e));
-  //   return isDeleted;
-  // };
+    await fetch(url, fetchOptions)
+      .then((res) => {
+        console.log(res.status);
+        if (res.status === 200 || res.status === 204) isDeleted = true;
+        else console.error(res.statusText);
+      })
+      .catch((e) => console.error(e));
+    return isDeleted;
+  };
 }
