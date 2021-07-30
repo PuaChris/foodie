@@ -9,7 +9,7 @@ export const checkEmotion = (emotion?: EmotionType) => {
 
   switch (emotion) {
     case EmotionType.Love:
-      emotionIcon = ['far', 'grin-hearts'];
+      emotionIcon = ['far', 'laugh-beam'];
       break;
     case EmotionType.Happy:
       emotionIcon = ['far', 'smile'];

@@ -3,10 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import styles from './styles/index.module.scss';
-import SearchBar from '../components/util/SearchBar';
 import RestaurantList from '../components/restaurant/RestaurantList';
 
 library.add(fab, fas);
@@ -15,7 +12,7 @@ const style: any = styles;
 
 const index = () => {
   return (
-    <div className={style['home_container']}>
+    <div className={style['home-container']}>
       {/* Remove horizontal scroll bar in mobile */}
       <style jsx global>{`
         html, body {
@@ -26,16 +23,19 @@ const index = () => {
           width: 100%;
           margin: 0;
           padding: 0;
+          background: #E7E5E5;
         }
       `}
       </style>
-      <header className={style['header_container']}>
-        <h1 className={style['header_title']}>My Restaurants</h1>
-        <span className={style['header_profile_icon']}>
-          <FontAwesomeIcon icon={['fas', 'user-circle']} />
+      <header className={style['container']}>
+        <div className={style['logo-container']}>
+          <h2 className={style['logo-red']}>foodie</h2>
+          <h2 className={style['logo-black']}>.io</h2>
+        </div>
+        <span className={style['sign-in']}>
+          {/* <FontAwesomeIcon icon={['fas', 'user-circle']} /> */}
         </span>
       </header>
-      <SearchBar />
       <RestaurantList />
     </div>
   );

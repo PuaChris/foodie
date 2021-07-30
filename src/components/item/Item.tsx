@@ -25,10 +25,16 @@ const RestaurantItem = (props: IProps) => {
     selectItem(itemData.id);
   };
 
+  const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    selectItem(itemData.id);
+  };
+
   return (
     <div
       className={style['container']}
-      onMouseUp={(e) => handleMouseClick(e)}
+      onClick={(e) => handleMouseClick(e)}
+      onKeyDown={(e) => handleKeydown(e)}
       role="button"
       tabIndex={-1}
     >

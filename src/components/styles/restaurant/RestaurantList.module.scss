@@ -4,50 +4,111 @@
   padding: 0;
 }
 
+.title {
+  font-size: 50px;
+  color: #d63031;
+  margin-bottom: 30px;
+}
+
 .restaurant-list {
   // Remove bullet in front of <li>
   list-style-type: none;
 
-  padding: 2%;
+  padding: 0;
 
   // Grid
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  grid-gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
   grid-template-rows: auto;
   align-items: center;
-  justify-items: center;
 }
 
 .restaurant-card {
   border-radius: 8px;
-  border: rgba(34, 36, 38, 0.35) 3px solid;
+  border: #696969 3px solid;
+
+  padding: 10px;
 
   position: relative;
 
-  padding-top: 100%;
-  width: 100%;
-  height: auto;
+  width: 90%;
+  height: 120px;
 
-  color: white;
+  color: #e7e5e5;
 
-  // Size
-  // height: 130px;
-  // width: 130px;
-
-  // margin: 13px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-@media screen and (min-width: 641px) {
-  .restaurant-list {
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 18px;
-  }
+.restaurant-text {
+  color: #1E1E1E;
 }
 
-@media screen and (min-width: 1008px) {
-  .restaurant-list {
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 30px;
-  }
+.restaurant-name {
+  font-size: 25px;
 }
+
+.location {
+
+}
+
+.icons {
+  font-size: 40px;
+  color: #3D3C3C;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.surprise {
+  color: #1E1E1E;
+}
+
+.love {
+  // color: #4A69BD;
+  color: #01A95A;
+  // color: #263F85;
+}
+
+.happy {
+  // color: #01A95A;
+  color: #4A69BD;
+  // color: #DAC827;
+}
+
+.meh {
+  color: #E57500;
+  // color: #E1BB2A;
+
+}
+
+.sad {
+  color: #C00D68;
+}
+
+// .question {
+//   color: #1E1E1E;
+// }
+
+// .yes {
+//   // color: #02BC65;
+// }
+
+// .no {
+//   // color: #C00D68;
+//   color: #1E1E1E;
+// }
+
+.emotion {
+  // color: #01A95A;
+}
+
+.recommend {
+  color: #4A69BD;
+
+}
+
+

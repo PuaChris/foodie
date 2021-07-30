@@ -1,18 +1,22 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/dist/client/link';
+import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
+import { NextRouter, withRouter } from 'next/dist/client/router';
 
 import RestaurantController from '../../routes/restaurantController';
-
 import RestaurantModal from './RestaurantModal';
+import SearchBar from '../util/SearchBar';
 
 import styles from '../styles/restaurant/RestaurantList.module.scss';
 import { IRestaurant } from '../../constant';
+import { checkEmotion, checkRecommend } from '../../helper/checkIcon';
 
-// Declaring State interface
-interface IProps {
-
+interface WithRouterProps {
+  router: NextRouter
 }
+
+interface IProps extends WithRouterProps { }
+
 interface IState {
   isModalOpen: boolean,
   restList: IRestaurant[],
@@ -22,12 +26,14 @@ const style: any = styles;
 class RestaurantList extends React.Component<IProps, IState> {
   private control: RestaurantController;
 
+  private router: NextRouter;
+
   constructor(props: IProps) {
     super(props);
 
     // Initialize API controller
     this.control = new RestaurantController();
-
+    this.router = props.router;
     this.state = {
       isModalOpen: false,
       restList: [],
@@ -35,39 +41,15 @@ class RestaurantList extends React.Component<IProps, IState> {
 
     this.addRestaurant = this.addRestaurant.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleMouseClick = this.handleMouseClick.bind(this);
   }
 
   componentDidMount = async () => {
-    // Check cache first before calling API for restaurants
-    if (typeof window !== undefined) {
-      const cache = window.localStorage.getItem(process.env.NEXT_PUBLIC_RESTLIST_CACHE as string) || undefined;
-      if (cache !== undefined) {
-        const restList = JSON.parse(cache);
-        if (restList.length > 0) this.setState({ restList }, () => console.log('Retrieved restaurant list from cache'));
-        else {
-          await this.getRestaurantList();
-        }
-      }
-
-      else {
-        await this.getRestaurantList();
-      }
-    }
-    else {
-      await this.getRestaurantList();
-    }
-  };
-
-  cache = (restList: IRestaurant[]) => {
-    if (typeof window !== undefined) {
-      window.localStorage.setItem(process.env.NEXT_PUBLIC_RESTLIST_CACHE as string, JSON.stringify(restList));
-      console.log('Caching restaurant list');
-    }
+    this.getRestaurantList();
   };
 
   getRestaurantList = async () => {
     const restList: IRestaurant[] = await this.control.getRestaurantList();
-    this.cache(restList);
     this.setState({ restList });
   };
 
@@ -90,11 +72,25 @@ class RestaurantList extends React.Component<IProps, IState> {
       const { restList } = this.state;
       restList.unshift(newRest);
       this.setState({ restList }, () => console.log('New restaurant added.'));
-      this.cache(restList);
     }
     else {
       console.error('Could not save new restaurant');
     }
+  };
+
+  selectItem = (restId: string) => {
+    if (restId) this.router.push('/[restaurant]', `/${restId}`);
+    else console.error('Cannot select restaurant with invalid ID');
+  };
+
+  handleMouseClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, restId: string) => {
+    e.preventDefault();
+    this.selectItem(restId);
+  };
+
+  handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, restId: string) => {
+    e.preventDefault();
+    this.selectItem(restId);
   };
 
   render() {
@@ -105,22 +101,41 @@ class RestaurantList extends React.Component<IProps, IState> {
 
     return (
       <div className={style['container']}>
+        <h1 className={style['title']}>My Restaurants</h1>
+
         <RestaurantModal
           open={isModalOpen}
           addRestaurant={this.addRestaurant}
           closeModal={this.closeModal}
         />
+        {/* <SearchBar /> */}
         <ul className={style['restaurant-list']}>
           {restList?.map((rest) => {
+            const emotionIcon: [IconPrefix, IconName] = checkEmotion(rest.emotion);
+            const recommendIcon: [IconPrefix, IconName] = checkRecommend(rest.recommend);
+
             return (
-              <li key={rest.id} className={style['restaurant-card']}>
-                {/* Adding dynamic ID to new links */}
-                <Link
-                  href="/[restaurant]"
-                  as={`/${rest.id}`}
+              <li key={rest.id}>
+                <div
+                  className={style['restaurant-card']}
+                  onClick={(e) => this.handleMouseClick(e, rest.id)}
+                  onKeyDown={(e) => this.handleKeyDown(e, rest.id)}
+                  role="button"
+                  tabIndex={-1}
                 >
-                  {rest.name || 'New Restaurant'}
-                </Link>
+
+                  <div className={style['restaurant-text']}>
+                    <h3 className={style['restaurant-name']}>{rest.name || 'New Restaurant'}</h3>
+                    <p className={style['location']}>{rest.location}</p>
+                  </div>
+
+                  <div className={style['icons']}>
+                    <FontAwesomeIcon className={style[`${rest.emotion}`]} icon={emotionIcon} />
+                    <FontAwesomeIcon className={style[`${rest.recommend}`]} icon={recommendIcon} />
+                    {/* <FontAwesomeIcon className={style['emotion']} icon={emotionIcon} />
+                    <FontAwesomeIcon className={style['recommend']} icon={recommendIcon} /> */}
+                  </div>
+                </div>
               </li>
             );
           })}
@@ -135,4 +150,4 @@ class RestaurantList extends React.Component<IProps, IState> {
   }
 }
 
-export default RestaurantList;
+export default withRouter(RestaurantList);
