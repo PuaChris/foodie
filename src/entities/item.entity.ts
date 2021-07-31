@@ -5,7 +5,7 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm';
-import { IRestaurantItem, EmotionType, RecommendType } from '../constant';
+import { IItem, EmotionType, RecommendType } from '../constant';
 import Restaurant from './restaurant.entity';
 
 @Entity()
@@ -40,7 +40,7 @@ class Item {
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.items, { cascade: true })
   public restaurant: Restaurant;
 
-  getInfo(): IRestaurantItem {
+  getInfo(): IItem {
     return {
       id: this.id,
       name: this.name,
@@ -56,7 +56,7 @@ class Item {
     price,
     emotion,
     recommend,
-  }: IRestaurantItem) {
+  }: IItem) {
     const item = new Item();
     if (id && id !== item.id) item.id = id;
     if (name) item.name = name;

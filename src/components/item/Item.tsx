@@ -2,14 +2,14 @@ import React from 'react';
 import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IRestaurantItem } from '../../constant';
+import { IItem } from '../../constant';
 import { checkEmotionIcon, checkRecommendIcon } from '../../helper/checkEmotionRecommend';
 import styles from '../styles/item/Item.module.scss';
 
 const style: any = styles;
 
 interface IProps {
-  itemData: IRestaurantItem,
+  itemData: IItem,
   selectItem: (itemId: string) => void,
 }
 

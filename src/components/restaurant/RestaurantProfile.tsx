@@ -9,6 +9,7 @@ import RestaurantModal from './RestaurantModal';
 import DeleteModal from '../util/DeleteModal';
 
 import {
+  restListCache,
   IRestaurant,
   DescriptionType,
   EmotionType,
@@ -174,7 +175,6 @@ class RestaurantProfile extends React.Component<IProps, IState> {
         window.localStorage.removeItem(id);
 
         // Deleting restaurant list from cache
-        const restListCache: string = process.env.NEXT_PUBLIC_RESTLIST_CACHE as string;
         window.localStorage.removeItem(restListCache);
 
         this.setState({ isEditModal: false });

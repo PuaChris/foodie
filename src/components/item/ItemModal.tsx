@@ -4,7 +4,7 @@ import NumberFormat from 'react-number-format';
 import { Modal } from 'semantic-ui-react';
 
 import {
-  IRestaurantItem,
+  IItem,
   EmotionType,
   RecommendType,
   RecommendItemText,
@@ -17,9 +17,9 @@ const style = styles;
 
 interface IProps {
   open: boolean,
-  item?: IRestaurantItem,
-  addItem: (item: IRestaurantItem) => void,
-  editItem: (item: IRestaurantItem) => void,
+  item?: IItem,
+  addItem: (item: IItem) => void,
+  editItem: (item: IItem) => void,
   deleteItem: (id: string) => void,
   closeModal: () => void,
 }
@@ -48,7 +48,7 @@ const ItemModal = (props: IProps) => {
       price,
       emotion,
       recommend,
-    } as IRestaurantItem;
+    } as IItem;
 
     if (item) {
       // Have to also pass along the existing item ID or else it cannot be saved into the database

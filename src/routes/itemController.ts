@@ -1,15 +1,15 @@
-import { IRestaurantItem, HTTPMethodType } from '../constant';
+import { IItem, HTTPMethodType } from '../constant';
 import Controller from './controller';
 
 export default class ItemController extends Controller {
-  public getItemList = async (restId: string): Promise<IRestaurantItem[]> => {
+  public getItemList = async (restId: string): Promise<IItem[]> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = (new URL(`${domain}/restaurant/${restId}/items`)).toString();
 
     const fetchOptions = this.initFetchOptions(HTTPMethodType.GET);
 
     // Get list of items for restaurant
-    let itemList: IRestaurantItem[] = [];
+    let itemList: IItem[] = [];
 
     await fetch(url, fetchOptions)
       .then((res) => {
@@ -25,7 +25,7 @@ export default class ItemController extends Controller {
     return itemList;
   };
 
-  public addItem = async (restId: string, itemData: IRestaurantItem): Promise<string> => {
+  public addItem = async (restId: string, itemData: IItem): Promise<string> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = (new URL(`${domain}/restaurant/${restId}/item`)).toString();
 
@@ -54,7 +54,7 @@ export default class ItemController extends Controller {
     return itemId;
   };
 
-  public editItem = async (restId: string, itemData: IRestaurantItem): Promise<Boolean> => {
+  public editItem = async (restId: string, itemData: IItem): Promise<Boolean> => {
     const domain = process.env.NEXT_PUBLIC_API_LINK;
     const url = (new URL(`${domain}/restaurant/${restId}/item/${itemData.id}`)).toString();
     let isEdited: Boolean = false;

@@ -7,7 +7,7 @@ import ItemModal from './ItemModal';
 import ItemController from '../../routes/itemController';
 
 import styles from '../styles/item/ItemList.module.scss';
-import { IRestaurantItem } from '../../constant';
+import { restListCache, IItem } from '../../constant';
 
 // Declaring State interface
 interface IProps {
@@ -15,8 +15,8 @@ interface IProps {
 }
 interface IState {
   isModalOpen: boolean,
-  selectedItem?: IRestaurantItem,
-  itemList: IRestaurantItem[],
+  selectedItem?: IItem,
+  itemList: IItem[],
 }
 
 const style: any = styles;
@@ -47,9 +47,9 @@ class ItemList extends React.Component<IProps, IState> {
     await this.getItemList();
   };
 
-  cache = (restList: IRestaurantItem[]) => {
+  cache = (restList: IItem[]) => {
     if (typeof window !== undefined) {
-      window.localStorage.setItem(process.env.NEXT_PUBLIC_RESTLIST_CACHE as string, JSON.stringify(restList));
+      window.localStorage.setItem(restListCache, JSON.stringify(restList));
       console.log('Caching restaurant list');
     }
   };
@@ -69,12 +69,12 @@ class ItemList extends React.Component<IProps, IState> {
   getItemList = async () => {
     const { restId } = this.props;
 
-    const itemList: IRestaurantItem[] = await this.control.getItemList(restId);
+    const itemList: IItem[] = await this.control.getItemList(restId);
     // this.cache(itemList);
     this.setState({ itemList });
   };
 
-  addItem = async (newItem: IRestaurantItem) => {
+  addItem = async (newItem: IItem) => {
     const { restId } = this.props;
     const itemId: string = await this.control.addItem(restId, newItem);
     if (itemId) {
@@ -88,9 +88,9 @@ class ItemList extends React.Component<IProps, IState> {
     else console.error('Could not save new item');
   };
 
-  editItem = async (newItem: IRestaurantItem) => {
+  editItem = async (newItem: IItem) => {
     const { itemList } = this.state;
-    const matchingItem: IRestaurantItem | undefined = itemList.find((item) => item.id === newItem.id);
+    const matchingItem: IItem | undefined = itemList.find((item) => item.id === newItem.id);
     const { restId } = this.props;
     if (matchingItem && await this.control.editItem(restId, newItem)) {
       // Updating element at the same index

@@ -1,5 +1,5 @@
 import express from 'express';
-import { IRestaurantItem } from '../constant';
+import { IItem } from '../constant';
 import {
   getItemList,
   addItem,
@@ -48,7 +48,7 @@ ItemRouter.route('/restaurant/:restId/item')
       price,
       emotion,
       recommend,
-    } as IRestaurantItem);
+    } as IItem);
     const itemId = await addItem(restId, newItem).catch((e) => {
       console.error(e);
       return res.status(400);
@@ -76,7 +76,7 @@ ItemRouter.route('/restaurant/:restId/item/:itemId')
       price,
       emotion,
       recommend,
-    } as IRestaurantItem);
+    } as IItem);
 
     await editItem(updatedItem)
       .catch((e) => {

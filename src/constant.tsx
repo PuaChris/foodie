@@ -1,3 +1,5 @@
+export const restListCache = 'restList';
+
 export interface IRestaurant {
   id: string,
   name: string,
@@ -7,7 +9,7 @@ export interface IRestaurant {
   recommend?: RecommendType,
 }
 
-export interface IRestaurantItem {
+export interface IItem {
   id: string,
   name?: string,
   price?: string,
