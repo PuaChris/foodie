@@ -1,10 +1,12 @@
 
 .container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 0.5fr;
   grid-template-rows: auto;
   align-items: center;
   justify-items: left;
+
+  margin-bottom: 30px;
 }
 
 .restaurant-description {
@@ -13,50 +15,30 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  padding: 12px 0;
 }
 
-.location-input {
-  margin: 8px;
-  font-size: 14px;
+.text {
+  margin: 0;
+  padding-left: 10px;
+  font-size: 18px;
   border: none;
-  background: rgba(34, 36, 38, 0.35);
 }
 
 .location-icon {
-  font-size: 30px;
-}
-
-.phone-input {
-  margin: 8px;
-  font-size: 14px;
-  border: none;
-  background: rgba(34, 36, 38, 0.35);
+  font-size: 40px;
+  margin-left: 3px;
 }
 
 .phone-icon {
-  font-size: 30px;
-}
-
-.emotion-dropdown {
-  margin: 8px;
-  font-size: 14px;
-
-  border: none;
-  background: rgba(34, 36, 38, 0.35);
+  font-size: 40px;
 }
 
 .emotion-icon {
-  font-size: 30px;
-}
-
-.recommend-dropdown {
-  margin: 8px;
-  font-size: 14px;
-
-  border: none;
-  background: rgba(34, 36, 38, 0.35);
+  font-size: 40px;
 }
 
 .recommend-icon {
-  font-size: 30px;
+  font-size: 40px;
 }

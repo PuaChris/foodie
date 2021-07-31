@@ -23,16 +23,15 @@ const index = () => {
           width: 100%;
           margin: 0;
           padding: 0;
-          background: #E7E5E5;
         }
       `}
       </style>
-      <header className={style['container']}>
-        <div className={style['logo-container']}>
-          <h2 className={style['logo-red']}>foodie</h2>
-          <h2 className={style['logo-black']}>.io</h2>
+      <header className="header-container">
+        <div className="logo-container">
+          <h2 className="logo-red">foodie</h2>
+          <h2 className="logo-black">.io</h2>
         </div>
-        <span className={style['sign-in']}>
+        <span className="sign-in">
           {/* <FontAwesomeIcon icon={['fas', 'user-circle']} /> */}
         </span>
       </header>

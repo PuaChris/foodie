@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.container {
+.header-container {
   // Size
   width: 90%;
   margin: 25px;
@@ -26,23 +26,6 @@
 
 }
 
-.logo-container{
-  display: flex;
-  flex-direction: row;
-}
-
-.logo-red {
-  margin: 0;
-  color: #D63031;
-}
-.logo-black {
-  margin: 0;
-  color: #1E1E1E;
-}
-
-.sign-in {
-  
-}
 
 @media screen and (min-width: 640px) {
   .home_container {

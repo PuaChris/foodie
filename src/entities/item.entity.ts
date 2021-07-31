@@ -27,7 +27,7 @@ class Item {
 
   @Column({
     type: 'text',
-    default: EmotionType.Surprise,
+    default: EmotionType.Question,
   })
   public emotion: EmotionType;
 

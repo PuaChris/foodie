@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal, Header } from 'semantic-ui-react';
 
 import {
   IRestaurant,
+  RestaurantModalType,
   EmotionType,
   RecommendType,
+  EmotionText,
+  RecommendRestText,
 } from '../../constant';
 
 import styles from '../styles/restaurant/RestaurantModal.module.scss';
@@ -14,14 +18,18 @@ const style = styles;
 
 interface IProps {
   open: boolean,
-  addRestaurant: (item: IRestaurant) => void,
+  restData?: IRestaurant,
+  type: RestaurantModalType,
+  restaurantAction: (item: IRestaurant) => void,
   closeModal: () => void,
 }
 
 const RestaurantModal = (props: IProps) => {
   const {
     open,
-    addRestaurant,
+    restData,
+    type,
+    restaurantAction,
     closeModal,
   } = props;
 
@@ -29,12 +37,13 @@ const RestaurantModal = (props: IProps) => {
   const [name, setName] = useState<string>();
   const [location, setLocation] = useState<string>();
   const [phone, setPhone] = useState<string>();
-  const [emotion, setEmotion] = useState<EmotionType | undefined>(EmotionType.Surprise);
+  const [emotion, setEmotion] = useState<EmotionType | undefined>(EmotionType.Question);
   const [recommend, setRecommend] = useState<RecommendType | undefined>(RecommendType.Question);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newRest = {
+
+    const rest = {
       name,
       location,
       phone,
@@ -42,13 +51,9 @@ const RestaurantModal = (props: IProps) => {
       recommend,
     } as IRestaurant;
 
-    addRestaurant(newRest);
+    restaurantAction(rest);
 
     console.log('Form submitted');
-    closeModal();
-  };
-
-  const handleDelete = () => {
     closeModal();
   };
 
@@ -56,23 +61,38 @@ const RestaurantModal = (props: IProps) => {
   // useEffect runs after render finishes
   useEffect(() => {
     setOpen(open);
-
-    setName('');
-    setLocation('');
-    setPhone('');
-    setEmotion(EmotionType.Surprise);
-    setRecommend(RecommendType.Question);
+    if (restData && type === RestaurantModalType.Edit) {
+      setName(restData.name);
+      setLocation(restData.location);
+      setPhone(restData.phone);
+      setEmotion(restData.emotion);
+      setRecommend(restData.recommend);
+    }
   }, [open]);
 
   return (
     <Modal
+      size="tiny"
       onClose={() => {
         closeModal();
       }}
       open={isOpen}
     >
       <Modal.Content>
-        <Header>New Restaurant</Header>
+        <div className={style['header-container']}>
+          <span className={style['header']}>
+            <Header>{type === RestaurantModalType.Add ? 'New Restaurant' : 'Edit Restaurant'}</Header>
+          </span>
+
+          <button
+            type="button"
+            className={style['cancel-button']}
+            onClick={() => closeModal()}
+          >
+            <FontAwesomeIcon icon={['far', 'window-close']} />
+          </button>
+        </div>
+
       </Modal.Content>
       <Modal.Actions>
         <form
@@ -81,7 +101,7 @@ const RestaurantModal = (props: IProps) => {
         >
           {/* Restaurant name */}
           <div className={style['name-container']}>
-            <label htmlFor="name">Name</label>
+            <label className={style['label']} htmlFor="name">Name</label>
             <input
               name="name"
               className={style['name-input']}
@@ -91,71 +111,71 @@ const RestaurantModal = (props: IProps) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
+          <div className={style['secondary-container']}>
+            {/* Restaurant location */}
+            <div className={style['input-container']}>
+              <label className={style['label']} htmlFor="location">Location</label>
+              <input
+                name="location"
+                className={style['input']}
+                autoComplete="off"
+                defaultValue={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
 
-          {/* Restaurant location */}
-          <div className={style['location-container']}>
-            <label htmlFor="location">Where are they located</label>
-            <input
-              name="location"
-              className={style['location-input']}
-              autoComplete="off"
-              defaultValue={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-
+            {/* Restaurant phone number */}
+            <div className={style['input-container']}>
+              <label className={style['label']} htmlFor="phone">Phone number</label>
+              <NumberFormat
+                className={style['input']}
+                format="(###) ###-####"
+                mask="_"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
           </div>
 
-          {/* Restaurant phone number */}
-          <div className={style['phone-container']}>
-            <label htmlFor="phone">Phone number</label>
-            <NumberFormat
-              className={style['phone-input']}
-              format="(###) ###-####"
-              mask="_"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
+          <div className={style['secondary-container']}>
+            {/* Emotion */}
+            <div className={style['dropdown-container']}>
+              <label className={style['label']} htmlFor="emotion">{EmotionText.Question}</label>
+              <select
+                name="emotion"
+                className={style['dropdown']}
+                defaultValue={emotion === EmotionType.Question ? 'placeholder' : emotion as string}
+                onChange={(e) => {
+                  const newEmotion: EmotionType = e.target.value as EmotionType;
+                  setEmotion(newEmotion);
+                }}
+              >
+                <option value="placeholder" disabled hidden> </option>
+                <option value={EmotionType.Love}>{EmotionText.Love}</option>
+                <option value={EmotionType.Happy}>{EmotionText.Happy}</option>
+                <option value={EmotionType.Meh}>{EmotionText.Meh}</option>
+                <option value={EmotionType.Sad}>{EmotionText.Sad}</option>
+              </select>
+            </div>
 
+            {/* Recommend */}
+            <div className={style['dropdown-container']}>
+              <label className={style['label']} htmlFor="recommend">{RecommendRestText.Question}</label>
+              <select
+                name="recommend"
+                className={style['dropdown']}
+                defaultValue={recommend === RecommendType.Question ? 'placeholder' : recommend as string}
+                onChange={(e) => {
+                  const newRecommend: RecommendType = e.target.value as RecommendType;
+                  setRecommend(newRecommend);
+                }}
+              >
+                <option value="placeholder" disabled hidden> </option>
+                <option value={RecommendType.Yes}>{RecommendRestText.Yes}</option>
+                <option value={RecommendType.No}>{RecommendRestText.No}</option>
+              </select>
+            </div>
           </div>
-
-          {/* Emotion */}
-          <div className={style['emotion-container']}>
-            <label htmlFor="emotion">How was it?</label>
-            <select
-              name="emotion"
-              className={style['emotion-dropdown']}
-              defaultValue={emotion === EmotionType.Surprise ? 'placeholder' : emotion as string}
-              onChange={(e) => {
-                const newEmotion: EmotionType = e.target.value as EmotionType;
-                setEmotion(newEmotion);
-              }}
-            >
-              <option value="placeholder" disabled hidden> </option>
-              <option value="love">I loved it!</option>
-              <option value="happy">It was good</option>
-              <option value="meh">It was okay</option>
-              <option value="sad">It was not good</option>
-            </select>
-          </div>
-
-          {/* Recommend */}
-          <div className={style['recommend-container']}>
-            <label htmlFor="recommend">Would I order again?</label>
-            <select
-              name="recommend"
-              className={style['recommend-dropdown']}
-              defaultValue={recommend === RecommendType.Question ? 'placeholder' : recommend as string}
-              onChange={(e) => {
-                const newRecommend: RecommendType = e.target.value as RecommendType;
-                setRecommend(newRecommend);
-              }}
-            >
-              <option value="placeholder" disabled hidden> </option>
-              <option value="yes">I would order again</option>
-              <option value="no">I would not order again</option>
-            </select>
-          </div>
-
           {/* Confirmation buttons */}
           <div className={style['button-container']}>
             <input
@@ -169,17 +189,8 @@ const RestaurantModal = (props: IProps) => {
               type="submit"
               value="Save"
             />
-            <input
-              className="delete-button"
-              type="button"
-              value="Delete"
-              onClick={handleDelete}
-            />
-
           </div>
-
         </form>
-
       </Modal.Actions>
     </Modal>
   );

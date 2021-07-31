@@ -1,20 +1,19 @@
-// TODO: Share icon
-// TODO: Image gallery
-
 import React, { SyntheticEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import _ from 'lodash';
 
 import RestaurantDescription from './RestaurantDescription';
 import RestaurantController from '../../routes/restaurantController';
+import RestaurantModal from './RestaurantModal';
 
 import DeleteModal from '../util/DeleteModal';
 
 import {
   IRestaurant,
-  PlaceHolder,
   DescriptionType,
   EmotionType,
   RecommendType,
+  RestaurantModalType,
 } from '../../constant';
 
 import styles from '../styles/restaurant/RestaurantProfile.module.scss';
@@ -29,7 +28,8 @@ interface IProps {
 // Declaring State interface
 interface IState {
   restData: IRestaurant,
-  isModalOpen: boolean,
+  isEditModal: boolean,
+  isDeleteModal: boolean,
 }
 
 class RestaurantProfile extends React.Component<IProps, IState> {
@@ -45,7 +45,8 @@ class RestaurantProfile extends React.Component<IProps, IState> {
         id: props.id,
         name: '',
       },
-      isModalOpen: false,
+      isEditModal: false,
+      isDeleteModal: false,
     };
 
     this.closeModal = this.closeModal.bind(this);
@@ -124,7 +125,6 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     }
   };
 
-  // TODO: Have an on submit button
   handleSelect = (e: SyntheticEvent, type: DescriptionType) => {
     e.preventDefault();
 
@@ -147,16 +147,20 @@ class RestaurantProfile extends React.Component<IProps, IState> {
     }
   };
 
-  editRestaurant = async (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-    e.preventDefault();
+  editRestaurant = async (editRest: IRestaurant) => {
     const { restData } = this.state;
 
     // Only update the profile if changes were made
-    if (await this.control.editRestaurant(restData)) {
-      console.log('Successfully edited restaurant');
-      this.cache(restData);
+    if (!_.isEqual(restData, editRest)) {
+      editRest.id = restData.id;
+      if (await this.control.editRestaurant(editRest)) {
+        console.log('Successfully edited restaurant');
+        this.setState({ restData: editRest });
+        this.cache(editRest);
+      }
+      else console.error('Changes could not be saved');
     }
-    else console.log('Restaurant could not be edited');
+    else console.log('No changes to be made');
   };
 
   deleteRestaurant = async () => {
@@ -172,52 +176,86 @@ class RestaurantProfile extends React.Component<IProps, IState> {
         // Deleting restaurant list from cache
         const restListCache: string = process.env.NEXT_PUBLIC_RESTLIST_CACHE as string;
         window.localStorage.removeItem(restListCache);
+
+        this.setState({ isEditModal: false });
       }
     }
     else console.log('Restaurant could not be deleted');
   };
 
-  openModal = () => {
-    this.setState({ isModalOpen: true });
+  openEditModal = () => {
+    this.setState({ isEditModal: true });
+  };
+
+  openDeleteModal = () => {
+    this.setState({ isDeleteModal: true });
   };
 
   closeModal = () => {
-    this.setState({ isModalOpen: false });
+    this.setState({ isEditModal: false, isDeleteModal: false });
   };
 
   render(): JSX.Element {
     const {
       restData,
-      isModalOpen,
+      isEditModal,
+      isDeleteModal,
     } = this.state;
 
     return (
       <div className={style['container']}>
-
+        <header className="header-container">
+          <div className="logo-container">
+            <h2 className="logo-red">foodie</h2>
+            <h2 className="logo-black">.io</h2>
+          </div>
+          <span className="sign-in">
+            {/* <FontAwesomeIcon icon={['fas', 'user-circle']} /> */}
+          </span>
+        </header>
+        <RestaurantModal
+          open={isEditModal}
+          restData={restData}
+          type={RestaurantModalType.Edit}
+          restaurantAction={this.editRestaurant}
+          closeModal={this.closeModal}
+        />
         <DeleteModal
-          open={isModalOpen}
+          open={isDeleteModal}
           name={restData.name}
           deleteRestaurant={this.deleteRestaurant}
           closeModal={this.closeModal}
         />
+
         {/* Profile */}
-        <div className={style['profile']}>
-          <input
-            className={style['profile-title']}
-            type="text"
-            placeholder={PlaceHolder.Name}
-            value={restData.name || ''}
-            onChange={(e) => this.handleChangeText(e, DescriptionType.Name)}
-          />
-          <button
-            type="button"
-            className="delete-button"
-            onClick={this.openModal}
-          >
-            <span className="delete-button_icon">
-              <FontAwesomeIcon icon={['fas', 'trash']} />
+        <div className={style['profile-container']}>
+          <div className={style['title-container']}>
+
+            <span className={style['title']}>
+              <h3 className={style['title-text']}> {restData.name || ''} </h3>
+              <button
+                type="button"
+                className={style['edit-button']}
+                onClick={this.openEditModal}
+              >
+                <span className={style['edit-button_icon']}>
+                  <FontAwesomeIcon icon={['fas', 'edit']} />
+                </span>
+              </button>
             </span>
-          </button>
+
+            <div className={style['icons']}>
+              <button
+                type="button"
+                className={style['delete-button']}
+                onClick={this.openDeleteModal}
+              >
+                <span className={style['delete-button_icon']}>
+                  <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                </span>
+              </button>
+            </div>
+          </div>
 
           {/* Descriptions */}
           <RestaurantDescription
@@ -225,18 +263,7 @@ class RestaurantProfile extends React.Component<IProps, IState> {
             phone={restData.phone}
             emotion={restData.emotion}
             recommend={restData.recommend}
-            handleChangeText={this.handleChangeText}
-            handleSelect={this.handleSelect}
           />
-          {/* Confirmation buttons */}
-          <div className={style['button-container']}>
-            <input
-              className="save-button"
-              type="button"
-              value="Save"
-              onClick={(e) => this.editRestaurant(e)}
-            />
-          </div>
           <ItemList restId={restData.id} />
         </div>
       </div>

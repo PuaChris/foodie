@@ -3,7 +3,7 @@ import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRestaurantItem } from '../../constant';
-import { checkEmotion, checkRecommend } from '../../helper/checkIcon';
+import { checkEmotionIcon, checkRecommendIcon } from '../../helper/checkEmotionRecommend';
 import styles from '../styles/item/Item.module.scss';
 
 const style: any = styles;
@@ -17,8 +17,8 @@ const RestaurantItem = (props: IProps) => {
   const { itemData, selectItem } = props;
 
   // Matching icon with selected option
-  const emotionIcon: [IconPrefix, IconName] = checkEmotion(itemData.emotion);
-  const recommendIcon: [IconPrefix, IconName] = checkRecommend(itemData.recommend);
+  const emotionIcon: [IconPrefix, IconName] = checkEmotionIcon(itemData.emotion);
+  const recommendIcon: [IconPrefix, IconName] = checkRecommendIcon(itemData.recommend);
 
   const handleMouseClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
@@ -38,22 +38,18 @@ const RestaurantItem = (props: IProps) => {
       role="button"
       tabIndex={-1}
     >
-      {/* Title + Emotion */}
-      <header className={style['header']}>
+      <div className={style['item-text']}>
         <h1 className={style['title']}>{itemData.name}</h1>
 
-        <span className={style['emotion-icon']}>
-          <FontAwesomeIcon icon={emotionIcon} />
-        </span>
-      </header>
+        <h2 className={style['price']}>
+          {itemData.price ? `$${itemData.price}` : '$0.00'}
+        </h2>
+      </div>
+      <div className={style['icons']}>
+        <FontAwesomeIcon className={`${itemData.emotion}`} icon={emotionIcon} />
+        <FontAwesomeIcon className={`${itemData.recommend}`} icon={recommendIcon} />
+      </div>
 
-      {/* Price */}
-      <h2 className={style['price']}>
-        {itemData.price ? `$${itemData.price}` : '$0.00'}
-      </h2>
-      <span className={style['recommend-icon']}>
-        <FontAwesomeIcon icon={recommendIcon} />
-      </span>
     </div>
   );
 };

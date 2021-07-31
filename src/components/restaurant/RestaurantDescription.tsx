@@ -1,15 +1,17 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import NumberFormat from 'react-number-format';
 
 import {
-  PlaceHolder,
-  DescriptionType,
   EmotionType,
   RecommendType,
 } from '../../constant';
-import { checkEmotion, checkRecommend } from '../../helper/checkIcon';
+import {
+  checkEmotionIcon,
+  checkEmotionText,
+  checkRecommendIcon,
+  checkRecommendText,
+} from '../../helper/checkEmotionRecommend';
 import styles from '../styles/restaurant/RestaurantDescription.module.scss';
 
 const style: any = styles;
@@ -19,9 +21,6 @@ interface IProps {
   phone?: string,
   emotion?: EmotionType,
   recommend?: RecommendType,
-
-  handleChangeText: (e: React.ChangeEvent<HTMLInputElement>, type: DescriptionType) => void;
-  handleSelect: (e: SyntheticEvent, type: DescriptionType) => void;
 }
 
 const RestaurantDescription = ({
@@ -29,32 +28,21 @@ const RestaurantDescription = ({
   phone,
   emotion,
   recommend,
-  handleChangeText,
-  handleSelect,
 }: IProps) => {
   // Matching icon with selected option
-  const emotionIcon: [IconPrefix, IconName] = checkEmotion(emotion);
-  const recommendIcon: [IconPrefix, IconName] = checkRecommend(recommend);
+  const emotionIcon: [IconPrefix, IconName] = checkEmotionIcon(emotion);
+  const recommendIcon: [IconPrefix, IconName] = checkRecommendIcon(recommend);
 
   return (
-    // TODO: Add onSubmit here
-    <form
+    <div
       className={style['container']}
-      action="/"
-      method="get"
     >
       {/* Location */}
       <div className={style['restaurant-description']}>
         <span className={style['location-icon']}>
           <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
         </span>
-        <input
-          className={style['location-input']}
-          type="text"
-          placeholder={PlaceHolder.Location}
-          value={location || ''}
-          onChange={(e) => handleChangeText(e, DescriptionType.Location)}
-        />
+        <p className={style['text']}> {location || ''}</p>
       </div>
 
       {/* Phone number */}
@@ -62,56 +50,25 @@ const RestaurantDescription = ({
         <span className={style['phone-icon']}>
           <FontAwesomeIcon icon={['fas', 'phone-alt']} />
         </span>
-        <NumberFormat
-          className={style['phone-input']}
-          format="(###) ###-####"
-          placeholder={PlaceHolder.Phone}
-          mask="_"
-          value={phone}
-          onChange={(e) => handleChangeText(e, DescriptionType.Phone)}
-        />
+        <p className={style['text']}>{phone || '(___) ___-____'}</p>
       </div>
 
       {/* Emotion */}
       <div className={style['restaurant-description']}>
         <span className={style['emotion-icon']}>
-          <FontAwesomeIcon icon={emotionIcon} />
+          <FontAwesomeIcon className={`${emotion}`} icon={emotionIcon} />
         </span>
-
-        {/* Dropdown */}
-        <select
-          className={style['emotion-dropdown']}
-          onChange={(e) => handleSelect(e, DescriptionType.Emotion)}
-          defaultValue={emotion || 'placeholder'}
-          value={emotion}
-        >
-          <option value="placeholder" disabled hidden>How was it?</option>
-          <option value="love">I loved it!</option>
-          <option value="happy">It was good</option>
-          <option value="meh">It was okay</option>
-          <option value="sad">It was not good</option>
-        </select>
+        <p className={style['text']}>{checkEmotionText(emotion)}</p>
       </div>
 
       {/* Recommendation */}
       <div className={style['restaurant-description']}>
         <span className={style['recommend-icon']}>
-          <FontAwesomeIcon icon={recommendIcon} />
+          <FontAwesomeIcon className={`${recommend}`} icon={recommendIcon} />
         </span>
-
-        {/* Dropdown */}
-        <select
-          className={style['recommend-dropdown']}
-          onChange={(e) => handleSelect(e, DescriptionType.Recommend)}
-          defaultValue={recommend || 'placeholder'}
-          value={recommend}
-        >
-          <option value="placeholder" disabled hidden>Would I go back?</option>
-          <option value="yes">I would go back</option>
-          <option value="no">I would not go back</option>
-        </select>
+        <p className={style['text']}>{checkRecommendText(true, recommend)} </p>
       </div>
-    </form>
+    </div>
   );
 };
 

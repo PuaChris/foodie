@@ -1,3 +1,25 @@
+.header-container {
+  width: 90%;
+  margin: 40px
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.logo-red {
+  margin: 0;
+  color: #d63031;
+}
+.logo-black {
+  margin: 0;
+  color: #1e1e1e;
+}
+
+.sign-in {
+}
+
 .add-button {
   // Positioning
   position: fixed;
@@ -9,16 +31,25 @@
   width: 70px;
 
   // Color
-  background: linear-gradient(90deg, rgba(214,48,49,1) 0%, rgba(192,13,104,1) 100%);
+  background: linear-gradient(90deg, rgba(214, 48, 49, 1) 0%, rgba(192, 13, 104, 1) 100%);
   border-radius: 50%;
   border: none;
 
   display: inline-block;
 }
 
+
 .add-button_icon {
-  color: #E7E5E5;
+  color: #e7e5e5;
   font-size: 35px;
+
+  // Positioning
+  bottom: 8%;
+  right: 20%;
+
+  // Size
+  height: 70px;
+  width: 70px;
 }
 
 .back-button {
@@ -33,23 +64,40 @@
   font-size: 35px;
 }
 
-@media screen and (min-width: 641px) {
-  .add-button {
-    // Positioning
-    bottom: 8%;
-    right: 10%;
+// Colors for different emotions
+.question {
+  color: #1e1e1e;
+}
 
-    // Size
-    height: 70px;
-    width: 70px;
-  }
+.love {
+  color: #01a95a;
+}
+
+.happy {
+  color: #4a69bd;
+}
+
+.meh {
+  color: #e57500;
+}
+
+.sad {
+  color: #c00d68;
+}
+
+.yes {
+  color: #01a95a;
+}
+
+.no {
+  color: #c00d68;
 }
 
 @media screen and (min-width: 1008px) {
   .add-button {
     // Positioning
     bottom: 8%;
-    right: 25%;
+    right: 20%;
 
     // Size
     height: 70px;

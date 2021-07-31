@@ -13,7 +13,7 @@ interface IProps {
   closeModal: () => void,
 }
 
-const RestaurantModal = (props: IProps) => {
+const DeleteModal = (props: IProps) => {
   const {
     open,
     name,
@@ -43,19 +43,20 @@ const RestaurantModal = (props: IProps) => {
 
   return (
     <Modal
+      size="mini"
       onClose={() => {
         closeModal();
       }}
       open={isOpen}
     >
       <Modal.Content>
-        <Header>New Restaurant</Header>
+        <Header>Delete</Header>
       </Modal.Content>
       <Modal.Actions>
         <form
           className={style['container']}
         >
-          <h1>Are you sure you want to delete {name}?</h1>
+          <p className={style['text']}>Are you sure you want to delete {name}?</p>
           {/* Confirmation buttons */}
           <div className={style['button-container']}>
             <input
@@ -80,4 +81,4 @@ const RestaurantModal = (props: IProps) => {
   );
 };
 
-export default RestaurantModal;
+export default DeleteModal;

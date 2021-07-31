@@ -5,11 +5,10 @@ import { NextRouter, withRouter } from 'next/dist/client/router';
 
 import RestaurantController from '../../routes/restaurantController';
 import RestaurantModal from './RestaurantModal';
-import SearchBar from '../util/SearchBar';
 
 import styles from '../styles/restaurant/RestaurantList.module.scss';
-import { IRestaurant } from '../../constant';
-import { checkEmotion, checkRecommend } from '../../helper/checkIcon';
+import { IRestaurant, RestaurantModalType } from '../../constant';
+import { checkEmotionIcon, checkRecommendIcon } from '../../helper/checkEmotionRecommend';
 
 interface WithRouterProps {
   router: NextRouter
@@ -105,14 +104,15 @@ class RestaurantList extends React.Component<IProps, IState> {
 
         <RestaurantModal
           open={isModalOpen}
-          addRestaurant={this.addRestaurant}
+          type={RestaurantModalType.Add}
+          restaurantAction={this.addRestaurant}
           closeModal={this.closeModal}
         />
         {/* <SearchBar /> */}
         <ul className={style['restaurant-list']}>
           {restList?.map((rest) => {
-            const emotionIcon: [IconPrefix, IconName] = checkEmotion(rest.emotion);
-            const recommendIcon: [IconPrefix, IconName] = checkRecommend(rest.recommend);
+            const emotionIcon: [IconPrefix, IconName] = checkEmotionIcon(rest.emotion);
+            const recommendIcon: [IconPrefix, IconName] = checkRecommendIcon(rest.recommend);
 
             return (
               <li key={rest.id}>
@@ -130,10 +130,9 @@ class RestaurantList extends React.Component<IProps, IState> {
                   </div>
 
                   <div className={style['icons']}>
-                    <FontAwesomeIcon className={style[`${rest.emotion}`]} icon={emotionIcon} />
-                    <FontAwesomeIcon className={style[`${rest.recommend}`]} icon={recommendIcon} />
-                    {/* <FontAwesomeIcon className={style['emotion']} icon={emotionIcon} />
-                    <FontAwesomeIcon className={style['recommend']} icon={recommendIcon} /> */}
+                    <FontAwesomeIcon className={`${rest.emotion}`} icon={emotionIcon} />
+                    {/* <FontAwesomeIcon className={`${rest.recommend}`} icon={recommendIcon} /> */}
+                    <FontAwesomeIcon className="question" icon={recommendIcon} />
                   </div>
                 </div>
               </li>

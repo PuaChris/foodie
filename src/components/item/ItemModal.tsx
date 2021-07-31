@@ -6,6 +6,8 @@ import {
   IRestaurantItem,
   EmotionType,
   RecommendType,
+  RecommendItemText,
+  EmotionText,
 } from '../../constant';
 
 import styles from '../styles/item/ItemModal.module.scss';
@@ -21,7 +23,7 @@ interface IProps {
   closeModal: () => void,
 }
 
-const RestaurantModal = (props: IProps) => {
+const ItemModal = (props: IProps) => {
   const {
     open,
     item,
@@ -34,7 +36,7 @@ const RestaurantModal = (props: IProps) => {
   const [isOpen, setOpen] = useState<boolean>(open);
   const [name, setName] = useState<string>();
   const [price, setPrice] = useState<string>();
-  const [emotion, setEmotion] = useState<EmotionType | undefined>(EmotionType.Surprise);
+  const [emotion, setEmotion] = useState<EmotionType | undefined>(EmotionType.Question);
   const [recommend, setRecommend] = useState<RecommendType | undefined>(RecommendType.Question);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,7 +72,7 @@ const RestaurantModal = (props: IProps) => {
 
     setName(item ? item.name : '');
     setPrice(item ? item.price : '');
-    setEmotion(item ? item.emotion : EmotionType.Surprise);
+    setEmotion(item ? item.emotion : EmotionType.Question);
     setRecommend(item ? item.recommend : RecommendType.Question);
   }, [open]);
 
@@ -82,7 +84,7 @@ const RestaurantModal = (props: IProps) => {
       open={isOpen}
     >
       <Modal.Content>
-        <Header>New Restaurant Item</Header>
+        <Header>New Item</Header>
       </Modal.Content>
       <Modal.Actions>
         <form
@@ -124,28 +126,28 @@ const RestaurantModal = (props: IProps) => {
 
           {/* Emotion */}
           <div className={style['emotion-container']}>
-            <label htmlFor="emotion">How was it?</label>
+            <label htmlFor="emotion">{EmotionText.Question}</label>
             <select
               name="emotion"
               className={style['emotion-dropdown']}
               required
-              defaultValue={emotion === EmotionType.Surprise ? 'placeholder' : emotion as string}
+              defaultValue={emotion === EmotionType.Question ? 'placeholder' : emotion as string}
               onChange={(e) => {
                 const newEmotion: EmotionType = e.target.value as EmotionType;
                 setEmotion(newEmotion);
               }}
             >
               <option value="placeholder" disabled hidden> </option>
-              <option value="love">I loved it!</option>
-              <option value="happy">It was good</option>
-              <option value="meh">It was okay</option>
-              <option value="sad">It was not good</option>
+              <option value={EmotionType.Love}>{EmotionText.Love}</option>
+              <option value={EmotionType.Happy}>{EmotionText.Happy}</option>
+              <option value={EmotionType.Meh}>{EmotionText.Meh}</option>
+              <option value={EmotionType.Sad}>{EmotionText.Sad}</option>
             </select>
           </div>
 
           {/* Recommend */}
           <div className={style['recommend-container']}>
-            <label htmlFor="recommend">Would I order again?</label>
+            <label htmlFor="recommend">{RecommendItemText.Question}</label>
             <select
               name="recommend"
               className={style['recommend-dropdown']}
@@ -157,8 +159,8 @@ const RestaurantModal = (props: IProps) => {
               }}
             >
               <option value="placeholder" disabled hidden> </option>
-              <option value="yes">I would order again</option>
-              <option value="no">I would not order again</option>
+              <option value={RecommendType.Yes}>{RecommendItemText.Yes}</option>
+              <option value={RecommendType.No}>{RecommendItemText.No}</option>
             </select>
           </div>
 
@@ -192,4 +194,4 @@ const RestaurantModal = (props: IProps) => {
   );
 };
 
-export default RestaurantModal;
+export default ItemModal;

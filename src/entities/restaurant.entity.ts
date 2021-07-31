@@ -34,7 +34,7 @@ class Restaurant {
   // TODO: Change column type to string for enums after learning migrations
   @Column({
     type: 'text',
-    default: EmotionType.Surprise,
+    default: EmotionType.Question,
   })
   public emotion: EmotionType;
 

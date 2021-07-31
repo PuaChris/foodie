@@ -1,7 +1,14 @@
 .item-list {
   // Remove bullet in front of <li>
   list-style-type: none;
-  
-  width: 100%;
+
   padding: 0;
+
+  // Grid
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
+  grid-template-rows: auto;
+  align-items: center;
+  justify-content: center;
 }
