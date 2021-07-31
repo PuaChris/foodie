@@ -23,7 +23,7 @@ RestaurantRouter.route('/restaurants')
     return res.status(200).json(result);
   });
 
-RestaurantRouter.route('/restaurant/')
+RestaurantRouter.route('/restaurant')
   // Add new restaurant
   .post(async (req, res) => {
     if (!req.body) return res.status(400).send('Request body is undefined');

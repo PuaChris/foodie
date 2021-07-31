@@ -1,5 +1,5 @@
-module.exports = {
-  "name": process.env.CONFIG_NAME,
+module.exports = [{
+  "name": process.env.CONFIG_PROD,
   "type": process.env.DB_TYPE,
   "url": process.env.DB_URL,
   "synchronize": false,
@@ -15,4 +15,23 @@ module.exports = {
   "migrations": [
     "src/migrations/**/*.ts"
   ]
+},
+{
+  "name": process.env.CONFIG_DEV,
+  "type": process.env.DB_TYPE,
+  "host": process.env.DB_HOST_DEV,
+  "username": process.env.DB_USERNAME_DEV,
+  "password": process.env.DB_PASSWORD_DEV,
+  "database": process.env.DB_NAME_DEV,
+  "synchronize": true,
+  "logging": true,
+  "entities": [
+    "src/entities/**/*.ts",
+    "dist/entities/**/*.js"
+  ],
+  "migrations": [
+    "src/migrations/**/*.ts"
+  ]
 }
+
+]

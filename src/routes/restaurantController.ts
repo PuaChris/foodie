@@ -3,7 +3,7 @@ import Controller from './controller';
 
 export default class RestaurantController extends Controller {
   public getRestaurantList = async (): Promise<IRestaurant[]> => {
-    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const domain = window.location.origin;
     const url = (new URL(`${domain}/restaurants`)).toString();
 
     const fetchOptions = this.initFetchOptions(HTTPMethodType.GET);
@@ -26,7 +26,7 @@ export default class RestaurantController extends Controller {
   };
 
   public getRestaurant = async (restId: string): Promise<IRestaurant> => {
-    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const domain = window.location.origin;
     const url = new URL(`${domain}/restaurant/${restId}`);
 
     const fetchOptions = this.initFetchOptions(HTTPMethodType.GET);
@@ -52,7 +52,7 @@ export default class RestaurantController extends Controller {
   };
 
   public addRestaurant = async (restData: IRestaurant): Promise<string> => {
-    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const domain = window.location.origin;
     const url = (new URL(`${domain}/restaurant`)).toString();
 
     // Passing new restaurant information
@@ -81,7 +81,7 @@ export default class RestaurantController extends Controller {
   };
 
   public editRestaurant = async (restData: IRestaurant): Promise<Boolean> => {
-    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const domain = window.location.origin;
     const restId: string = restData.id;
     const url = (new URL(`${domain}/restaurant/${restId}`)).toString();
     let isEdited: Boolean = false;
@@ -103,7 +103,7 @@ export default class RestaurantController extends Controller {
   };
 
   public deleteRestaurant = async (restId: string): Promise<Boolean> => {
-    const domain = process.env.NEXT_PUBLIC_API_LINK;
+    const domain = window.location.origin;
     const url = (new URL(`${domain}/restaurant/${restId}`)).toString();
     let isDeleted: Boolean = false;
 

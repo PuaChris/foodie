@@ -7,10 +7,6 @@ import RestaurantRouter from './routes/restaurantRouter';
 import ItemRouter from './routes/itemRouter';
 
 const dev = process.env.NODE_ENV !== 'production';
-if (dev) {
-  console.log('>> Rejecting Node TLS');
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-}
 
 const app = next({ dev });
 const handle = app.getRequestHandler();

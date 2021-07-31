@@ -167,17 +167,23 @@ class RestaurantProfile extends React.Component<IProps, IState> {
   deleteRestaurant = async () => {
     const { restData } = this.state;
     const { id } = restData;
-    if (id && await this.control.deleteRestaurant(id)) {
-      console.log('Successfully deleted restaurant');
 
-      // Deleting from cache
-      if (typeof window !== undefined) {
-        window.localStorage.removeItem(id);
+    console.log(`Deleting all items from ${restData.name}`);
 
-        // Deleting restaurant list from cache
-        window.localStorage.removeItem(restListCache);
+    if (id) {
+      console.log(`Deleting ${restData.name}`);
 
-        this.setState({ isEditModal: false });
+      if (await this.control.deleteRestaurant(id)) {
+        console.log('Successfully deleted restaurant');
+        // Deleting from cache
+        if (typeof window !== undefined) {
+          window.localStorage.removeItem(id);
+
+          // Deleting restaurant list from cache
+          window.localStorage.removeItem(restListCache);
+
+          this.setState({ isEditModal: false });
+        }
       }
     }
     else console.log('Restaurant could not be deleted');

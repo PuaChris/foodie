@@ -37,7 +37,7 @@ class Item {
   })
   public recommend: RecommendType;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.items, { cascade: true })
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.items, { onDelete: 'CASCADE' })
   public restaurant: Restaurant;
 
   getInfo(): IItem {

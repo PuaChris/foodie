@@ -1,4 +1,5 @@
 import {
+  ConnectionOptions,
   createConnection,
   getRepository,
 } from 'typeorm';
@@ -9,11 +10,45 @@ export const connectDB = async () => {
   console.log('>> Connecting to database...');
 
   // Uses details from ormconfig.js
-  if (process.env.DB_URL) {
-    await createConnection(process.env.CONFIG_NAME as string)
+  const connectionOptions: ConnectionOptions = {
+    type: 'postgres',
+    logging: true,
+    entities: [
+      'src/entities/**/*.ts',
+      'dist/entities/**/*.js',
+    ],
+    migrations: [
+      'src/migrations/**/*.ts',
+    ],
+  };
+
+  if (process.env.DB_URL && process.env.NODE_ENV === 'production') {
+    Object.assign(connectionOptions, {
+      url: process.env.DB_URL,
+      synchronize: true,
+    });
+
+    await createConnection(connectionOptions)
       .then(async () => {
         console.log('\n\n>> Database connected.\n\n');
       }).catch((error) => console.log(error));
+  }
+  else {
+    Object.assign(connectionOptions, {
+      host: process.env.DB_HOST_DEV,
+      username: process.env.DB_USERNAME_DEV,
+      password: process.env.DB_PASSWORD_DEV,
+      database: process.env.DB_NAME_DEV,
+      synchronize: true,
+    });
+
+    await createConnection(connectionOptions)
+      .then(async () => {
+        console.log('\n\n>> Database connected.\n\n');
+      }).catch((error) => {
+        console.log(error);
+        throw new Error('>> Could not successfully connect to database');
+      });
   }
 };
 
@@ -29,7 +64,10 @@ export const getRestaurantList = async () => {
         console.log('>> Loading complete');
       }
     },
-  ).catch((e) => console.error(e));
+  ).catch((e) => {
+    console.error(e);
+    throw new Error('>> Could not successfully retrieve restaurants');
+  });
 
   // Return in order of most recently added restaurants
   return restList.reverse();
@@ -52,7 +90,7 @@ export const getRestaurant = async (restId: string) => {
       ).catch((e) => console.error(e));
 
     if (rest.id) return rest.getInfo();
-    throw new Error(`>> Could not retrieve restaurant profile ${restId}`);
+    throw new Error(`>> Could not successfully retrieve restaurant profile ${restId}`);
   }
   else throw new Error('>> Undefined restaurant ID');
 };
@@ -93,7 +131,10 @@ export const editRestaurant = async (rest: Restaurant) => {
       .then(() => {
         console.log(`>> Updated restaurant: ${rest.id} --> ${rest.name}`);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        throw new Error('>> Could not successfully update restaurant');
+      });
   }
   else throw new Error('>> Invalid restaurant data; cannot update restaurant');
 };
@@ -107,7 +148,10 @@ export const deleteRestaurant = async (restId: string) => {
       .then(() => {
         console.log(`>> Deleted restaurant ${restId}`);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        throw new Error('>> Could not successfully delete restaurant');
+      });
   }
   else throw new Error('>> Invalid restaurant ID; cannot delete restaurant');
 };
@@ -182,7 +226,10 @@ export const editItem = async (item: Item) => {
       .then(() => {
         console.log(`>> Updated item: ${item.id} --> ${item.name}`);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        throw new Error('>> Could not successfully save item into database');
+      });
   }
   else throw new Error('>> Invalid item data; cannot save into database');
 };
@@ -197,7 +244,10 @@ export const deleteItem = async (itemId: string) => {
       .then(() => {
         console.log(`>> Deleted item ${itemId}`);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        throw new Error('>> Could not successfully delete item');
+      });
   }
   else throw new Error('>> Invalid item ID; could not delete');
 };
