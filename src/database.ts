@@ -8,11 +8,13 @@ import Restaurant from './entities/restaurant.entity';
 export const connectDB = async () => {
   console.log('>> Connecting to database...');
 
-  // Uses details from ormconfig.json
-  await createConnection('default')
-    .then(async () => {
-      console.log('\n\n>> Database connected.\n\n');
-    }).catch((error) => console.log(error));
+  // Uses details from ormconfig.js
+  if (process.env.DB_URL) {
+    await createConnection(process.env.CONFIG_NAME as string)
+      .then(async () => {
+        console.log('\n\n>> Database connected.\n\n');
+      }).catch((error) => console.log(error));
+  }
 };
 
 // * DEFINING CRUD OPERATIONS FOR RESTAURANTS * //
@@ -30,8 +32,7 @@ export const getRestaurantList = async () => {
   ).catch((e) => console.error(e));
 
   // Return in order of most recently added restaurants
-  if (restList.length) return restList.reverse();
-  throw new Error('>> Could not retrieve restaurants');
+  return restList.reverse();
 };
 
 export const getRestaurant = async (restId: string) => {
