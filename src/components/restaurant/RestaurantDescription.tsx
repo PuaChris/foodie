@@ -39,7 +39,7 @@ const RestaurantDescription = ({
     >
       {/* Location */}
       <div className={style['restaurant-description']}>
-        <span className={style['location-icon']}>
+        <span className={style['icon']}>
           <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
         </span>
         <p className={style['text']}> {location || ''}</p>
@@ -47,7 +47,7 @@ const RestaurantDescription = ({
 
       {/* Phone number */}
       <div className={style['restaurant-description']}>
-        <span className={style['phone-icon']}>
+        <span className={style['icon']}>
           <FontAwesomeIcon icon={['fas', 'phone-alt']} />
         </span>
         <p className={style['text']}>{phone || '(___) ___-____'}</p>
@@ -55,7 +55,7 @@ const RestaurantDescription = ({
 
       {/* Emotion */}
       <div className={style['restaurant-description']}>
-        <span className={style['emotion-icon']}>
+        <span className={style['icon']}>
           <FontAwesomeIcon className={`${emotion}`} icon={emotionIcon} />
         </span>
         <p className={style['text']}>{checkEmotionText(emotion)}</p>
@@ -63,7 +63,7 @@ const RestaurantDescription = ({
 
       {/* Recommendation */}
       <div className={style['restaurant-description']}>
-        <span className={style['recommend-icon']}>
+        <span className={style['icon']}>
           <FontAwesomeIcon className={`${recommend}`} icon={recommendIcon} />
         </span>
         <p className={style['text']}>{checkRecommendText(true, recommend)} </p>

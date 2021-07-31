@@ -21,24 +21,16 @@
 
 .text {
   margin: 0;
-  padding-left: 10px;
+  padding: 0 10px;
   font-size: 18px;
   border: none;
 }
 
-.location-icon {
-  font-size: 40px;
-  margin-left: 3px;
-}
+.icon {
+  min-width: 40px;
+  height: 40px;
 
-.phone-icon {
-  font-size: 40px;
-}
+  text-align: center;
 
-.emotion-icon {
-  font-size: 40px;
-}
-
-.recommend-icon {
   font-size: 40px;
 }

@@ -9,7 +9,11 @@
   margin: 0;
 }
 
-.cancel-button {
+.header-text {
+  color: #d63031;
+}
+
+.cancel-icon {
   border: none;
   background: white;
 
@@ -39,6 +43,8 @@
   width: 100%;
   border-radius: 8px;
   border: #696969 2px solid;
+
+  height: 30px;
 }
 
 .input-container {
@@ -52,6 +58,8 @@
 .input {
   border-radius: 8px;
   border: #696969 2px solid;
+
+  height: 30px;
 }
 
 .secondary-container {
@@ -66,6 +74,10 @@
 
 .label {
   margin-bottom: 10px;
+  color: #1e1e1e;
+
+  font-size: 19px;
+  font-weight: 500;
 }
 
 .dropdown-container {
@@ -81,8 +93,45 @@
 
   border-radius: 8px;
   border: #696969 2px solid;
+
+  height: 30px;
 }
 
-.button-container { 
-  margin-top: 20px;
+.button-container {
+  width: 100%;
+  margin: 20px 0;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.cancel-button {
+  width: 90px;
+  height: 30px;
+
+  font-weight: 600;
+  font-size: 18px;
+  color: #d63031;
+
+  background-color: white;
+
+  border: #d63031 3px solid;
+  border-radius: 30px;
+}
+
+.save-button {
+  margin: 0 10px;
+
+  width: 90px;
+  height: 30px;
+
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+
+  background: linear-gradient(90deg, rgba(214, 48, 49, 1) 0%, rgba(192, 13, 104, 1) 100%);
+  border: none;
+  border-radius: 30px;
 }

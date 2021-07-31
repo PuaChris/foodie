@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Header } from 'semantic-ui-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Modal } from 'semantic-ui-react';
 import { useRouter } from 'next/dist/client/router';
 
 import styles from '../styles/util/DeleteModal.module.scss';
@@ -50,30 +51,40 @@ const DeleteModal = (props: IProps) => {
       open={isOpen}
     >
       <Modal.Content>
-        <Header>Delete</Header>
+        <div className={style['header-container']}>
+          <span className={style['header']}>
+            <h1 className={style['header-text']}>Delete Restaurant</h1>
+          </span>
+
+          <button
+            type="button"
+            className={style['cancel-icon']}
+            onClick={() => closeModal()}
+          >
+            <FontAwesomeIcon icon={['far', 'window-close']} />
+          </button>
+        </div>
       </Modal.Content>
       <Modal.Actions>
         <form
           className={style['container']}
         >
-          <p className={style['text']}>Are you sure you want to delete {name}?</p>
+          <p className={style['text']}>Do you want to delete <strong >{name}</strong>?</p>
           {/* Confirmation buttons */}
           <div className={style['button-container']}>
             <input
-              className="cancel-button"
+              className={style['no-button']}
               type="button"
-              value="Cancel"
+              value="No"
               onClick={() => closeModal()}
             />
             <input
-              className="delete-button"
+              className={style['yes-button']}
               type="button"
-              value="Delete"
+              value="Yes"
               onClick={(e) => handleDelete(e)}
             />
-
           </div>
-
         </form>
 
       </Modal.Actions>

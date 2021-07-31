@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Modal, Header } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 
 import {
   IRestaurant,
@@ -81,12 +81,12 @@ const RestaurantModal = (props: IProps) => {
       <Modal.Content>
         <div className={style['header-container']}>
           <span className={style['header']}>
-            <Header>{type === RestaurantModalType.Add ? 'New Restaurant' : 'Edit Restaurant'}</Header>
+            <h1 className={style['header-text']}>{type === RestaurantModalType.Add ? 'New Restaurant' : 'Edit Restaurant'}</h1>
           </span>
 
           <button
             type="button"
-            className={style['cancel-button']}
+            className={style['cancel-icon']}
             onClick={() => closeModal()}
           >
             <FontAwesomeIcon icon={['far', 'window-close']} />
@@ -179,13 +179,13 @@ const RestaurantModal = (props: IProps) => {
           {/* Confirmation buttons */}
           <div className={style['button-container']}>
             <input
-              className="cancel-button"
+              className={style['cancel-button']}
               type="button"
               value="Cancel"
               onClick={() => closeModal()}
             />
             <input
-              className="save-button"
+              className={style['save-button']}
               type="submit"
               value="Save"
             />

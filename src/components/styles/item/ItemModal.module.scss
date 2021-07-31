@@ -1,3 +1,26 @@
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+  margin: 0;
+}
+
+.header-text {
+  color: #d63031;
+}
+
+.cancel-icon {
+  border: none;
+  background: white;
+
+  font-size: 25px;
+  margin-top: -0.14285714em;
+}
+
 .container {
   display: flex;
   flex-direction: row;
@@ -5,40 +28,105 @@
 
   text-align: start;
 
+  padding: 0 1rem;
 }
 
-.name-container {
-  width: 100%;
+.input-container {
+  width: 45%;
+  margin: 10px 0;
+
   display: flex;
   flex-direction: column;
 }
 
-.name-input {
-  width: 100%;
+.input {
+  border-radius: 8px;
+  border: #696969 2px solid;
+
+  height: 30px;
 }
 
-.price-container {
-  width: 50%;
+.secondary-container {
+  width: 100%;
+  margin: 10px 0;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  margin-bottom: 10px;
+  color: #1e1e1e;
+
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.dropdown-container {
+  width: 45%;
+
   display: flex;
   flex-direction: column;
 }
 
-.emotion-container {
+.dropdown {
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  background: white;
+
+  border-radius: 8px;
+  border: #696969 2px solid;
+
+  height: 30px;
 }
 
-.emotion-dropdown {
-  width: 70%;
-}
-
-.recommend-container {
+.button-container {
   width: 100%;
+  margin: 20px 0;
+
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.recommend-dropdown { 
-  width: 70%;
+.delete-button {
+  background: white;
+
+  font-size: 35px;
+  border: none;
+}
+
+.delete-button_icon {
+  color: #1e1e1e;
+}
+
+.cancel-button {
+  width: 90px;
+  height: 30px;
+
+  font-weight: 600;
+  font-size: 18px;
+  color: #d63031;
+
+  background-color: white;
+
+  border: #d63031 3px solid;
+  border-radius: 30px;
+}
+
+.save-button {
+  margin: 0 10px;
+
+  width: 90px;
+  height: 30px;
+
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+
+  background: linear-gradient(90deg, rgba(214, 48, 49, 1) 0%, rgba(192, 13, 104, 1) 100%);
+  border: none;
+  border-radius: 30px;
 }
