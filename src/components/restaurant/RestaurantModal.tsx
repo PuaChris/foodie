@@ -68,6 +68,13 @@ const RestaurantModal = (props: IProps) => {
       setEmotion(restData.emotion);
       setRecommend(restData.recommend);
     }
+    else {
+      setName('');
+      setLocation('');
+      setPhone('');
+      setEmotion(EmotionType.Question);
+      setRecommend(RecommendType.Question);
+    }
   }, [open]);
 
   return (

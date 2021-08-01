@@ -48,7 +48,11 @@ RestaurantRouter.route('/restaurant')
       console.error(e);
       return res.status(400).send(e);
     });
-    if (id) return res.status(200).json({ id });
+    if (id) {
+      console.log(id);
+      res.setHeader('Content-Type', 'application/json');
+      return res.status(200).json({ id });
+    }
     return res.status(400).send('Returned restaurant ID is undefined');
   });
 
