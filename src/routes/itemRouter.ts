@@ -51,7 +51,7 @@ ItemRouter.route('/restaurant/:restId/item')
     } as IItem);
     const itemId = await addItem(restId, newItem).catch((e) => {
       console.error(e);
-      return res.status(400);
+      return res.status(400).send(e);
     });
     return res.status(200).json({ id: itemId });
   });
@@ -81,7 +81,7 @@ ItemRouter.route('/restaurant/:restId/item/:itemId')
     await editItem(updatedItem)
       .catch((e) => {
         console.error(e);
-        return res.status(400).send(`Error while trying to edit restaurant ${id}`);
+        return res.status(400).send(`Error while trying to edit restaurant ${id}: ${e}`);
       });
 
     return res.status(204).send('Successfully updated restaurant.');
@@ -96,7 +96,7 @@ ItemRouter.route('/restaurant/:restId/item/:itemId')
     await deleteItem(itemId)
       .catch((e) => {
         console.error(e);
-        return res.status(400).send(`Error while trying to delete restaurant ${itemId}`);
+        return res.status(400).send(`Error while trying to delete restaurant ${itemId}: ${e}`);
       });
 
     return res.status(204).send('Successfully deleted restaurant');

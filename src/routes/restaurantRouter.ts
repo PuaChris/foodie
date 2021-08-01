@@ -17,7 +17,7 @@ RestaurantRouter.route('/restaurants')
   .get(async (req, res) => {
     const result = await getRestaurantList().catch((e) => {
       console.error(e);
-      return res.status(400);
+      return res.status(400).send(e);
     });
 
     return res.status(200).json(result);
@@ -46,7 +46,7 @@ RestaurantRouter.route('/restaurant')
     } as IRestaurant);
     const id = await addRestaurant(newRest).catch((e) => {
       console.error(e);
-      return res.status(400);
+      return res.status(400).send(e);
     });
     return res.status(200).json({ id });
   });
@@ -92,7 +92,7 @@ RestaurantRouter.route('/restaurant/:restId')
     await editRestaurant(editRest)
       .catch((e) => {
         console.error(e);
-        return res.status(400).send(`Error while trying to edit restaurant ${id}`);
+        return res.status(400).send(`Error while trying to edit restaurant ${id}: ${e}`);
       });
 
     return res.status(204).send('Successfully updated restaurant.');
@@ -107,7 +107,7 @@ RestaurantRouter.route('/restaurant/:restId')
     await deleteRestaurant(restId)
       .catch((e) => {
         console.error(e);
-        return res.status(400).send(`Error while trying to delete restaurant ${restId}`);
+        return res.status(400).send(`Error while trying to delete restaurant ${restId}: ${e}`);
       });
 
     return res.status(204).send('Successfully deleted restaurant');
