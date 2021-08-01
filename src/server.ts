@@ -12,8 +12,8 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare()
-  .then(() => {
-    connectDB();
+  .then(async () => {
+    await connectDB();
 
     const port = Number(process.env.PORT) || 3000;
 
