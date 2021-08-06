@@ -12,7 +12,6 @@ export const connectDB = async () => {
   console.log('>> Connecting to database...');
 
   const connOptions: ConnectionOptions = {
-    name: 'default',
     type: 'postgres',
     logging: true,
     entities: [
@@ -76,6 +75,8 @@ export const getRestaurantList = async () => {
     },
   ).catch((e) => {
     console.error(e);
+    // TODO: Throw the actual error instead of an error message
+    // TODO: Add a try catch and return status 500 to prevent the client from seeing server information
     throw new Error('>> Could not successfully retrieve restaurants');
   });
 
