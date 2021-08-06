@@ -9,21 +9,6 @@ import 'reflect-metadata';
 import Restaurant from './entities/restaurant.entity';
 import Item from './entities/item.entity';
 
-
-async function getConnection(): Promise<void> {
-  const connectionManager = getConnectionManager();
-
-  if (connectionManager.has('default')) {
-    const connection = connectionManager.get('default');
-
-    if (!connection.isConnected) {
-      await connection.connect();
-    }
-  } else {
-    await connectDB();
-  }
-}
-
 export const connectDB = async () => {
   console.log('>> Connecting to database...');
 
@@ -76,6 +61,20 @@ export const connectDB = async () => {
     });
 };
 
+const getConnection = async () => {
+  const connectionManager = getConnectionManager();
+
+  if (connectionManager.has('default')) {
+    const connection = connectionManager.get('default');
+
+    if (!connection.isConnected) {
+      await connection.connect();
+    }
+  } else {
+    await connectDB();
+  }
+};
+
 // * DEFINING CRUD OPERATIONS FOR RESTAURANTS * //
 
 export const getRestaurantList = async () => {
@@ -83,7 +82,7 @@ export const getRestaurantList = async () => {
 
   let restList: Restaurant[] = [];
 
-  await getConnection();
+  // await getConnection();
   await getRepository('restaurant').find().then(
     (result) => {
       if (result) {
