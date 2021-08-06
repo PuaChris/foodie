@@ -12,3 +12,12 @@
   align-items: center;
   justify-content: center;
 }
+
+.item { 
+  transition: 0.5s;
+}
+
+.item:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}

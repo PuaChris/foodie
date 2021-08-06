@@ -12,9 +12,26 @@ const style: any = styles;
 
 const index = () => {
   return (
-    <div className={style['home-container']}>
-      {/* Remove horizontal scroll bar in mobile */}
-      <style jsx global>{`
+    // Can return empty elements like this
+    <>
+      <header className="header-container">
+        <div className="logo-container">
+
+          {/* Making the logo link back to the home page */}
+          <a href="/">
+            {/* Have only one header tag with multiple <span> children instead of the reverse */}
+            <h2>
+              <span className="logo-red">foodie</span>
+              <span className="logo-black">.io </span>
+            </h2>
+          </a>
+        </div>
+        <span className="sign-in">
+          {/* <FontAwesomeIcon icon={['fas', 'user-circle']} /> */}
+        </span>
+      </header>
+      <div className={style['home-container']}>
+        {/* <style jsx global>{`
         html, body {
           overflow-x: hidden;
         }
@@ -25,18 +42,10 @@ const index = () => {
           padding: 0;
         }
       `}
-      </style>
-      <header className="header-container">
-        <div className="logo-container">
-          <h2 className="logo-red">foodie</h2>
-          <h2 className="logo-black">.io</h2>
-        </div>
-        <span className="sign-in">
-          {/* <FontAwesomeIcon icon={['fas', 'user-circle']} /> */}
-        </span>
-      </header>
-      <RestaurantList />
-    </div>
+      </style> */}
+        <RestaurantList />
+      </div>
+    </>
   );
 };
 

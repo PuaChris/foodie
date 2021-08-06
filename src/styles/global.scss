@@ -1,6 +1,22 @@
+/* Remove horizontal scroll bar in mobile */
+html, body {
+  overflow-x: hidden;
+}
+body {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .header-container {
-  width: 90%;
-  margin: 40px
+  // width: 90%;
+  // margin: 40px auto;
+  background: #d63031;
+width: 100%;
+// padding: 0;
+margin: 0;
+padding: 30px;
 }
 
 .logo-container {
@@ -10,7 +26,8 @@
 
 .logo-red {
   margin: 0;
-  color: #d63031;
+  // color: #d63031;
+  color: white;
 }
 .logo-black {
   margin: 0;
@@ -43,13 +60,9 @@
   color: #e7e5e5;
   font-size: 35px;
 
-  // Positioning
-  bottom: 8%;
-  right: 20%;
-
-  // Size
-  height: 70px;
-  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .back-button {
@@ -102,5 +115,125 @@
     // Size
     height: 70px;
     width: 70px;
+  }
+}
+
+// Only have margins vertically and not horizontally for "layout containers" and not "content containers" or else it'll mess up the container placement 
+// E.g RestaurantList has an overlapping div that's the layout container while the search bar and the item list are the content containers
+
+// Fast way to add animations to buttons below. Can also target inputs of different types
+input[type="submit"],
+input[type="button"],
+button {
+  transition: 0.5s;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
+// Adds padding to the text so it doesn't feel cluttered inside the forms
+select,
+input[type="text"] {
+  padding: 15px 25px 15px 15px;
+
+  // min-height to prevent text from being overrun by padding
+  min-height: 50px;
+}
+
+
+
+$small: 420px;
+$medium: 770px;
+$large: 1040px;
+$xlarge: 1280px;
+$xxlarge: 1440px;
+
+
+// TODO: Move this back to baseline (which wont load?)
+@mixin media($max: false, $min: false) {
+  @if $max {
+    @if $min {
+      @media screen and (max-width: $max - 1) and (min-width: $min) {
+        @content;
+      }
+    } @else {
+      @media screen and (max-width: $max - 1) {
+        @content;
+      }
+    }
+  } @else {
+    @media screen and (min-width: $min) {
+      @content;
+    }
+  }
+}
+
+.device {
+  // ! Media query equivalent
+  @include breakpoint(s-only) {
+    width: 100%;
+  }
+  @include breakpoint(s-up) {
+    width: 75%;
+  }
+}
+
+// Breakpoints
+@mixin breakpoint($point) {
+  @if $point == s-up {
+    @include media($min: $small) {
+      @content;
+    }
+  }
+  @if $point == s-only {
+    @include media($max: $small) {
+      @content;
+    }
+  }
+  @if $point == m-up {
+    @include media($min: $medium) {
+      @content;
+    }
+  }
+  @if $point == m-only {
+    @include media($max: $medium) {
+      @content;
+    }
+  }
+  @if $point == m-and-l {
+    @include media($max: $large, $min: $medium) {
+      @content;
+    }
+  }
+  @if $point == l-up {
+    @include media($min: $large) {
+      @content;
+    }
+  }
+  @if $point == l-only {
+    @include media($max: $large) {
+      @content;
+    }
+  }
+  @if $point == xl-up {
+    @include media($min: $xlarge) {
+      @content;
+    }
+  }
+  @if $point == xl-only {
+    @include media($max: $xlarge) {
+      @content;
+    }
+  }
+  @if $point == xxl-up {
+    @include media($min: $xxlarge) {
+      @content;
+    }
+  }
+  @if $point == xxl-only {
+    @include media($max: $xxlarge) {
+      @content;
+    }
   }
 }

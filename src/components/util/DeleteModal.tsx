@@ -69,7 +69,7 @@ const DeleteModal = (props: IProps) => {
         <form
           className={style['container']}
         >
-          <p className={style['text']}>Do you want to delete <strong >{name}</strong>?</p>
+          <p className={style['text']}>Do you want to delete <strong>{name}</strong>?</p>
           {/* Confirmation buttons */}
           <div className={style['button-container']}>
             <input

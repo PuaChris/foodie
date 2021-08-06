@@ -111,6 +111,7 @@ const ItemModal = (props: IProps) => {
               <label className={style['label']} htmlFor="name">Name</label>
               <input
                 name="name"
+                type="text"
                 className={style['input']}
                 required
                 autoComplete="off"

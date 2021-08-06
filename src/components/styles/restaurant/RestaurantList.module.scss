@@ -19,6 +19,10 @@
   // Grid
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
+  // This column below means to fill the columns with a minimum of 200px width and max the screen size (?)
+  // grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
   grid-gap: 30px;
   grid-template-rows: auto;
   align-items: center;
@@ -26,13 +30,16 @@
 
 .restaurant-card {
   border-radius: 8px;
-  border: #696969 3px solid;
+  // border: #696969 3px solid;
+  // Adding box shadows for better aesthetics than borders
+  // https://dribbble.com/shots/14557861-Cards-UI-Design
+  box-shadow: -4px 9px 28px 0 rgba(34, 44, 70, 0.08);
 
-  padding: 10px;
+  padding: 25px 20px;
 
   position: relative;
 
-  width: 85%;
+  // width: 85%;
   height: 120px;
 
   color: #e7e5e5;
@@ -40,6 +47,15 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  transition: 0.5s;
+}
+
+// Adding a hover for more interactivity
+// Also change the cursor to have a pointer thumb for stuff you can click on
+.restaurant-card:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }
 
 .restaurant-text {

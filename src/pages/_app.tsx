@@ -19,6 +19,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+        {/* Adding titles to the tab */}
+        <meta charSet="utf-8"/>
+        <title>foodie.io | Restaurants near me</title>
       </Head>
 
       <Component {...pageProps} />

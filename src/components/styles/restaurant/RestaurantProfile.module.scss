@@ -11,7 +11,9 @@
 .profile-container {
   width: 90%;
   padding: 0;
-  margin: 30px 40px;
+
+  // Example of messing with margins for content containers vs. layout containers. For content containers, use either 0 or auto for horizontal margins
+  margin: 30px auto;
 }
 
 .title-container {
