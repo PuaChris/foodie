@@ -24,7 +24,10 @@ export const connectDB = async () => {
   if (process.env.NODE_ENV === 'production') {
     // Prod options
     Object.assign(connOptions, {
-      url: process.env.DB_URL,
+      host: process.env.DB_HOST_PROD,
+      username: process.env.DB_USERNAME_PROD,
+      password: process.env.DB_PASSWORD_PROD,
+      database: process.env.DB_NAME_PROD,
       synchronize: false,
 
       // Connect to prod from local using the line below:
