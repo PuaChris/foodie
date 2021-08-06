@@ -31,17 +31,22 @@ export const connectDB = async () => {
       synchronize: false,
 
       // Connect to prod from local using the line below:
-      // ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: false },
     });
   }
   else {
     // Dev + test options
     Object.assign(connOptions, {
-      host: process.env.DB_HOST_DEV,
-      username: process.env.DB_USERNAME_DEV,
-      password: process.env.DB_PASSWORD_DEV,
-      database: process.env.DB_NAME_DEV,
+      // host: process.env.DB_HOST_DEV,
+      // username: process.env.DB_USERNAME_DEV,
+      // password: process.env.DB_PASSWORD_DEV,
+      // database: process.env.DB_NAME_DEV,
+      host: process.env.DB_HOST_PROD,
+      username: process.env.DB_USERNAME_PROD,
+      password: process.env.DB_PASSWORD_PROD,
+      database: process.env.DB_NAME_PROD,
       synchronize: true,
+      ssl: { rejectUnauthorized: false },
     });
   }
 
