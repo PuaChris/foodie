@@ -2,11 +2,28 @@ import {
   ConnectionOptions,
   createConnection,
   getRepository,
+  getConnectionManager
 } from 'typeorm';
 import 'reflect-metadata';
 
 import Restaurant from './entities/restaurant.entity';
 import Item from './entities/item.entity';
+
+
+async function getRepoCustom(name: string): Promise<any> {
+  const connectionManager = getConnectionManager();
+
+  if (connectionManager.has('default')) {
+    const connection = connectionManager.get('default');
+
+    if (!connection.isConnected) {
+      await connection.connect();
+    }
+  } else {
+    await connectDB();
+  }
+  return getRepository(name);
+}
 
 export const connectDB = async () => {
   console.log('>> Connecting to database...');
@@ -64,10 +81,11 @@ export const connectDB = async () => {
 
 export const getRestaurantList = async () => {
   console.log('>> Loading restaurants from the database...');
+
   let restList: Restaurant[] = [];
 
-  await getRepository('restaurant').find().then(
-    (result) => {
+  await (await getRepoCustom('restaurant')).find().then(
+    (result: Restaurant[]) => {
       if (result) {
         restList = result as Restaurant[];
         console.log('>> Loading complete');
