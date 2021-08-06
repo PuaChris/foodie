@@ -28,7 +28,7 @@ export const connectDB = async () => {
       synchronize: false,
 
       // Connect to prod from local using the line below:
-      // ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: false },
     });
   }
   else {
@@ -41,6 +41,8 @@ export const connectDB = async () => {
       synchronize: true,
     });
   }
+
+  console.log(connOptions);
 
   await createConnection(connOptions)
     .then(async () => {
