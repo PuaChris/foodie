@@ -48,7 +48,8 @@ export const connectDB = async () => {
     .then(async () => {
       console.log('\n\n>> Database connected.\n\n');
     }).catch((error) => {
-      console.log(error);
+      console.error(error);
+      console.log(connOptions);
       throw new Error('>> Could not successfully connect to database');
     });
 };
