@@ -91,7 +91,7 @@ export const getRestaurantList = async () => {
         console.log('>> Loading complete');
       }
     },
-  ).catch((e) => {
+  ).catch((e: any) => {
     console.error(e);
     // TODO: Throw the actual error instead of an error message
     // TODO: Add a try catch and return status 500 to prevent the client from seeing server information
