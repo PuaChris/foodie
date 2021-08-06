@@ -67,8 +67,6 @@ export const getRestaurantList = async () => {
   console.log('>> Loading restaurants from the database...');
   let restList: Restaurant[] = [];
 
-  await connectDB();
-
   await getRepository('restaurant').find().then(
     (result) => {
       if (result) {
