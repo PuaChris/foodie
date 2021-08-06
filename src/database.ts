@@ -26,7 +26,9 @@ export const connectDB = async () => {
     Object.assign(connOptions, {
       url: process.env.DB_URL,
       synchronize: false,
-      ssl: { rejectUnauthorized: false },
+
+      // Connect to prod from local using the line below:
+      // ssl: { rejectUnauthorized: false },
     });
   }
   else {
