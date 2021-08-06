@@ -28,7 +28,7 @@ export const connectDB = async () => {
       synchronize: false,
 
       // Connect to prod from local using the line below:
-      ssl: { rejectUnauthorized: false },
+      // ssl: { rejectUnauthorized: false },
     });
   }
   else {
@@ -58,6 +58,8 @@ export const connectDB = async () => {
 export const getRestaurantList = async () => {
   console.log('>> Loading restaurants from the database...');
   let restList: Restaurant[] = [];
+
+  await connectDB();
 
   await getRepository('restaurant').find().then(
     (result) => {
