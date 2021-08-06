@@ -8,31 +8,37 @@ import 'reflect-metadata';
 import Restaurant from './entities/restaurant.entity';
 import Item from './entities/item.entity';
 
-const getConnectionName = () => {
-  const connectionName = process.env.NODE_ENV === 'production' ? process.env.CONFIG_PROD as string : process.env.CONFIG_DEV as string;
-  return connectionName;
-};
-
 export const connectDB = async () => {
   console.log('>> Connecting to database...');
-
-  console.log('\n\n\n', getConnectionName());
 
   const connOptions: ConnectionOptions = {
     name: 'default',
     type: 'postgres',
-    host: process.env.DB_HOST_DEV,
-    username: process.env.DB_USERNAME_DEV,
-    password: process.env.DB_PASSWORD_DEV,
-    database: process.env.DB_NAME_DEV,
-    synchronize: true,
     logging: true,
     entities: [
       Restaurant,
       Item,
     ],
   };
-  console.log(connOptions);
+
+  if (process.env.NODE_ENV === 'production') {
+    // Prod options
+    Object.assign(connOptions, {
+      url: process.env.DB_URL,
+      synchronize: false,
+      ssl: { rejectUnauthorized: false },
+    });
+  }
+  else {
+    // Dev + test options
+    Object.assign(connOptions, {
+      host: process.env.DB_HOST_DEV,
+      username: process.env.DB_USERNAME_DEV,
+      password: process.env.DB_PASSWORD_DEV,
+      database: process.env.DB_NAME_DEV,
+      synchronize: true,
+    });
+  }
 
   await createConnection(connOptions)
     .then(async () => {

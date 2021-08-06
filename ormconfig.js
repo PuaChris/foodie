@@ -8,7 +8,7 @@ module.exports = [{
   "logging": true,
   "extra": {
     "ssl": true,
-    "rejectUnauthorized": process.env.NODE_ENV !== "production" ? false : true,
+    "rejectUnauthorized": process.env.NODE_ENV === "production",
   },
   "entities": [
     __dirname + "**/entities/**/*.entity{.ts,.js}",
