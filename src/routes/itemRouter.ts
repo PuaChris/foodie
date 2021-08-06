@@ -58,7 +58,7 @@ ItemRouter.route('/restaurant/:restId/item')
 
 ItemRouter.route('/restaurant/:restId/item/:itemId')
 
-  // Edit restaurant
+  // Edit item
   .put(async (req, res) => {
     if (!req.body) return res.status(400).send('Request body is undefined');
 
@@ -87,7 +87,7 @@ ItemRouter.route('/restaurant/:restId/item/:itemId')
     return res.status(204).send('Successfully updated restaurant.');
   })
 
-  // Delete restaurant
+  // Delete item
   .delete(async (req, res) => {
     if (!req.params) return res.status(400).send('Request params are undefined');
 

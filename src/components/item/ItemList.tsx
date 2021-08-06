@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 
 import Item from './Item';
 import ItemModal from './ItemModal';
-import ItemController from '../../routes/itemController';
+import ItemController from '../../helper/controller/itemController';
 
 import styles from '../styles/item/ItemList.module.scss';
 import { restListCache, IItem } from '../../constant';

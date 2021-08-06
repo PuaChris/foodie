@@ -1,4 +1,4 @@
-import { HTTPMethodType } from '../constant';
+import { HTTPMethodType } from '../../constant';
 
 export default class Controller {
   public initFetchOptions = (method: HTTPMethodType, requestBody?: string): RequestInit => {

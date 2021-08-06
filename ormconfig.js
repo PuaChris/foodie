@@ -1,3 +1,5 @@
+
+
 module.exports = [{
   "name": process.env.CONFIG_PROD,
   "type": process.env.DB_TYPE,
@@ -9,12 +11,8 @@ module.exports = [{
     "rejectUnauthorized": process.env.NODE_ENV !== "production" ? false : true,
   },
   "entities": [
-    "src/entities/**/*.ts",
-    "dist/entities/**/*.js"
+    __dirname + "**/entities/**/*.entity{.ts,.js}",
   ],
-  "migrations": [
-    "src/migrations/**/*.ts"
-  ]
 },
 {
   "name": process.env.CONFIG_DEV,
@@ -26,12 +24,6 @@ module.exports = [{
   "synchronize": true,
   "logging": true,
   "entities": [
-    "src/entities/**/*.ts",
-    "dist/entities/**/*.js"
+    __dirname + "/**/entities/**/*.entity{.ts,.js}",
   ],
-  "migrations": [
-    "src/migrations/**/*.ts"
-  ]
-}
-
-]
+}]

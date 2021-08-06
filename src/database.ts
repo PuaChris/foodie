@@ -3,53 +3,44 @@ import {
   createConnection,
   getRepository,
 } from 'typeorm';
-import Item from './entities/item.entity';
+import 'reflect-metadata';
+
 import Restaurant from './entities/restaurant.entity';
+import Item from './entities/item.entity';
+
+const getConnectionName = () => {
+  const connectionName = process.env.NODE_ENV === 'production' ? process.env.CONFIG_PROD as string : process.env.CONFIG_DEV as string;
+  return connectionName;
+};
 
 export const connectDB = async () => {
   console.log('>> Connecting to database...');
 
-  // Uses details from ormconfig.js
-  const connectionOptions: ConnectionOptions = {
+  console.log('\n\n\n', getConnectionName());
+
+  const connOptions: ConnectionOptions = {
+    name: 'default',
     type: 'postgres',
+    host: process.env.DB_HOST_DEV,
+    username: process.env.DB_USERNAME_DEV,
+    password: process.env.DB_PASSWORD_DEV,
+    database: process.env.DB_NAME_DEV,
+    synchronize: true,
     logging: true,
     entities: [
-      'src/entities/**/*.ts',
-      'dist/entities/**/*.js',
-    ],
-    migrations: [
-      'src/migrations/**/*.ts',
+      Restaurant,
+      Item,
     ],
   };
+  console.log(connOptions);
 
-  if (process.env.DB_URL && process.env.NODE_ENV === 'production') {
-    Object.assign(connectionOptions, {
-      url: process.env.DB_URL,
-      synchronize: true,
+  await createConnection(connOptions)
+    .then(async () => {
+      console.log('\n\n>> Database connected.\n\n');
+    }).catch((error) => {
+      console.log(error);
+      throw new Error('>> Could not successfully connect to database');
     });
-
-    await createConnection(connectionOptions)
-      .then(async () => {
-        console.log('\n\n>> Database connected.\n\n');
-      }).catch((error) => console.log(error));
-  }
-  else {
-    Object.assign(connectionOptions, {
-      host: process.env.DB_HOST_DEV,
-      username: process.env.DB_USERNAME_DEV,
-      password: process.env.DB_PASSWORD_DEV,
-      database: process.env.DB_NAME_DEV,
-      synchronize: true,
-    });
-
-    await createConnection(connectionOptions)
-      .then(async () => {
-        console.log('\n\n>> Database connected.\n\n');
-      }).catch((error) => {
-        console.log(error);
-        throw new Error('>> Could not successfully connect to database');
-      });
-  }
 };
 
 // * DEFINING CRUD OPERATIONS FOR RESTAURANTS * //
@@ -57,10 +48,11 @@ export const connectDB = async () => {
 export const getRestaurantList = async () => {
   console.log('>> Loading restaurants from the database...');
   let restList: Restaurant[] = [];
-  await getRepository(Restaurant).find().then(
+
+  await getRepository('restaurant').find().then(
     (result) => {
       if (result) {
-        restList = result;
+        restList = result as Restaurant[];
         console.log('>> Loading complete');
       }
     },
@@ -78,12 +70,12 @@ export const getRestaurant = async (restId: string) => {
     console.log(`>> Loading restaurant ${restId} from the database ...`);
 
     let rest: Restaurant = new Restaurant();
-    await getRepository(Restaurant).find({ where: { id: restId } })
+    await getRepository('restaurant').find({ where: { id: restId } })
       .then(
         (result) => {
           // Empty arrays are not null or undefined
           if (result && result.length > 0) {
-            [rest] = result;
+            [rest] = result as Restaurant[];
             console.log('>> Loading complete');
           }
         },
@@ -101,7 +93,7 @@ export const addRestaurant = async (newRest: Restaurant): Promise<string> => {
 
     // Save Restaurant object in connection
     let id: string = '';
-    await getRepository(Restaurant).save(newRest)
+    await getRepository('restaurant').save(newRest)
       .then((result) => {
         id = result.id;
         console.log(`>> Saved a new restaurant: ${id} --> ${result.name}`);
@@ -120,7 +112,7 @@ export const editRestaurant = async (rest: Restaurant) => {
     console.log(`>> Editing restaurant: ${rest.id}...`);
 
     // UPDATE restaurant SET name = ... WHERE id = ...
-    await getRepository(Restaurant)
+    await getRepository('restaurant')
       .update(rest.id, {
         name: rest.name,
         location: rest.location,
@@ -143,7 +135,7 @@ export const deleteRestaurant = async (restId: string) => {
   if (restId) {
     console.log(`>> Deleting restaurant: ${restId}...`);
 
-    await getRepository(Restaurant)
+    await getRepository('restaurant')
       .delete(restId)
       .then(() => {
         console.log(`>> Deleted restaurant ${restId}`);
@@ -164,10 +156,11 @@ export const getItemList = async (restId: string) => {
 
     let itemList: Item[] = [];
     if (restId) {
-      await getRepository(Restaurant).findOne(restId, { relations: ['items'] })
-        .then((rest) => {
-          if (rest) {
-            itemList = rest.items;
+      await getRepository('restaurant').findOne(restId, { relations: ['items'] })
+        .then((data) => {
+          if (data) {
+            const rest = data as Restaurant;
+            itemList = rest.items as Item[];
             console.log('>> Loading complete');
           }
         })
@@ -187,10 +180,10 @@ export const addItem = async (restId: string, newItem: Item) => {
 
     // Save Restaurant object in connection
     let itemId: string = '';
-    await getRepository(Restaurant).findOne(restId)
+    await getRepository('restaurant').findOne(restId)
       .then((result) => {
         if (result) {
-          newItem.restaurant = result;
+          newItem.restaurant = result as Restaurant;
         }
         else {
           throw new Error(`>> Could not find restaurant with ID ${restId}`);
@@ -198,7 +191,7 @@ export const addItem = async (restId: string, newItem: Item) => {
       })
       .catch((e) => console.error(e));
 
-    await getRepository(Item).save(newItem)
+    await getRepository('item').save(newItem)
       .then((result) => {
         itemId = result.id;
         console.log(`>> Saved a new item: ${itemId} --> ${result.name}`);
@@ -216,7 +209,7 @@ export const editItem = async (item: Item) => {
     console.log(`>> Editing item: ${item.id}...`);
 
     // UPDATE restaurant SET name = ... WHERE id = ...
-    await getRepository(Item)
+    await getRepository('item')
       .update(item.id, {
         name: item.name,
         price: item.price,
@@ -234,12 +227,11 @@ export const editItem = async (item: Item) => {
   else throw new Error('>> Invalid item data; cannot save into database');
 };
 
-// TODO: Not sure if I have to replicate in Restaurant as well (I shouldn't though...)
 export const deleteItem = async (itemId: string) => {
   if (itemId) {
     console.log(`>> Deleting item: ${itemId}...`);
 
-    await getRepository(Item)
+    await getRepository('item')
       .delete(itemId)
       .then(() => {
         console.log(`>> Deleted item ${itemId}`);

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core';
 import { NextRouter, withRouter } from 'next/dist/client/router';
 
-import RestaurantController from '../../routes/restaurantController';
+import RestaurantController from '../../helper/controller/restaurantController';
 import RestaurantModal from './RestaurantModal';
 
 import styles from '../styles/restaurant/RestaurantList.module.scss';
@@ -131,7 +131,7 @@ class RestaurantList extends React.Component<IProps, IState> {
 
                   <div className={style['icons']}>
                     <FontAwesomeIcon className={`${rest.emotion}`} icon={emotionIcon} />
-                    {/* <FontAwesomeIcon className={`${rest.recommend}`} icon={recommendIcon} /> */}
+
                     <FontAwesomeIcon className="question" icon={recommendIcon} />
                   </div>
                 </div>

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node src/server.ts",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production ts-node src/server.ts",
     "test": "jest",
     "test:tsc": "tsc -p tsconfig.test.json -w"
   },

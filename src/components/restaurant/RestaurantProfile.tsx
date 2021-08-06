@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import _ from 'lodash';
 
 import RestaurantDescription from './RestaurantDescription';
-import RestaurantController from '../../routes/restaurantController';
+import RestaurantController from '../../helper/controller/restaurantController';
 import RestaurantModal from './RestaurantModal';
 
 import DeleteModal from '../util/DeleteModal';
@@ -210,15 +210,6 @@ class RestaurantProfile extends React.Component<IProps, IState> {
 
     return (
       <div className={style['container']}>
-        <header className="header-container">
-          <div className="logo-container">
-            <h2 className="logo-red">foodie</h2>
-            <h2 className="logo-black">.io</h2>
-          </div>
-          <span className="sign-in">
-            {/* <FontAwesomeIcon icon={['fas', 'user-circle']} /> */}
-          </span>
-        </header>
         <RestaurantModal
           open={isEditModal}
           restData={restData}
