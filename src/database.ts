@@ -2,7 +2,7 @@ import {
   ConnectionOptions,
   createConnection,
   getRepository,
-  getConnectionManager
+  getConnectionManager,
 } from 'typeorm';
 import 'reflect-metadata';
 
@@ -10,7 +10,7 @@ import Restaurant from './entities/restaurant.entity';
 import Item from './entities/item.entity';
 
 
-async function getRepoCustom(name: string): Promise<any> {
+async function getConnection(): Promise<void> {
   const connectionManager = getConnectionManager();
 
   if (connectionManager.has('default')) {
@@ -22,7 +22,6 @@ async function getRepoCustom(name: string): Promise<any> {
   } else {
     await connectDB();
   }
-  return getRepository(name);
 }
 
 export const connectDB = async () => {
@@ -84,14 +83,15 @@ export const getRestaurantList = async () => {
 
   let restList: Restaurant[] = [];
 
-  await (await getRepoCustom('restaurant')).find().then(
-    (result: Restaurant[]) => {
+  await getConnection();
+  await getRepository('restaurant').find().then(
+    (result) => {
       if (result) {
         restList = result as Restaurant[];
         console.log('>> Loading complete');
       }
     },
-  ).catch((e: any) => {
+  ).catch((e) => {
     console.error(e);
     // TODO: Throw the actual error instead of an error message
     // TODO: Add a try catch and return status 500 to prevent the client from seeing server information
