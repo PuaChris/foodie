@@ -37,16 +37,11 @@ export const connectDB = async () => {
   else {
     // Dev + test options
     Object.assign(connOptions, {
-      // host: process.env.DB_HOST_DEV,
-      // username: process.env.DB_USERNAME_DEV,
-      // password: process.env.DB_PASSWORD_DEV,
-      // database: process.env.DB_NAME_DEV,
-      host: process.env.DB_HOST_PROD,
-      username: process.env.DB_USERNAME_PROD,
-      password: process.env.DB_PASSWORD_PROD,
-      database: process.env.DB_NAME_PROD,
+      host: process.env.DB_HOST_DEV,
+      username: process.env.DB_USERNAME_DEV,
+      password: process.env.DB_PASSWORD_DEV,
+      database: process.env.DB_NAME_DEV,
       synchronize: true,
-      ssl: { rejectUnauthorized: false },
     });
   }
 
@@ -61,7 +56,7 @@ export const connectDB = async () => {
     });
 };
 
-const getConnection = async () => {
+export const getConnection = async () => {
   const connectionManager = getConnectionManager();
 
   if (connectionManager.has('default')) {
@@ -82,7 +77,6 @@ export const getRestaurantList = async () => {
 
   let restList: Restaurant[] = [];
 
-  // await getConnection();
   await getRepository('restaurant').find().then(
     (result) => {
       if (result) {
