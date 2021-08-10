@@ -45,8 +45,6 @@ export const connectDB = async () => {
     });
   }
 
-  console.log(connOptions);
-
   await createConnection(connOptions)
     .then(async () => {
       console.log('\n\n>> Database connected.\n\n');
@@ -56,6 +54,8 @@ export const connectDB = async () => {
     });
 };
 
+
+// Vercel is funky with maintaining connections on start up so use the following to check if a connection already exists. If not, make a new one
 export const getConnection = async () => {
   const connectionManager = getConnectionManager();
 
